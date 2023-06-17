@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Truckflow</string>
+    <string name="logo_name">TruckFlow</string>
+
+    <!--search-->
+    <string name="search_text">Search...</string>
+
+
+</resources>
