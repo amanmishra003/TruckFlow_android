@@ -2,29 +2,18 @@ package com.example.truckflow.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import com.example.truckflow.Home.Home;
 import com.example.truckflow.R;
+import com.example.truckflow.registration.SignUpChoice;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 public class SignUp extends AppCompatActivity {
 
@@ -50,6 +39,14 @@ public class SignUp extends AppCompatActivity {
         submit_registration = findViewById(R.id.register_button);
 
         submit_registration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SignUp.this, SignUpChoice.class);
+                startActivity(i);
+            }
+        });
+        /*submit_registration.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 String postUrl = url + "/postUser";
@@ -98,7 +95,7 @@ public class SignUp extends AppCompatActivity {
 
             }
         });
-
+*/
 
 
 

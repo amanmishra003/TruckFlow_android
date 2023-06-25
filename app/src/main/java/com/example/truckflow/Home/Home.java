@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,12 +15,16 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.truckflow.R;
+import com.example.truckflow.load.LoadActivity;
 import com.google.android.material.navigation.NavigationView;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageView menuIcon;
+
+    ImageView postLoad;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +36,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         menuIcon = findViewById(R.id.menu_icon);
+        postLoad = findViewById(R.id.postImg);
 
+        postLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Home.this, LoadActivity.class);
+                startActivity(i);
+
+            }
+        });
         //Navigation Drawer
         navigationDrawer();
 
