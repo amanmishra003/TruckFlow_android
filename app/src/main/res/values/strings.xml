@@ -4,6 +4,7 @@
 
     <!--search-->
     <string name="search_text">Search...</string>
+    <string name="reg_api_url">https://ec2-54-196-55-232.compute-1.amazonaws.com/</string>
 
 
 </resources>
