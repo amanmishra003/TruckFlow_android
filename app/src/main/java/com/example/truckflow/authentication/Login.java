@@ -1,4 +1,4 @@
-package com.example.truckflow.Authentication;
+package com.example.truckflow.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import com.example.truckflow.Home.Home;
+import com.example.truckflow.home.Home;
 import com.example.truckflow.R;
 
 public class Login extends AppCompatActivity {

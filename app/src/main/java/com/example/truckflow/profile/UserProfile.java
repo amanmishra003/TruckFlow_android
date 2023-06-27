@@ -1,4 +1,4 @@
-package com.example.truckflow.Profile;
+package com.example.truckflow.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 

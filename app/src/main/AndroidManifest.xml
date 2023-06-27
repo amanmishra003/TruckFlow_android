@@ -25,28 +25,28 @@
             android:name=".registration.SignUpChoice"
             android:exported="false" />
         <activity
-            android:name=".UserProfile"
+            android:name=".profile.UserProfile"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Home.Home"
+            android:name=".home.Home"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Authentication.SignUp"
+            android:name=".authentication.SignUp"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Authentication.Login"
+            android:name=".authentication.Login"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

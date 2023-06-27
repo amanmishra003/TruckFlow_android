@@ -1,4 +1,4 @@
-package com.example.truckflow.Authentication;
+package com.example.truckflow.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 

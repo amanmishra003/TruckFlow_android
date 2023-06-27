@@ -1,14 +1,15 @@
 package com.example.truckflow.registration;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.truckflow.Home.Home;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.truckflow.R;
+import com.example.truckflow.home.Home;
 
 public class TruckerRegistrationTwo extends AppCompatActivity {
 

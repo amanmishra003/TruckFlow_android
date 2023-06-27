@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.Home"
-    tools:openDrawer="start"
+    tools:context=".home.Home"
     android:id="@+id/drawer_layout">
+    <!--tools:openDrawer="start"-->
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
@@ -108,7 +108,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="horizontal"></LinearLayout>
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>
