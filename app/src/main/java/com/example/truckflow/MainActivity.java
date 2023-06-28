@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import com.example.truckflow.authentication.Login;
+
 public class MainActivity extends AppCompatActivity {
     private static  int SPLASH_SCREEN=1000;
     @Override
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent =new Intent(MainActivity.this, com.example.truckflow.authentication.Login.class);
+                Intent intent =new Intent(MainActivity.this, Login.class);
 
                 startActivity(intent);
                 finish();

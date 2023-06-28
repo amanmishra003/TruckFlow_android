@@ -45,6 +45,8 @@ public class SignUp extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
         /*submit_registration.setOnClickListener(new View.OnClickListener() {
 
             @Override
