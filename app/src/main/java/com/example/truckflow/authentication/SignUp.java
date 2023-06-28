@@ -1,9 +1,13 @@
 package com.example.truckflow.authentication;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -12,8 +16,18 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import com.example.truckflow.R;
+import com.example.truckflow.entities.User;
 import com.example.truckflow.registration.SignUpChoice;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.UUID;
 
 public class SignUp extends AppCompatActivity {
 
@@ -24,6 +38,12 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //instance initiated
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //database reference
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up);
 
@@ -31,6 +51,7 @@ public class SignUp extends AppCompatActivity {
         phone = findViewById(R.id.phone);
         email = findViewById(R.id.email);
         password = findViewById(R.id.pass);
+
 
         String url = getString(R.string.reg_api_url);
 
@@ -43,6 +64,27 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(SignUp.this, SignUpChoice.class);
                 startActivity(i);
+                UUID uuid = UUID.randomUUID();
+
+                User user = new User(f_name.getEditText().getText().toString(),phone
+                        .getEditText().getText().toString(),email.getEditText().getText().toString(),password.getEditText().getText().toString());
+                databaseRef.child("users").child(String.valueOf(uuid)).setValue(user);
+
+                db.collection("users")
+                        .add(user)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                            }
+                        });
+
             }
         });
 
