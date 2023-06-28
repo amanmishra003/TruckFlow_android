@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:cardElevation="20dp"
+        android:layout_marginBottom="10dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:padding="20dp"
+            >
+
+            <TextView
+                android:id="@+id/load_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sureway Transportation Company"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18dp"
+
+                />
+            <TextView
+                android:id="@+id/load_pick_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Surrey,BC"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintLeft_toRightOf="@id/load_pick_month"
+                app:layout_constraintTop_toBottomOf="@id/load_name"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:drawableStart="@drawable/baseline_arrow_circle_up_24"
+                android:drawablePadding="5dp"/>
+
+            <TextView
+                android:id="@+id/load_drop_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calgary,Alberta"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintLeft_toRightOf="@id/load_pick_date"
+                app:layout_constraintTop_toBottomOf="@id/load_pick_loc"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:drawableStart="@drawable/baseline_arrow_circle_down_24"
+                android:drawablePadding="5dp"
+                />
+            <TextView
+                android:id="@+id/load_pick_month"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="JUN"
+                app:layout_constraintTop_toBottomOf="@id/load_name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/load_pick_loc"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                />
+
+            <TextView
+                android:id="@+id/load_pick_date"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="30"
+                app:layout_constraintTop_toBottomOf="@id/load_pick_month"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/load_drop_loc"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                />
+
+            <TextView
+                android:id="@+id/load_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trip 1,332 mi"
+                app:layout_constraintTop_toBottomOf="@id/load_name"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                />
+
+
+            <TextView
+                android:id="@+id/load_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="47,500 lbs."
+                app:layout_constraintTop_toBottomOf="@id/load_distance"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                />
+            <TextView
+                android:id="@+id/view_load_dts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Details"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/load_pick_date"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:paddingHorizontal="10dp"
+                android:background="#4169E1"
+                />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
