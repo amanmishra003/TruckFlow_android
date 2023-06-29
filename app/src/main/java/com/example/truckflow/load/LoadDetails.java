@@ -1,4 +1,5 @@
 package com.example.truckflow.load;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,9 +27,11 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_load_dts);
 
         // Initialize the MapView with the latest renderer
         MapsInitializer.initialize(getApplicationContext());
+
         mapView = findViewById(R.id.load_dts_map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -46,7 +49,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         double latitude1 = 37.7749;
         double longitude1 = -122.4194;
 
-     // Define the latitude and longitude values for location2
+        // Define the latitude and longitude values for location2
         double latitude2 = 34.0522;
         double longitude2 = -118.2437;
 
@@ -66,7 +69,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         googleMap.addMarker(dropMarkerOptions);
 
 
-      // Adding polyline
+        // Adding polyline
         PolylineOptions polylineOptions = new PolylineOptions()
                 .add(pickupLatLng, dropLatLng)
                 .color(Color.BLUE)
