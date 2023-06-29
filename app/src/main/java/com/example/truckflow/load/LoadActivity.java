@@ -13,14 +13,13 @@ import com.google.android.gms.maps.MapView;
 
 public class LoadActivity extends AppCompatActivity {
 
-        postLoad = findViewById(R.id.postLoadButton);
-        postLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent i = new Intent(LoadActivity.this, Home.class);
-                startActivity(i);
-            }
-        });
+    private MapView mapView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_load);
+
+    }
     }
 }
