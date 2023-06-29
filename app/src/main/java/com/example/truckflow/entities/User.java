@@ -1,10 +1,30 @@
 package com.example.truckflow.entities;
 
 public class User {
+
+
     public String name;
     public String email;
     public String phone;
     public String password;
+
+    public User(String name, String email, String phone, String password, String role) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.Role = role;
+    }
+
+    public String Role;
+
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String role) {
+        Role = role;
+    }
 
     public String getName() {
         return name;
@@ -38,10 +58,6 @@ public class User {
         this.password = password;
     }
 
-    public User(String name, String email, String phone, String password) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-    }
+
+
 }

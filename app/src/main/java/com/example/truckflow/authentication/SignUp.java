@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -47,10 +48,27 @@ public class SignUp extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up);
 
+        RadioButton radioButtonShipper;
+        RadioButton radioButtonTrucker;
+
         f_name = findViewById(R.id.full_name);
         phone = findViewById(R.id.phone);
         email = findViewById(R.id.email);
         password = findViewById(R.id.pass);
+        radioButtonShipper = findViewById(R.id.radioButtonShipper);
+        radioButtonTrucker = findViewById(R.id.radioButtonTrucker);
+
+        String selectedOption;
+
+        if (radioButtonShipper.isChecked()) {
+            selectedOption = "shipper";
+        } else if (radioButtonTrucker.isChecked()) {
+            selectedOption = "trucker";
+        } else {
+            // Handle the case when neither RadioButton is selected
+            selectedOption = ""; // or any other default value
+        }
+
 
 
         String url = getString(R.string.reg_api_url);
@@ -66,8 +84,13 @@ public class SignUp extends AppCompatActivity {
                 startActivity(i);
                 UUID uuid = UUID.randomUUID();
 
+
+
                 User user = new User(f_name.getEditText().getText().toString(),phone
-                        .getEditText().getText().toString(),email.getEditText().getText().toString(),password.getEditText().getText().toString());
+                        .getEditText().getText().toString(),email.getEditText().getText().toString(),
+                        password.getEditText().getText().toString(), selectedOption);
+
+
                 databaseRef.child("users").child(String.valueOf(uuid)).setValue(user);
 
                 db.collection("users")
@@ -89,57 +112,6 @@ public class SignUp extends AppCompatActivity {
         });
 
 
-        /*submit_registration.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String postUrl = url + "/postUser";
-
-                Toast.makeText(getApplicationContext(), "Changes for message", Toast.LENGTH_SHORT).show();
-                new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Intent intent = new Intent(SignUp.this, Home.class);
-                                startActivity(intent);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Handle the error
-                                System.out.println(error.getMessage());
-                            }
-                        }) {
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/x-www-form-urlencoded; charset=UTF-8";
-                    }
-
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        try {
-                            String pass = password.toString();
-                            String name = f_name.toString();
-                            String phonenumber = phone.toString();
-                            String emailStr = email.toString();
-
-                            String requestBody = "pass=" + URLEncoder.encode(pass, "UTF-8") +
-                                    "&name=" + URLEncoder.encode(name, "UTF-8") +
-                                    "&phone=" + URLEncoder.encode(phonenumber, "UTF-8") +
-                                    "&email=" + URLEncoder.encode(emailStr, "UTF-8");
-
-                            return requestBody.getBytes("UTF-8");
-                        } catch (UnsupportedEncodingException e) {
-                            System.out.println(e.getMessage());
-                            return null;
-                        }
-                    }
-                };
-
-            }
-        });
-*/
 
 
 

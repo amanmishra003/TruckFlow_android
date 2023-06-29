@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.truckflow.R;
 import com.example.truckflow.load.load_dts;
-import com.example.truckflow.models.Load;
+import com.example.truckflow.entities.Load;
 
 import java.util.List;
 
