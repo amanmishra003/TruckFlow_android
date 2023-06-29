@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Intent;
-import android.media.Image;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,8 +18,8 @@ import android.widget.ImageView;
 
 import com.example.truckflow.R;
 import com.example.truckflow.adpters.LoadAdapter;
+import com.example.truckflow.entities.Load;
 import com.example.truckflow.load.LoadActivity;
-import com.example.truckflow.models.Load;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;

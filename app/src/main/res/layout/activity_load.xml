@@ -8,11 +8,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="ExtraText">
 
         <!-- Load Name -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loadNameLayout"
+            android:id="@+id/loadName"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="40dp"
@@ -29,48 +30,30 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Pickup Location -->
-        <com.google.android.material.textfield.TextInputLayout
+
+        <fragment
             android:id="@+id/pickupLocationLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Pickup Location"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadNameLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
+            app:layout_constraintTop_toBottomOf="@id/loadName"
+            />
         <!-- Drop-off Location -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dropOffLocationLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Drop-off Location"
 
+        <fragment
+            android:id="@+id/dropOffLocationLayout"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pickupLocationLayout">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+            app:layout_constraintTop_toBottomOf="@id/pickupLocationLayout" />
 
-        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Load Description -->
         <com.google.android.material.textfield.TextInputLayout
@@ -87,6 +70,7 @@
             app:layout_constraintTop_toBottomOf="@id/dropOffLocationLayout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loadDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
@@ -110,6 +94,7 @@
             app:layout_constraintTop_toBottomOf="@id/loadDescriptionLayout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loadWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -131,6 +116,7 @@
             app:layout_constraintTop_toBottomOf="@id/loadWeightLayout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loadDimension"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -151,10 +137,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/loadDimensionsLayout">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/loadDateTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="datetime" />
+                android:backgroundTint="@color/black"
+                android:inputType="datetime"
+                android:text="Choose Date" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -173,6 +162,7 @@
             app:layout_constraintTop_toBottomOf="@id/loadDateTimeLayout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contactInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -194,6 +184,7 @@
             app:layout_constraintTop_toBottomOf="@id/contactInfoLayout">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/additionReq"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"

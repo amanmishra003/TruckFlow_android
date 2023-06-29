@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.truckflow.R;
 
-public class load_dts extends AppCompatActivity {
+public class LoadDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

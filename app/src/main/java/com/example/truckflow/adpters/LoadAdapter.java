@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.truckflow.R;
-import com.example.truckflow.load.load_dts;
-import com.example.truckflow.models.Load;
+import com.example.truckflow.entities.Load;
+import com.example.truckflow.load.LoadDetails;
 
 import java.util.List;
 
@@ -74,7 +74,7 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
             if (position != RecyclerView.NO_POSITION) {
                 Load clickedLoad = loadList.get(position);
                 // Start a new activity and pass the load details to it
-                Intent intent = new Intent(itemView.getContext(), load_dts.class);
+                Intent intent = new Intent(itemView.getContext(), LoadDetails.class);
                 intent.putExtra("load", clickedLoad);
                 itemView.getContext().startActivity(intent);
             }
