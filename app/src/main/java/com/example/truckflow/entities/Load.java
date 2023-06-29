@@ -82,7 +82,7 @@ public class Load implements Serializable {
 
     public void setCurrentLoc(String currentLoc) {
         this.currentLoc = currentLoc;
-
+    }
 
     public String getDropLoc() {
         return dropLoc;
