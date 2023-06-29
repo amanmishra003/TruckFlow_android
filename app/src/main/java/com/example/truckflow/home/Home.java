@@ -127,7 +127,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         load1.setId("1");
         load1.setAdditionalReq("Handle with care");
         load1.setContactInfo("John Doe");
-        load1.setCurrentStatus("654 Oak Ave, Surrey, BC");
+        load1.setCurrentLoc("654 Oak Ave, Surrey, BC");
         load1.setDropLoc("321 Maple Road, Surrey, BC");
         load1.setEstDeliveryTime(new Date());
         load1.setLoadDesc("Fragile items");
@@ -146,7 +146,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         load2.setId("2");
         load2.setAdditionalReq("Handle with caution");
         load2.setContactInfo("Jane Smith");
-        load2.setCurrentStatus("City X");
+        load2.setCurrentLoc("City X");
         load2.setDropLoc("City Y");
         load2.setEstDeliveryTime(new Date());
         load2.setLoadDesc("Heavy machinery");
