@@ -8,9 +8,9 @@ public class Load implements Serializable {
     private String id;
     private String additionalReq;
     private String contactInfo;
-    private String currentLoc;
+    private String currentStatus;
     private String dropLoc;
-    private Date estArrivalTime;
+    private Date estDeliveryTime;
     private String loadDesc;
     private String loadDims;
     private String loadName;
@@ -32,7 +32,7 @@ public class Load implements Serializable {
                 String loadDesc, float distance, String loadDims, String loadName, String loadWeight, String pickupLoc, Date pickUpDateTime, Date dropDateTime, String truckerId, String shipperId) {
         this.additionalReq = additionalReq;
         this.contactInfo = contactInfo;
-        this.currentLoc = currentLoc;
+        this.currentStatus = currentLoc;
         this.dropLoc = dropLoc;
         this.loadDesc = loadDesc;
         this.loadDims = loadDims;
@@ -71,12 +71,12 @@ public class Load implements Serializable {
         this.contactInfo = contactInfo;
     }
 
-    public String getCurrentLoc() {
-        return currentLoc;
+    public String getCurrentStatus() {
+        return currentStatus;
     }
 
-    public void setCurrentLoc(String currentLoc) {
-        this.currentLoc = currentLoc;
+    public void setCurrentStatus(String currentStatus) {
+        this.currentStatus = currentStatus;
     }
 
     public String getDropLoc() {
@@ -87,12 +87,12 @@ public class Load implements Serializable {
         this.dropLoc = dropLoc;
     }
 
-    public Date getEstArrivalTime() {
-        return estArrivalTime;
+    public Date getEstDeliveryTime() {
+        return estDeliveryTime;
     }
 
-    public void setEstArrivalTime(Date estArrivalTime) {
-        this.estArrivalTime = estArrivalTime;
+    public void setEstDeliveryTime(Date estDeliveryTime) {
+        this.estDeliveryTime = estDeliveryTime;
     }
 
     public String getLoadDesc() {

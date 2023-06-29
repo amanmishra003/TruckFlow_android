@@ -9,14 +9,9 @@ import android.widget.Button;
 
 import com.example.truckflow.home.Home;
 import com.example.truckflow.R;
+import com.google.android.gms.maps.MapView;
 
 public class LoadActivity extends AppCompatActivity {
-
-    Button postLoad;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_load);
 
         postLoad = findViewById(R.id.postLoadButton);
         postLoad.setOnClickListener(new View.OnClickListener() {
@@ -27,6 +22,5 @@ public class LoadActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
     }
 }
