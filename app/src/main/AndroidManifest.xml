@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
     <application
+
+
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,7 +20,7 @@
         android:theme="@style/Theme.Truckflow"
         tools:targetApi="31">
         <activity
-            android:name=".load.load_dts"
+            android:name=".load.LoadDetails"
             android:exported="false" />
         <activity
             android:name=".load.LoadActivity"
@@ -72,6 +79,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBbOq9E_iUhKtg6WiaqV2CXUxIG2qo9wjQ" />
     </application>
 
 </manifest>
