@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".registration.TruckerRegistrationT">
+
+    <TextView
+        android:id="@+id/truck_name"
+        android:layout_width="265dp"
+        android:layout_height="69dp"
+        android:hint="truckname"
+        tools:layout_editor_absoluteX="60dp"
+        tools:layout_editor_absoluteY="171dp" />
+
+    <TextView
+        android:id="@+id/truck_type"
+        android:layout_width="250dp"
+        android:layout_height="69dp"
+        android:hint="truck type"
+        tools:layout_editor_absoluteX="71dp"
+        tools:layout_editor_absoluteY="275dp" />
+
+    <TextView
+        android:id="@+id/max_length"
+        android:layout_width="250dp"
+        android:layout_height="59dp"
+        android:hint="max length"
+        tools:layout_editor_absoluteX="71dp"
+        tools:layout_editor_absoluteY="391dp" />
+
+    <TextView
+        android:id="@+id/max_wt"
+        android:layout_width="254dp"
+        android:layout_height="64dp"
+        android:hint="wt"
+        tools:layout_editor_absoluteX="71dp"
+        tools:layout_editor_absoluteY="492dp" />
+
+    <Button
+        android:id="@+id/registerTruck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="register"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="631dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

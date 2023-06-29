@@ -1,6 +1,5 @@
 package com.example.truckflow.entities;
 
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,9 +8,11 @@ public class Load implements Serializable {
     private String id;
     private String additionalReq;
     private String contactInfo;
-    private String currentStatus;
+
+    private String currentLoc;
     private String dropLoc;
     private Date estDeliveryTime;
+
     private String loadDesc;
     private String loadDims;
     private String loadName;
@@ -33,7 +34,9 @@ public class Load implements Serializable {
                 String loadDesc, float distance, String loadDims, String loadName, String loadWeight, String pickupLoc, Date pickUpDateTime, Date dropDateTime, String truckerId, String shipperId) {
         this.additionalReq = additionalReq;
         this.contactInfo = contactInfo;
-        this.currentStatus = currentLoc;
+
+        this.currentLoc = currentLoc;
+
         this.dropLoc = dropLoc;
         this.loadDesc = loadDesc;
         this.loadDims = loadDims;
@@ -72,13 +75,14 @@ public class Load implements Serializable {
         this.contactInfo = contactInfo;
     }
 
-    public String getCurrentStatus() {
-        return currentStatus;
+
+    public String getCurrentLoc() {
+        return currentLoc;
     }
 
-    public void setCurrentStatus(String currentStatus) {
-        this.currentStatus = currentStatus;
-    }
+    public void setCurrentLoc(String currentLoc) {
+        this.currentLoc = currentLoc;
+
 
     public String getDropLoc() {
         return dropLoc;
@@ -87,13 +91,13 @@ public class Load implements Serializable {
     public void setDropLoc(String dropLoc) {
         this.dropLoc = dropLoc;
     }
-
     public Date getEstDeliveryTime() {
         return estDeliveryTime;
     }
 
     public void setEstDeliveryTime(Date estDeliveryTime) {
         this.estDeliveryTime = estDeliveryTime;
+
     }
 
     public String getLoadDesc() {
@@ -178,4 +182,7 @@ public class Load implements Serializable {
         this.distance = distance;
 
     }
+
+
 }
+

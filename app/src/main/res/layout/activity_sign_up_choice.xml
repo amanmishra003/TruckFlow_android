@@ -11,30 +11,25 @@
     <!-- Radio Buttons -->
 
     <!-- Register Button -->
+
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="161dp"
         android:gravity="center"
         android:padding="16dp"
         android:text="Please Select"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="151dp" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="300dp"
         android:orientation="horizontal"
         android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        tools:layout_editor_absoluteY="253dp">
 
         <!-- Shipper Radio Button -->
         <RadioButton
@@ -53,26 +48,20 @@
     </RadioGroup>
 
 
-
     <Button
         android:id="@+id/buttonRegisterChoice"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="76dp"
         android:text="Register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="470dp" />
 
     <TextView
         android:id="@+id/warningText"
         android:layout_width="318dp"
         android:layout_height="26dp"
         android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/buttonRegisterChoice"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="389dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

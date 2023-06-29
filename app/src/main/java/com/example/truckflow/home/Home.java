@@ -20,6 +20,7 @@ import com.example.truckflow.R;
 import com.example.truckflow.adpters.LoadAdapter;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.load.LoadActivity;
+
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;

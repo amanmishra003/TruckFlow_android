@@ -11,13 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.truckflow.R;
-<<<<<<< HEAD
+
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.load.LoadDetails;
-=======
-import com.example.truckflow.load.LoadDetails;
-import com.example.truckflow.models.Load;
->>>>>>> 0900ee424d2bc0f4412b38c4beef8bf63f4b05df
+
 
 import java.util.List;
 

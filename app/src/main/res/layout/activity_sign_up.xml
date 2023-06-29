@@ -56,7 +56,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email"
+            android:id="@+id/company_phne"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -71,7 +71,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/phone"
+            android:id="@+id/dot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -102,27 +102,52 @@
                 android:layout_marginTop="4px"
                 android:inputType="textPassword"/>
 
+
         </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>
 
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        tools:layout_editor_absoluteY="253dp">
+
+        <!-- Shipper Radio Button -->
+        <RadioButton
+            android:id="@+id/radioButtonShipper"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Shipper" />
+
+        <!-- Trucker Radio Button -->
+        <RadioButton
+            android:id="@+id/radioButtonTrucker"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Trucker" />
+
+    </RadioGroup>
+
+
     <Button
         android:id="@+id/register_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
         android:layout_marginTop="4px"
-        android:backgroundTint="#4169E1"/>
+        android:backgroundTint="#4169E1"
+        android:text="Register" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Already have an account? LogIn"
         android:layout_marginTop="4px"
         android:background="#00000000"
-        android:textColor="@color/black"/>
-
-
+        android:text="Already have an account? LogIn"
+        android:textColor="@color/black" />
 
 
 </LinearLayout>
