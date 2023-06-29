@@ -4,42 +4,148 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".load.load_dts">
+    tools:context=".load.LoadDetails">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+    <TextView
+        android:id="@+id/load_dts_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Load Details"
+        android:textSize="16sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.092"
-        tools:srcCompat="@tools:sample/avatars"
-
+        android:gravity="center"
         />
 
-    <TextView
-        android:id="@+id/dts_load_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="93dp"
-        android:layout_marginTop="61dp"
-        android:text="load_name"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/load_dts_map"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@id/load_dts_head"
+        android:contentDescription="@string/map_content_description" />
+        />
 
-    <TextView
-        android:id="@+id/dts_load_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:text="load_desc"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/dts_load_name"
-        app:layout_constraintStart_toEndOf="@+id/dts_load_name" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/load_dts_card1"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintTop_toBottomOf="@id/load_dts_map"
+        app:cardElevation="20dp"
+        android:layout_marginBottom="10dp"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            >
+
+            <TextView
+                android:id="@+id/load_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sureway Transportation Company"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18dp"
+
+
+                />
+            <TextView
+                android:id="@+id/load_pick_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Surrey,BC"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintLeft_toRightOf="@id/load_pick_month"
+                app:layout_constraintTop_toBottomOf="@id/load_name"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:drawableStart="@drawable/baseline_arrow_circle_up_24"
+                android:drawablePadding="5dp"/>
+
+            <TextView
+                android:id="@+id/load_drop_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calgary,Alberta"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                app:layout_constraintLeft_toRightOf="@id/load_pick_date"
+                app:layout_constraintTop_toBottomOf="@id/load_pick_loc"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:drawableStart="@drawable/baseline_arrow_circle_down_24"
+                android:drawablePadding="5dp"
+                />
+            <TextView
+                android:id="@+id/load_pick_month"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="JUN"
+                app:layout_constraintTop_toBottomOf="@id/load_name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/load_pick_loc"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                />
+
+            <TextView
+                android:id="@+id/load_pick_date"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="30"
+                app:layout_constraintTop_toBottomOf="@id/load_pick_month"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/load_drop_loc"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/load_dts_card2"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@id/load_dts_card1"
+        app:cardElevation="20dp"
+        android:layout_marginTop="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/load_dts_distance_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Distance"
+                android:layout_marginLeft="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/load_dts_weight_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Weight"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/load_dts_distance_head"
+                android:layout_marginLeft="50dp"
+                />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+         </androidx.cardview.widget.CardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

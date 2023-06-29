@@ -18,8 +18,9 @@ import android.widget.ImageView;
 
 import com.example.truckflow.R;
 import com.example.truckflow.adpters.LoadAdapter;
-import com.example.truckflow.load.LoadActivity;
 import com.example.truckflow.entities.Load;
+import com.example.truckflow.load.LoadActivity;
+
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -126,9 +127,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         load1.setId("1");
         load1.setAdditionalReq("Handle with care");
         load1.setContactInfo("John Doe");
-        load1.setCurrentLoc("654 Oak Ave, Surrey, BC");
+        load1.setCurrentStatus("654 Oak Ave, Surrey, BC");
         load1.setDropLoc("321 Maple Road, Surrey, BC");
-        load1.setEstArrivalTime(new Date());
+        load1.setEstDeliveryTime(new Date());
         load1.setLoadDesc("Fragile items");
         load1.setLoadDims("20x20x10");
         load1.setLoadName("Online Fright Services, Inc.");
@@ -145,9 +146,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         load2.setId("2");
         load2.setAdditionalReq("Handle with caution");
         load2.setContactInfo("Jane Smith");
-        load2.setCurrentLoc("City X");
+        load2.setCurrentStatus("City X");
         load2.setDropLoc("City Y");
-        load2.setEstArrivalTime(new Date());
+        load2.setEstDeliveryTime(new Date());
         load2.setLoadDesc("Heavy machinery");
         load2.setLoadDims("10x10x10");
         load2.setLoadName("Sureway Transportation Company");
