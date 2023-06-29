@@ -35,6 +35,9 @@ public class SignUp extends AppCompatActivity {
     Button submit_registration;
 
     RequestQueue requestQueue;
+
+
+    String selectedOption = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,6 @@ public class SignUp extends AppCompatActivity {
         radioButtonShipper = findViewById(R.id.radioButtonShipper);
         radioButtonTrucker = findViewById(R.id.radioButtonTrucker);
 
-        String selectedOption;
 
         if (radioButtonShipper.isChecked()) {
             selectedOption = "shipper";
@@ -90,6 +92,8 @@ public class SignUp extends AppCompatActivity {
                 User user = new User(f_name.getEditText().getText().toString(),phone
                         .getEditText().getText().toString(),email.getEditText().getText().toString(),
                         password.getEditText().getText().toString(), selectedOption);
+
+                User user1 = new User();
 
 
                 databaseRef.child("users").child(String.valueOf(uuid)).setValue(user);

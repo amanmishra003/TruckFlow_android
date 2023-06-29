@@ -19,11 +19,16 @@ public class User {
     }
 
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+    public User() {
+    }
+>>>>>>> origin/rk-integrationapi
     public String getName() {
         return name;
     }
@@ -59,6 +64,13 @@ public class User {
     public String getRole() {
         return role;
     }
+<<<<<<< HEAD
+=======
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+>>>>>>> origin/rk-integrationapi
 
     public void setRole(String Role) {
         this.role = Role;
