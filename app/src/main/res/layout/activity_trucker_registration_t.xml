@@ -6,43 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".registration.TruckerRegistrationT">
 
-    <TextView
+    <EditText
         android:id="@+id/truck_name"
-        android:layout_width="265dp"
-        android:layout_height="69dp"
-        android:hint="truckname"
-        tools:layout_editor_absoluteX="60dp"
-        tools:layout_editor_absoluteY="171dp" />
+        android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="TRUCK NAME"
+        app:layout_constraintBottom_toTopOf="@+id/truck_type"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/truck_type"
-        android:layout_width="250dp"
-        android:layout_height="69dp"
-        android:hint="truck type"
-        tools:layout_editor_absoluteX="71dp"
-        tools:layout_editor_absoluteY="275dp" />
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:hint="TRUCK TYPE"
+        app:layout_constraintBottom_toTopOf="@+id/max_length"
+        app:layout_constraintEnd_toEndOf="@+id/max_length"
+        app:layout_constraintStart_toStartOf="@+id/max_length"
+        app:layout_constraintTop_toBottomOf="@+id/truck_name" />
 
-    <TextView
+    <EditText
         android:id="@+id/max_length"
-        android:layout_width="250dp"
-        android:layout_height="59dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
         android:hint="max length"
-        tools:layout_editor_absoluteX="71dp"
-        tools:layout_editor_absoluteY="391dp" />
+        app:layout_constraintBottom_toTopOf="@+id/max_wt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/truck_type" />
 
-    <TextView
+    <EditText
         android:id="@+id/max_wt"
-        android:layout_width="254dp"
-        android:layout_height="64dp"
-        android:hint="wt"
-        tools:layout_editor_absoluteX="71dp"
-        tools:layout_editor_absoluteY="492dp" />
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:hint="WT#"
+        app:layout_constraintBottom_toTopOf="@+id/registerTruck"
+        app:layout_constraintEnd_toEndOf="@+id/truck_name"
+        app:layout_constraintStart_toStartOf="@+id/max_length"
+        app:layout_constraintTop_toBottomOf="@+id/max_length" />
 
     <Button
         android:id="@+id/registerTruck"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:text="register"
-        tools:layout_editor_absoluteX="129dp"
-        tools:layout_editor_absoluteY="631dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/max_wt" />
 </androidx.constraintlayout.widget.ConstraintLayout>

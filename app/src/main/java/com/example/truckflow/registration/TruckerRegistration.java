@@ -16,10 +16,6 @@ public class TruckerRegistration extends AppCompatActivity {
 
     TextInputLayout company_name, company_phone, dot, mc;
 
-//    TextView company_name;
-//    TextView company_phone;
-//    TextView dot;
-//    TextView mc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +36,7 @@ public class TruckerRegistration extends AppCompatActivity {
                 String dotValue = dot.getEditText().getText().toString();
                 String mcValue = mc.getEditText().getText().toString();
 
-                Intent i = new Intent(TruckerRegistration.this, TruckerRegistrationT.class);
+                Intent i = new Intent(TruckerRegistration.this, TruckerRegistrationTwo.class);
                 i.putExtra("companyName", companyName);
                 i.putExtra("companyPhone", companyPhone);
                 i.putExtra("dotValue", dotValue);
