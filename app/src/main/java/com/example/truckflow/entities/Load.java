@@ -1,4 +1,5 @@
-package com.example.truckflow.models;
+package com.example.truckflow.entities;
+
 
 import java.io.Serializable;
 import java.util.Date;

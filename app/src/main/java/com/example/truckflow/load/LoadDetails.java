@@ -1,5 +1,4 @@
 package com.example.truckflow.load;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,11 +26,9 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_load_dts);
 
         // Initialize the MapView with the latest renderer
         MapsInitializer.initialize(getApplicationContext());
-
         mapView = findViewById(R.id.load_dts_map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
