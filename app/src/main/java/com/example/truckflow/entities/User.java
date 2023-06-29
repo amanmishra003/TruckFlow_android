@@ -8,24 +8,19 @@ public class User {
     public String phone;
     public String password;
 
+    public String role;
+
     public User(String name, String email, String phone, String password, String role) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.Role = role;
+        this.role = role;
     }
 
-    public String Role;
 
-    public String getRole() {
-        return Role;
+    public User() {
     }
-
-    public void setRole(String role) {
-        Role = role;
-    }
-
     public String getName() {
         return name;
     }
@@ -58,6 +53,13 @@ public class User {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 
 }
