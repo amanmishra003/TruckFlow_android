@@ -18,11 +18,10 @@ import com.android.volley.toolbox.Volley;
 
 import com.example.truckflow.R;
 import com.example.truckflow.entities.User;
-import com.example.truckflow.registration.SignUpChoice;
+import com.example.truckflow.registration.TruckerRegistration;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,8 +51,8 @@ public class SignUp extends AppCompatActivity {
         RadioButton radioButtonTrucker;
 
         f_name = findViewById(R.id.full_name);
-        phone = findViewById(R.id.phone);
-        email = findViewById(R.id.email);
+        phone = findViewById(R.id.dot);
+        email = findViewById(R.id.company_phne);
         password = findViewById(R.id.pass);
         radioButtonShipper = findViewById(R.id.radioButtonShipper);
         radioButtonTrucker = findViewById(R.id.radioButtonTrucker);
@@ -80,7 +79,9 @@ public class SignUp extends AppCompatActivity {
         submit_registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SignUp.this, SignUpChoice.class);
+                Intent i = new Intent(SignUp.this, TruckerRegistration.class);
+
+
                 startActivity(i);
                 UUID uuid = UUID.randomUUID();
 
