@@ -24,9 +24,8 @@ import java.util.Calendar;
 
 public class LoadActivity extends AppCompatActivity {
 
-    Button postLoad,datePicker;
-    TextInputEditText loadName,pickupLoc,dropOffLoc,loadDesc,loadWeight,loadDim,localDate,contactInfo,additionalReq;
-
+    Button postLoad, datePicker;
+    TextInputEditText loadName, pickupLoc, dropOffLoc, loadDesc, loadWeight, loadDim, localDate, contactInfo, additionalReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +45,10 @@ public class LoadActivity extends AppCompatActivity {
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.dropOffLocationLayout);
 
-// Specify the types of place data to return
+        // Specify the types of place data to return
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS));
 
-// Handle place selection
+        // Handle place selection
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
@@ -75,9 +74,7 @@ public class LoadActivity extends AppCompatActivity {
 
 
     }
-
-
-    private void showDatePicker() {
+    private void showDatePicker () {
         // Get the current date
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
