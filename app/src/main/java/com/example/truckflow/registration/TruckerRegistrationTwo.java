@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,20 +36,37 @@ public class TruckerRegistrationTwo extends AppCompatActivity {
 
     RequestQueue requestQueue;
 
+    Button registerTruck;
+    DatabaseReference databaseRef;
+    FirebaseFirestore db;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_trucker_registration_two);
 
-        submit = findViewById(R.id.postLoadButton);
+//        requestQueue = Volley.newRequestQueue(this);
+        registerTruck = findViewById(R.id.finalRegButton);
 
-        requestQueue = Volley.newRequestQueue(this);
+        truck_name = findViewById(R.id.truck_name);
+        truck_type = findViewById(R.id.truck_type);
 
-        submit.setOnClickListener(new View.OnClickListener() {
+        max_length = findViewById(R.id.max_length);
+        max_wt = findViewById(R.id.maxweight);
+
+        databaseRef = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
+
+
+        registerTruck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TruckerRegistrationTwo.this, Home.class);
+                String truckName = truck_name.getEditText().getText().toString();
+                String truckType = truck_type.getEditText().getText().toString();
+                String maxLength = max_length.getEditText().getText().toString();
+                String maxWt = max_wt.getEditText().getText().toString();
 
                 Intent intent = getIntent();
                 if (intent != null) {
@@ -57,31 +75,41 @@ public class TruckerRegistrationTwo extends AppCompatActivity {
                     String dotValue = intent.getStringExtra("dotValue");
                     String mcValue = intent.getStringExtra("mcValue");
 
-                    Trucker tck = new Trucker(companyName, companyPhone, dotValue, mcValue);
+                    Trucker tck = new Trucker(companyName, companyPhone, dotValue, mcValue, truckName, truckType, maxLength, maxWt);
 
                     UUID uuid = UUID.randomUUID();
 
-                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-                    databaseRef.child("trucker").child(String.valueOf(uuid)).setValue(tck);
-
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("trucker")
-                            .add(tck)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    databaseRef.child("trucker").child(String.valueOf(uuid)).setValue(tck)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                public void onSuccess(Void unused) {
+                                    Log.d(TAG, "Trucker data saved to Firebase Realtime Database");
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
+                                    Log.e(TAG, "Error saving trucker data to Firebase Realtime Database", e);
+                                }
+                            });
+
+                    db.collection("trucker")
+                            .add(tck)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d(TAG, "Trucker data saved to Firestore with ID: " + documentReference.getId());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, "Error saving trucker data to Firestore", e);
                                 }
                             });
                 }
 
-                // Start the next activity
+                Intent i = new Intent(TruckerRegistrationTwo.this, Home.class);
                 startActivity(i);
             }
         });
