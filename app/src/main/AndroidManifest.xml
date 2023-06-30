@@ -31,9 +31,6 @@
             android:name=".registration.TruckerRegistration"
             android:exported="false" />
         <activity
-            android:name=".registration.TruckerRegistrationT"
-            android:exported="false" />
-        <activity
             android:name=".registration.SignUpChoice"
             android:exported="false" />
         <activity

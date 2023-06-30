@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -37,7 +38,7 @@ public class SignUp extends AppCompatActivity {
     RequestQueue requestQueue;
 
 
-    String selectedOption = "";
+    String role = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +61,25 @@ public class SignUp extends AppCompatActivity {
         radioButtonShipper = findViewById(R.id.radioButtonShipper);
         radioButtonTrucker = findViewById(R.id.radioButtonTrucker);
 
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // Perform actions based on the selected RadioButton
+                if (checkedId == R.id.radioButtonShipper) {
+                    // Option 1 is selected
+                    // Add your code here
+                    role = "shipper";
+                } else if (checkedId == R.id.radioButtonTrucker) {
+                    // Option 2 is selected
+                    // Add your code here
+                    role = "truckker";
+                }
+                // Add more conditions for other RadioButtons as needed
+            }
+        });
 
-        if (radioButtonShipper.isChecked()) {
-            selectedOption = "shipper";
-        } else if (radioButtonTrucker.isChecked()) {
-            selectedOption = "trucker";
-        } else {
-            // Handle the case when neither RadioButton is selected
-            selectedOption = ""; // or any other default value
-        }
+
 
 
 
@@ -91,13 +102,11 @@ public class SignUp extends AppCompatActivity {
 
                 User user = new User(f_name.getEditText().getText().toString(),phone
                         .getEditText().getText().toString(),email.getEditText().getText().toString(),
-                        password.getEditText().getText().toString(), selectedOption);
+                        password.getEditText().getText().toString(), role);
 
-                User user1 = new User();
-
+                user.toString();
 
                 databaseRef.child("users").child(String.valueOf(uuid)).setValue(user);
-
                 db.collection("users")
                         .add(user)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -125,4 +134,5 @@ public class SignUp extends AppCompatActivity {
 
 
     }
+
 }
