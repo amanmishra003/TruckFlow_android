@@ -7,6 +7,7 @@
     tools:context=".load.LoadActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="ExtraText">
@@ -39,8 +40,7 @@
             android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadName"
-            />
+            app:layout_constraintTop_toBottomOf="@id/loadName" />
         <!-- Drop-off Location -->
 
         <fragment
@@ -143,21 +143,48 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/black"
                 android:inputType="datetime"
-                android:text="Choose Date" />
+                android:text="Choose Pick up Date" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Contact Information -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/contactInfoLayout"
+            android:id="@+id/dropDateTimeLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:hint="Load Date/Time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loadDateTimeLayout">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dropDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:inputType="datetime"
+                android:text="Choose Delivery Date" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Contact Information -->
+
+        <!-- Additional Requirements -->
+
+        <!-- Submit Button -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/contactInfoLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="16dp"
             android:hint="Contact Information"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/loadDateTimeLayout">
 
@@ -165,21 +192,23 @@
                 android:id="@+id/contactInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Additional Requirements -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/additionalRequirementsLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="16dp"
             android:hint="Additional Requirements"
+            app:layout_constraintBottom_toTopOf="@+id/postLoadButton"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/contactInfoLayout">
 
@@ -189,11 +218,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:maxLines="5"
-                android:minLines="3" />
+                android:minLines="4" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Submit Button -->
         <Button
             android:id="@+id/postLoadButton"
             android:layout_width="match_parent"

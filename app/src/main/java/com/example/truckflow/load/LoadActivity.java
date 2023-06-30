@@ -24,7 +24,7 @@ import java.util.Calendar;
 
 public class LoadActivity extends AppCompatActivity {
 
-    Button postLoad, datePicker;
+    Button postLoad, loadDatePicker,dropDatePicker;
     TextInputEditText loadName, pickupLoc, dropOffLoc, loadDesc, loadWeight, loadDim, localDate, contactInfo, additionalReq;
 
     @Override
@@ -33,23 +33,53 @@ public class LoadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_load);
 
         postLoad = findViewById(R.id.postLoadButton);
-        datePicker = findViewById(R.id.loadDateTime);
+        loadDatePicker = findViewById(R.id.loadDateTime);
         Places.initialize(getApplicationContext(), "AIzaSyBbOq9E_iUhKtg6WiaqV2CXUxIG2qo9wjQ");
-        datePicker.setOnClickListener(new View.OnClickListener() {
+        loadDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePicker();
+                showLoadDatePicker();
             }
         });
 
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+        dropDatePicker = findViewById(R.id.dropDateTime);
+        Places.initialize(getApplicationContext(), "AIzaSyBbOq9E_iUhKtg6WiaqV2CXUxIG2qo9wjQ");
+        dropDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDropDatePicker();
+            }
+        });
+
+        AutocompleteSupportFragment dropOffLocationFrag = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.dropOffLocationLayout);
 
         // Specify the types of place data to return
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS));
+        dropOffLocationFrag.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS));
 
         // Handle place selection
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        dropOffLocationFrag.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                String address = place.getAddress();
+
+                // Handle the selected place
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // Handle any errors that occur during autocomplete
+            }
+        });
+
+        AutocompleteSupportFragment pickUpLocFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.pickupLocationLayout);
+
+        // Specify the types of place data to return
+        pickUpLocFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS));
+
+        // Handle place selection
+        pickUpLocFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 String address = place.getAddress();
@@ -74,7 +104,7 @@ public class LoadActivity extends AppCompatActivity {
 
 
     }
-    private void showDatePicker () {
+    private void showLoadDatePicker () {
         // Get the current date
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -90,7 +120,30 @@ public class LoadActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
                         // Do something with the selected date
                         String selectedDate = selectedDayOfMonth + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                        datePicker.setText(selectedDate);
+                        loadDatePicker.setText(selectedDate);
+                    }
+                }, year, month, dayOfMonth);
+
+        // Show the date picker dialog
+        datePickerDialog.show();
+    }
+    private void showDropDatePicker () {
+        // Get the current date
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Create a DatePickerDialog and set the initial date to the current date
+        DatePickerDialog datePickerDialog = new DatePickerDialog(LoadActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+
+
+                    @Override
+                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
+                        // Do something with the selected date
+                        String selectedDate = selectedDayOfMonth + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                        dropDatePicker.setText(selectedDate);
                     }
                 }, year, month, dayOfMonth);
 
