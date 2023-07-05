@@ -123,43 +123,29 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         List<Load> loadList = new ArrayList<>();
 
         // Load 1
-        Load load1 = new Load();
-        load1.setId("1");
-        load1.setAdditionalReq("Handle with care");
-        load1.setContactInfo("John Doe");
-        load1.setCurrentLoc("654 Oak Ave, Surrey, BC");
-        load1.setDropLoc("321 Maple Road, Surrey, BC");
-        load1.setEstDeliveryTime(new Date());
-        load1.setLoadDesc("Fragile items");
-        load1.setLoadDims("20x20x10");
-        load1.setLoadName("Online Fright Services, Inc.");
-        load1.setLoadWeight("100 lbs");
-        load1.setPickupLoc("987 Elm Street, Surrey, BC");
-        load1.setDistance(50.0f);
-        load1.setPickUpDateTime(new Date());
-        load1.setDropDateTime(new Date());
-        load1.setTruckerId("123456");
-        load1.setShipperId("789012");
+            Load load1 = new Load();
+            load1.setLoadDescription("Fragile Items");
+            load1.setLoadWeight("200kg");
+            load1.setLoadDimensions("200*200*200");
+            load1.setPickDate("12-12-12");
+            load1.setDeliverDate("32.21.12");
+            load1.setContactInformation("James");
+            load1.setRequirement("Plastic");
 
-        // Load 2
+
+
         Load load2 = new Load();
-        load2.setId("2");
-        load2.setAdditionalReq("Handle with caution");
-        load2.setContactInfo("Jane Smith");
-        load2.setCurrentLoc("City X");
-        load2.setDropLoc("City Y");
-        load2.setEstDeliveryTime(new Date());
-        load2.setLoadDesc("Heavy machinery");
-        load2.setLoadDims("10x10x10");
-        load2.setLoadName("Sureway Transportation Company");
-        load2.setLoadWeight("500 lbs");
-        load2.setPickupLoc("City X");
-        load2.setDistance(100.0f);
-        load2.setPickUpDateTime(new Date());
-        load2.setDropDateTime(new Date());
-        load2.setTruckerId("987654");
-        load2.setShipperId("210987");
+        load2.setLoadDescription("Fragile Items");
+        load2.setLoadWeight("200kg");
+        load2.setLoadDimensions("200*200*200");
+        load2.setPickDate("12-12-12");
+        load2.setDeliverDate("32.21.12");
+        load2.setContactInformation("James");
+        load2.setRequirement("Plastic");
+
 // Add the loads to the list
+
+
         loadList.add(load1);
         loadList.add(load2);
 

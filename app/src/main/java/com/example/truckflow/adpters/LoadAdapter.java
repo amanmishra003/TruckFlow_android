@@ -77,7 +77,7 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
                 Load clickedLoad = loadList.get(position);
                 // Start a new activity and pass the load details to it
                 Intent intent = new Intent(itemView.getContext(), LoadDetails.class);
-                intent.putExtra("load", clickedLoad);
+//                intent.putExtra("load", clickedLoad);
                 itemView.getContext().startActivity(intent);
             }
         }
