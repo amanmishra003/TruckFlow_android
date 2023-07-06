@@ -56,7 +56,7 @@ public class SignUp extends AppCompatActivity {
 
         f_name = findViewById(R.id.full_name);
         phone = findViewById(R.id.dot);
-        email = findViewById(R.id.company_phne);
+        email = findViewById(R.id.email);
         password = findViewById(R.id.pass);
         radioButtonShipper = findViewById(R.id.radioButtonShipper);
         radioButtonTrucker = findViewById(R.id.radioButtonTrucker);
@@ -100,8 +100,9 @@ public class SignUp extends AppCompatActivity {
 
 
 
-                User user = new User(f_name.getEditText().getText().toString(),phone
-                        .getEditText().getText().toString(),email.getEditText().getText().toString(),
+                User user = new User(f_name.getEditText().getText().toString(),email.getEditText().getText().toString(),
+                        phone
+                        .getEditText().getText().toString(),
                         password.getEditText().getText().toString(), role);
 
                 user.toString();
