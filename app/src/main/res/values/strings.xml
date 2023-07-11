@@ -7,7 +7,11 @@
     <string name="reg_api_url">https://ec2-54-196-55-232.compute-1.amazonaws.com/</string>
 
     <!--map-->
-    <string name = "map_content_description" > Pick drop location map</string>
+    <string name="map_content_description"> Pick drop location map</string>
+    <string name="todo">TODO</string>
+    <string name="upload">upload</string>
+    <string name="select">select</string>
+    <string name="add_profile_picture">Add Profile Picture</string>
 
 
 </resources>
