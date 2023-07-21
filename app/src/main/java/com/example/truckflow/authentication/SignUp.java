@@ -96,8 +96,10 @@ public class SignUp extends AppCompatActivity {
 //                Intent i = new Intent(SignUp.this, TruckerRegistration.class);
                 Intent i = new Intent(SignUp.this, imageUser.class);
 
-
+                String userEmail = email.getEditText().getText().toString();
+                i.putExtra("USER_EMAIL", userEmail);
                 startActivity(i);
+
                 UUID uuid = UUID.randomUUID();
 
 

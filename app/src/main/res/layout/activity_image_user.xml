@@ -20,8 +20,8 @@
 
     <Button
         android:id="@+id/select"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="265dp"
+        android:layout_height="52dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="413dp"
         android:layout_marginEnd="40dp"
@@ -35,8 +35,8 @@
 
     <Button
         android:id="@+id/uploadImage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="264dp"
+        android:layout_height="47dp"
         android:layout_marginStart="45dp"
         android:layout_marginEnd="45dp"
         android:layout_marginBottom="165dp"
@@ -51,6 +51,10 @@
         android:layout_width="257dp"
         android:layout_height="50dp"
         android:text="@string/add_profile_picture"
+        android:textAlignment="center"
+        android:textColor="#673AB7"
+        android:textSize="24sp"
+        android:textStyle="bold"
         tools:layout_editor_absoluteX="71dp"
         tools:layout_editor_absoluteY="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

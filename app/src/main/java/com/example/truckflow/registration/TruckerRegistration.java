@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,6 +29,8 @@ public class TruckerRegistration extends AppCompatActivity {
         dot = findViewById(R.id.dot);
         mc = findViewById(R.id.mc);
 
+
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +44,18 @@ public class TruckerRegistration extends AppCompatActivity {
                 i.putExtra("companyPhone", companyPhone);
                 i.putExtra("dotValue", dotValue);
                 i.putExtra("mcValue", mcValue);
+
+                if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("IMAGE_FILE_NAME")) {
+                    String fileName = getIntent().getStringExtra("IMAGE_FILE_NAME");
+                    i.putExtra("IMAGE_FILE_NAME", fileName);
+                    Log.d("fileName trucker", fileName);
+                    startActivity(i);
+
+                }
+
                 startActivity(i);
+
+
             }
         });
     }

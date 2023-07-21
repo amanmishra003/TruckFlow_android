@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.truckflow.R;
+import com.example.truckflow.authentication.Login;
 import com.example.truckflow.entities.Trucker;
 import com.example.truckflow.home.Home;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -109,7 +111,15 @@ public class TruckerRegistrationTwo extends AppCompatActivity {
                             });
                 }
 
-                Intent i = new Intent(TruckerRegistrationTwo.this, Home.class);
+                Toast.makeText(TruckerRegistrationTwo.this, "User successfully created! You can Login Now", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(TruckerRegistrationTwo.this, Login.class);
+
+                if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("IMAGE_FILE_NAME")) {
+                    String fileName = getIntent().getStringExtra("IMAGE_FILE_NAME");
+                    i.putExtra("IMAGE_FILE_NAME", fileName);
+                    Log.d("fileName trucker reg 2", fileName);
+                    startActivity(i);
+                }
                 startActivity(i);
             }
         });

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +22,7 @@ import com.example.truckflow.adpters.LoadAdapter;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.load.LoadActivity;
 
+import com.example.truckflow.profile.UserProfile;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -99,13 +101,46 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     }
                 }
             });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.nav_profile) {
+                    // Handle Home item click here
+                    Intent intent = new Intent(Home.this, UserProfile.class);
+
+                    if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
+                        String email = getIntent().getStringExtra("EMAIL_KEY");
+                        Log.d("UserProfile", "Email GOT IT HOME from intent: " + email);
+
+                        intent.putExtra("EMAIL_KEY", email);
+
+
+                    }
+
+
+
+                    startActivity(intent);
+                }
+
+                // Close the drawer after handling the click event
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return true;
     }
     //closing navigation drawer first not app on back press
+
+
     @Override
     public void onBackPressed() {
         if(drawerLayout.isDrawerVisible(GravityCompat.START)){
