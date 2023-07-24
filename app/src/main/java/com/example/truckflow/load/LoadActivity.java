@@ -5,234 +5,260 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.DatePicker;
 
-import com.example.truckflow.entities.Load;
-import com.example.truckflow.home.Home;
+import com.example.truckflow.databinding.ActivityLoadBinding;
 import com.example.truckflow.R;
-import com.google.android.gms.common.api.Status;
+import com.example.truckflow.entities.Load;
+import com.example.truckflow.entities.Trucker;
+import com.example.truckflow.home.Home;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+
+import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.Slider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.UUID;
 
 public class LoadActivity extends AppCompatActivity {
 
-    Button postLoad, loadDatePicker,dropDatePicker ;
 
-    TextInputLayout loadName, loadWeight, loadDim, contactInfo, additionalReq, loadDesc;
+    private ActivityLoadBinding binding;
 
-    TextInputEditText dropDateTimeLayout, loadDateTimeLayout;
+    float loadWeight = 0;
+    float loadLength = 0;
+
+    String loadName, loadDescription;
+
+    DatabaseReference databaseRef;
+    FirebaseFirestore db;
 
 
+    private String streetNumberPU, streetNamePU, cityPU, statePU, countryPU, postalCodePU, longitudePU, latitudePU, datePU, addressPU;
+    private String streetNumberDel, streetNameDel, cityDel, stateDel, countryDel, postalCodeDel, longitudeDel, latitudeDel, dateDel, addressDel;
+    private int distance;
+    private Double distanceInKM;
+    double expectedPrice;
+    private int duration;
+
+    private Load load;
+    private Double durationInHours;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_load);
+     //   setContentView(R.layout.activity_load);
 
-        //instance initiated
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        //database reference
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        load = new Load();
+        binding = ActivityLoadBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        loadName = binding.loadName.getText().toString();
+        Log.i("Load Name::Load Act::",loadName);
 
-        loadName = findViewById(R.id.loadName);
-        loadDesc = findViewById(R.id.loadDescriptionLayout);
-        loadWeight = findViewById(R.id.loadWeightLayout);
-        loadDim = findViewById(R.id.loadDimensionsLayout);
-        contactInfo = findViewById(R.id.contactInfoLayout);
-        additionalReq = findViewById(R.id.additionalRequirementsLayout);
+        loadDescription = binding.loadDescription.getEditableText().toString();
+        Log.i("Load Name::Load Act::",loadName);
 
+        databaseRef = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
 
 
+        Places.initialize(getApplicationContext(), "AIzaSyAtw3f2NBYcbNVz01pmZPfZnQlOwnoErNk");
+
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null) {
+            // Retrieve the data from the bundle
+            streetNumberPU = bundle.getString("streetNumberPU");
+            streetNamePU = bundle.getString("streetNamePU");
+            cityPU = bundle.getString("cityPU");
+            statePU = bundle.getString("statePU");
+            countryPU = bundle.getString("countryPU");
+            postalCodePU = bundle.getString("postalCodePU");
+            longitudePU = bundle.getString("longitudePU");
+            latitudePU = bundle.getString("latitudePU");
+            datePU = bundle.getString("datePU");
+            addressPU = bundle.getString("addressPU");
+
+            streetNumberDel = bundle.getString("streetNumberDel");
+            streetNameDel = bundle.getString("streetNameDel");
+            cityDel = bundle.getString("cityDel");
+            stateDel = bundle.getString("stateDel");
+            countryDel = bundle.getString("countryDel");
+            postalCodeDel = bundle.getString("postalCodeDel");
+            longitudeDel = bundle.getString("longitudeDel");
+            latitudeDel = bundle.getString("latitudeDel");
+            int distance = bundle.getInt("distance");
+            distanceInKM = Double.valueOf(Double.valueOf(distance) / 1000);
+            duration = bundle.getInt("duration");
+            durationInHours = Double.valueOf(duration / 60 * 60);
+            dateDel = bundle.getString("dateDel");
+            addressDel = bundle.getString("addressDel");
+        }
+        double baseRatePerKm = 2.5;
+        double additionalRatePerKmPerTonne = 0.1;
+        double distance = distanceInKM; // Length of the freight route in kilometers.
+        double pricePerKm = baseRatePerKm + (additionalRatePerKmPerTonne * loadWeight);
+        expectedPrice = pricePerKm * distance;
 
 
-        postLoad = findViewById(R.id.postLoadButton);
-        loadDatePicker = findViewById(R.id.loadDateTime);
-        dropDatePicker = findViewById(R.id.dropDateTime);
+        load.setLoadDescription(loadDescription);
+        load.setLoadLength(loadLength+"");
+        load.setLoadName(loadName);
+        load.setLoadWeight(loadWeight+"");
 
 
+        load.setPickUpDate(datePU);
+        load.setPickupAddress(addressPU);
+
+        load.setDeliveryDate(dateDel);
+        load.setDeliveryAddress(addressDel);
+
+        load.setTotalDistance(distance+"");
+        load.setExpectedPrice(expectedPrice+"");
+
+        binding.pickupAddress.setText("PickUp Address:"+addressPU);
+        binding.deliveryAddress.setText("Delivery Address:"+addressDel);
+        binding.deliveryDate.setText("Delivery Date:"+dateDel);
+        binding.pickupDate.setText("Pick up date:"+datePU);
+        binding.distance.setText("Total distance:"+distanceInKM.toString()+" KM");
+        String formattedValue = String.format("%.2f", expectedPrice);
+        binding.price.setText("Expected Price:"+formattedValue+" $");
+        binding.sliderLoad.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(Slider slider, float value, boolean fromUser) {
+                loadWeight = value;
 
 
-        postLoad.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
+            }
+
+        });
+
+        binding.sliderLoad.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                double baseRatePerKm = 2.5;
+                double additionalRatePerKmPerTonne = 0.1;
+                double distance = distanceInKM; // Length of the freight route in kilometers.
+                double pricePerKm = baseRatePerKm + (additionalRatePerKmPerTonne * loadWeight/2000);
+                double expectedPrice = pricePerKm * distance;
 
 
+                binding.loadWeightLabel.setText("Load Weight : " + loadWeight + " lbs");
+                String formattedValue = String.format("%.2f", expectedPrice);
+                load.setExpectedPrice(formattedValue);
+                load.setLoadWeight(loadWeight+"");
+                binding.price.setText("Expected Price:"+formattedValue+" $");
 
-                                        }
+            }
+        });
 
-                                    });
+        binding.sliderLength.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return String.valueOf(value) + " ft";
+            }
+        });
 
 
-        Places.initialize(getApplicationContext(), "AIzaSyBbOq9E_iUhKtg6WiaqV2CXUxIG2qo9wjQ");
-        loadDatePicker.setOnClickListener(new View.OnClickListener() {
+        binding.sliderLength.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(Slider slider, float value, boolean fromUser) {
+                loadLength = value;
+                load.setLoadLength(loadLength+"");
+
+            }
+
+        });
+
+        binding.sliderLength.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+
+
+                binding.loadDimLabel.setText("Load Length : " + loadLength + " ft");
+            }
+        });
+
+        binding.sliderLoad.setLabelFormatter(new LabelFormatter() {
+            @NonNull
+            @Override
+            public String getFormattedValue(float value) {
+                return value + " ft";
+            }
+        });
+
+
+        binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLoadDatePicker();
-            }
-        });
-
-        dropDatePicker = findViewById(R.id.dropDateTime);
-        Places.initialize(getApplicationContext(), "AIzaSyBbOq9E_iUhKtg6WiaqV2CXUxIG2qo9wjQ");
-        dropDatePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDropDatePicker();
-            }
-        });
-
-        AutocompleteSupportFragment dropOffLocationFrag = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.dropOffLocationLayout);
-
-        // Specify the types of place data to return
-        dropOffLocationFrag.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS));
-
-        // Handle place selection
-        dropOffLocationFrag.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                String address = place.getAddress();
-
-                // Handle the selected place
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                // Handle any errors that occur during autocomplete
-            }
-        });
-
-        AutocompleteSupportFragment pickUpLocFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.pickupLocationLayout);
-
-        // Specify the types of place data to return
-        pickUpLocFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS));
-
-        // Handle place selection
-        pickUpLocFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                String address = place.getAddress();
-
-                // Handle the selected place
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                // Handle any errors that occur during autocomplete
-            }
-        });
-
-        postLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                Intent i = new Intent(LoadActivity.this, Home.class);
+                //post intent here
 
                 UUID uuid = UUID.randomUUID();
+                loadName = binding.loadName.getText().toString();
+                Log.i("Load Name::Load Act::",loadName);
 
-                String pickDate = showLoadDatePicker();
-                String deliveryDate = showDropDatePicker();
-                Load load = new Load(loadName.getEditText().getText().toString(),
-                        loadDesc.getEditText().getText().toString(), loadWeight.getEditText().getText().toString()
-                        , loadDim.getEditText().getText().toString(), pickDate, deliveryDate, contactInfo.getEditText().getText().toString(),
-                        additionalReq.getEditText().getText().toString());
-
-                load.toString();
-
-                databaseRef.child("load").child(String.valueOf(uuid)).setValue(load);
-                db.collection("load")
-                        .add(load)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                loadDescription = binding.loadDescription.getEditableText().toString();
+                Log.i("Load Name::Load Act::",loadName);
+                load.setLoadName(loadName);
+                load.setLoadDescription(loadDescription);
+                databaseRef.child("Load").child(String.valueOf(uuid)).setValue(load)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "Load data saved to Firebase Realtime Database");
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
+                                Log.e(TAG, "Error saving Load data to Firebase Realtime Database", e);
                             }
                         });
-                Intent i = new Intent(LoadActivity.this, Home.class);
-                startActivity(i);
 
+                db.collection("load")
+                        .add(load)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "Trucker data saved to Firestore with ID: " + documentReference.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "Error saving trucker data to Firestore", e);
+                            }
+                        });
+
+
+                startActivity(i);
 
             }
         });
 
 
     }
-    private String showLoadDatePicker () {
-        // Get the current date
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Create a DatePickerDialog and set the initial date to the current date
-        DatePickerDialog datePickerDialog = new DatePickerDialog(LoadActivity.this,
-                new DatePickerDialog.OnDateSetListener() {
-
-
-                    @Override
-                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
-                        // Do something with the selected date
-                        String selectedDate = selectedDayOfMonth + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                        loadDatePicker.setText(selectedDate);
-                    }
-                }, year, month, dayOfMonth);
-
-        // Show the date picker dialog
-        datePickerDialog.show();
-        return null;
-    }
-    private String showDropDatePicker () {
-        // Get the current date
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-
-
-        // Create a DatePickerDialog and set the initial date to the current date
-        DatePickerDialog datePickerDialog = new DatePickerDialog(LoadActivity.this,
-                new DatePickerDialog.OnDateSetListener() {
-
-
-                    @Override
-                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
-                        // Do something with the selected date
-                        String selectedDate = selectedDayOfMonth + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                        dropDatePicker.setText(selectedDate);
-                    }
-                }, year, month, dayOfMonth);
-
-        // Show the date picker dialog
-        datePickerDialog.show();
-
-        return null;
-
-    }
 
 }

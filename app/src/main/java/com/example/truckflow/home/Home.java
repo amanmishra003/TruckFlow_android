@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,7 +22,12 @@ import com.example.truckflow.adpters.LoadAdapter;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.load.LoadActivity;
 
+import com.example.truckflow.load.LoadActivityTwo;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +60,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Home.this, LoadActivity.class);
+                Intent i = new Intent(Home.this, LoadActivityTwo.class);
                 startActivity(i);
 
             }
@@ -69,13 +75,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerView = findViewById(R.id.show_loads_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        loadAdapter = new LoadAdapter(loadList);
         // Get the shipper load data from Firestore or any other source
-        List<Load> MyLoadList = getMyLoads();
-
-        // Set the load data for the shipperLoadAdapter
-        loadAdapter.updateLoads(MyLoadList);
-        recyclerView.setAdapter(loadAdapter);
+        getMyLoads(new FirestoreLoadCallback() {
+            @Override
+            public void onLoadsReceived(List<Load> loadData) {
+                // Set the load data for the shipperLoadAdapter
+                loadAdapter = new LoadAdapter(loadData);
+                recyclerView.setAdapter(loadAdapter);
+            }
+        });
 
 
 
@@ -119,38 +127,36 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
     //dummy loads list for now
-    private List<Load> getMyLoads() {
-        List<Load> loadList = new ArrayList<>();
+    private void getMyLoads(FirestoreLoadCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference loadsCollectionRef = db.collection("load");
 
-        // Load 1
-            Load load1 = new Load();
-            load1.setLoadDescription("Fragile Items");
-            load1.setLoadWeight("200kg");
-            load1.setLoadDimensions("200*200*200");
-            load1.setPickDate("12-12-12");
-            load1.setDeliverDate("32.21.12");
-            load1.setContactInformation("James");
-            load1.setRequirement("Plastic");
-
-
-
-        Load load2 = new Load();
-        load2.setLoadDescription("Fragile Items");
-        load2.setLoadWeight("200kg");
-        load2.setLoadDimensions("200*200*200");
-        load2.setPickDate("12-12-12");
-        load2.setDeliverDate("32.21.12");
-        load2.setContactInformation("James");
-        load2.setRequirement("Plastic");
-
-// Add the loads to the list
-
-
-        loadList.add(load1);
-        loadList.add(load2);
-
-
-        return loadList;
+        loadsCollectionRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Load> loadData = new ArrayList<>();
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null) {
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        Load load = new Load();
+                        load.setLoadName(document.getString("loadName"));
+                        load.setLoadDescription(document.getString("loadDescription"));
+                        load.setLoadWeight(document.getString("loadWeight"));
+                        load.setPickUpDate(document.getString("pickUpDate"));
+                        load.setDeliveryDate(document.getString("deliveryDate"));
+                        load.setContactInformation(document.getString("contactInformation"));
+                        load.setRequirement(document.getString("requirement"));
+                        loadData.add(load);
+                    }
+                }
+                callback.onLoadsReceived(loadData);
+            } else {
+                // Handle errors here
+                callback.onLoadsReceived(new ArrayList<>()); // or pass null to indicate an error
+            }
+        });
     }
 
+    public interface FirestoreLoadCallback {
+        void onLoadsReceived(List<Load> loadData);
+    }
 }

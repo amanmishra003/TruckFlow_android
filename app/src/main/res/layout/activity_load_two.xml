@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/pickUpLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Please provide pick up Location"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/pickup_map"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+
+            android:contentDescription="@string/map_content_description"/>
+        <fragment
+            android:id="@+id/pickupLocationLayout"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Pick up location"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/apartmentNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:hint="Unit"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/streetNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+
+                android:hint="Street Name"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/cityNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+
+                android:hint="City"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <EditText
+                android:id="@+id/provinceNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+
+                android:hint="Province"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@+id/countryNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+
+                android:hint="Country" />
+
+            <EditText
+                android:id="@+id/pinCodeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+
+                android:hint="Zip Code"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dropDateTimeLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/black"
+                android:hint="Load Date/Time"
+                app:layout_constraintBottom_toTopOf="@+id/pickUpButton"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/dropDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/black"
+                    android:inputType="datetime"
+                    android:height="48dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+
+                    android:text="Choose Delivery Date" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/pickUpButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:height="50dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:text="Next"/>
+
+            <TextView
+                android:id="@+id/nextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_marginTop="20dp"
+                android:text="1 of 2"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>

@@ -3,34 +3,54 @@ package com.example.truckflow.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Load  {
+public class Load {
 
-   public String loadName;
-   public String loadDescription;
+    public String loadName;
+    public String loadDescription;
+    public String loadWeight;
+    public String loadLength;
+    public String pickUpDate;
+    public String deliveryDate;
+    public String totalDistance;
+    public String pickupAddress;
+    public String deliveryAddress;
+    public String expectedPrice;
 
-   public String loadWeight;
 
-   public String loadDimensions;
+    public Load(String loadName, String loadDescription, String loadWeight, String loadLength, String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress, String expectedPrice, String contactInformation, String requirement) {
+        this.loadName = loadName;
+        this.loadDescription = loadDescription;
+        this.loadWeight = loadWeight;
+        this.loadLength = loadLength;
+        this.pickUpDate = pickUpDate;
+        this.deliveryDate = deliveryDate;
+        this.totalDistance = totalDistance;
+        this.pickupAddress = pickupAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.expectedPrice = expectedPrice;
+        this.contactInformation = contactInformation;
+        this.requirement = requirement;
+    }
 
-   public String pickDate;
+    public String contactInformation;
 
-   public String deliverDate;
+    public String getPickupAddress() {
+        return pickupAddress;
+    }
 
-   public String contactInformation;
+    public void setPickupAddress(String pickupAddress) {
+        this.pickupAddress = pickupAddress;
+    }
 
-   public String requirement;
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
 
-//    public Load(String loadDescription, String loadWeight,
-//                String loadDimensions, String pickDate, String deliverDate, String contactInformation, String requirement) {
-//        this.loadDescription = loadDescription;
-//        this.loadWeight = loadWeight;
-//        this.loadDimensions = loadDimensions;
-//        this.pickDate = pickDate;
-//        this.deliverDate = deliverDate;
-//        this.contactInformation = contactInformation;
-//        this.requirement = requirement;
-//    }
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
 
+    public String requirement;
 
     public String getLoadName() {
         return loadName;
@@ -38,20 +58,6 @@ public class Load  {
 
     public void setLoadName(String loadName) {
         this.loadName = loadName;
-    }
-
-    public Load() {
-    }
-
-    public Load(String loadName, String loadDescription, String loadWeight, String loadDimensions, String pickDate, String deliverDate, String contactInformation, String requirement) {
-        this.loadName = loadName;
-        this.loadDescription = loadDescription;
-        this.loadWeight = loadWeight;
-        this.loadDimensions = loadDimensions;
-        this.pickDate = pickDate;
-        this.deliverDate = deliverDate;
-        this.contactInformation = contactInformation;
-        this.requirement = requirement;
     }
 
     public String getLoadDescription() {
@@ -70,29 +76,44 @@ public class Load  {
         this.loadWeight = loadWeight;
     }
 
-    public String getLoadDimensions() {
-        return loadDimensions;
+    public String getLoadLength() {
+        return loadLength;
     }
 
-
-    public void setLoadDimensions(String loadDimensions) {
-        this.loadDimensions = loadDimensions;
+    public void setLoadLength(String loadLength) {
+        this.loadLength = loadLength;
     }
 
-    public String getPickDate() {
-        return pickDate;
+    public String getPickUpDate() {
+        return pickUpDate;
     }
 
-    public void setPickDate(String pickDate) {
-        this.pickDate = pickDate;
+    public void setPickUpDate(String pickUpDate) {
+        this.pickUpDate = pickUpDate;
     }
 
-    public String getDeliverDate() {
-        return deliverDate;
+    public String getDeliveryDate() {
+        return deliveryDate;
     }
 
-    public void setDeliverDate(String deliverDate) {
-        this.deliverDate = deliverDate;
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public String getTotalDistance() {
+        return totalDistance;
+    }
+
+    public void setTotalDistance(String totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
+    public String getExpectedPrice() {
+        return expectedPrice;
+    }
+
+    public void setExpectedPrice(String expectedPrice) {
+        this.expectedPrice = expectedPrice;
     }
 
     public String getContactInformation() {
@@ -109,6 +130,11 @@ public class Load  {
 
     public void setRequirement(String requirement) {
         this.requirement = requirement;
+    }
+
+
+    public Load() {
+
     }
 }
 

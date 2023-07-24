@@ -11,9 +11,9 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.truckflow.authentication.SignUp;
 import com.example.truckflow.entities.User;
 import com.example.truckflow.home.Home;
 import com.example.truckflow.R;
@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.example.truckflow.home.HomeShipper;
 
 public class Login extends AppCompatActivity {
     Button callSignUp;
@@ -32,6 +33,9 @@ public class Login extends AppCompatActivity {
 
     TextInputLayout emailInputLayout;
     TextInputLayout passwordInputLayout;
+
+    ImageView image;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,16 @@ public class Login extends AppCompatActivity {
 
         emailInputLayout = findViewById(R.id.userName);
         passwordInputLayout = findViewById(R.id.password);
+        image = findViewById(R.id.logoImg);
 
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Login.this,Home.class);
+                startActivity(i);
+            }
+        });
         // Navigate to Home
         callToHome = findViewById(R.id.button_login);
         callToHome.setOnClickListener(new View.OnClickListener() {
@@ -50,25 +63,11 @@ public class Login extends AppCompatActivity {
 
                 if (validateEmail(emailInputLayout.getEditText().getText().toString()) &&
                         validatePassword(passwordInputLayout.getEditText().getText().toString())) {
-
-
                     checkEmailAndPasswordExist(emailInputLayout.getEditText().getText().toString(),
                             passwordInputLayout.getEditText().getText().toString());
-
-
                 }
-
-                
-
-
-
-//                checkEmailAndPasswordExist(emailInputLayout.getEditText().getText().toString(),
-//                        passwordInputLayout.getEditText().getText().toString());
-            }
+     }
         });
-
-
-
         // Navigate to Registration
         callSignUp = findViewById(R.id.button_gotoRegister);
         callSignUp.setOnClickListener(new View.OnClickListener() {
@@ -146,137 +145,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
 
 }
-
-
-///////////////////////
-
-
-//import android.content.Intent;
-//import android.os.Bundle;
-//import android.text.TextUtils;
-//import android.util.Patterns;
-//import android.view.View;
-//import android.view.WindowManager;
-//import android.widget.Button;
-//import android.widget.Toast;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import com.example.truckflow.R;
-//import com.example.truckflow.entities.User;
-//import com.example.truckflow.home.Home;
-//import com.google.android.material.textfield.TextInputLayout;
-//
-//import com.google.firebase.database.DataSnapshot;
-//import com.google.firebase.database.DatabaseError;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.ValueEventListener;
-//
-//public class Login extends AppCompatActivity {
-//    Button callSignUp;
-//    Button callToHome;
-//
-//    Button button_login;
-//    TextInputLayout emailInputLayout;
-//    TextInputLayout passwordInputLayout;
-//    DatabaseReference usersRef;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        setContentView(R.layout.activity_login);
-//
-//        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-//        usersRef = databaseRef.child("users"); // Assuming "users" is the table name in Firebase
-//
-//        emailInputLayout = findViewById(R.id.userName);
-//        passwordInputLayout = findViewById(R.id.password);
-//
-//        callToHome = findViewById(R.id.button_login);
-//        callToHome.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (validateEmail() && validatePassword()) {
-//                    String email = emailInputLayout.getEditText().getText().toString().trim();
-//                    String password = passwordInputLayout.getEditText().getText().toString().trim();
-//
-//                    usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            boolean emailExists = false;
-//                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                                User user = snapshot.getValue(User.class);
-//                                if (user != null && user.getPassword().equals(password)) {
-//                                    emailExists = true;
-//                                    break;
-//                                }
-//                            }
-//                            if (emailExists) {
-//                                // Email and password are correct, navigate to Home activity
-//                                Intent intent = new Intent(Login.this, Home.class);
-//                                startActivity(intent);
-//                            } else {
-//                                // Invalid email or password
-//                                Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//                            // Handle database errors if any
-//                            Toast.makeText(Login.this, "Database error occurred", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-//
-//            }
-//        });
-//
-//        callSignUp = findViewById(R.id.button_gotoRegister);
-//        callSignUp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Login.this, SignUp.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-//
-//    private boolean validateEmail() {
-//        String email = emailInputLayout.getEditText().getText().toString().trim();
-//        if (TextUtils.isEmpty(email)) {
-//            emailInputLayout.setError("Email is required");
-//            return false;
-//        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//            emailInputLayout.setError("Please enter a valid email address");
-//            return false;
-//        } else {
-//            emailInputLayout.setError(null);
-//            return true;
-//        }
-//    }
-//
-//    private boolean validatePassword() {
-//        String password = passwordInputLayout.getEditText().getText().toString().trim();
-//        if (TextUtils.isEmpty(password)) {
-//            passwordInputLayout.setError("Password is required");
-//            return false;
-//        } else if (password.length() < 6) {
-//            passwordInputLayout.setError("Password must be at least 6 characters long");
-//            return false;
-//        } else {
-//            passwordInputLayout.setError(null);
-//            return true;
-//        }
-//    }
-//}
 
