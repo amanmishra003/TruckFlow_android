@@ -1,240 +1,153 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".load.LoadActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <TextView
+        android:id="@+id/textView7"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="ExtraText">
+        android:layout_height="30dp"
+        android:textAlignment="center"
+        android:text="Please Provide Load Description"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"/>
+    <LinearLayout
+        android:padding="12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/quantum_grey100"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/deliveryAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Pick Up Address:"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/pickupAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Delivery Address:"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/pickupDate"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Pick Up Date:"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/deliveryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Delivery Date:"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"/>
 
-        <!-- Load Name -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loadName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_margin="16dp"
-            android:hint="Load Name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Total Distance:"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="Expected Price:"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
 
-        <fragment
-            android:id="@+id/pickupLocationLayout"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Load Name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/load_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadName" />
-        <!-- Drop-off Location -->
+            android:background="@color/white"
+            android:inputType="text"
+            android:textSize="15sp" />
 
-        <fragment
-            android:id="@+id/dropOffLocationLayout"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Load description">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/white"
+            android:inputType="textMultiLine"
+            android:id="@+id/load_description"
+            android:maxLines="5"
+            android:minLines="3"
+            android:textSize="15sp" />
 
-            app:layout_constraintTop_toBottomOf="@id/pickupLocationLayout" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/load_weight_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load Weight"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp" />
 
-        <!-- Load Description -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loadDescriptionLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Load Description"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dropOffLocationLayout">
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider_load"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="Slider for selecting load"
+        android:stepSize="20.0"
+        android:textSize="15sp"
+        android:value="20.0"
+        android:valueFrom="0.0"
+        android:valueTo="40000.0"
+        android:layout_marginTop="10dp" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loadDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:maxLines="5"
-                android:minLines="3" />
+    <TextView
+        android:id="@+id/load_dim_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load Length"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider_length"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="Slider for selecting load"
+        android:stepSize="1.0"
+        android:textSize="20sp"
+        android:value="20.0"
+        android:valueFrom="10.0"
+        android:valueTo="100.0"
+        android:layout_marginTop="10dp" />
 
-        <!-- Load Weight -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loadWeightLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Load Weight (lbs)"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadDescriptionLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loadWeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Load Dimensions -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loadDimensionsLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Load Dimensions"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadWeightLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loadDimension"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Load Date/Time -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loadDateTimeLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Load Date/Time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadDimensionsLayout">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/loadDateTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
-                android:inputType="datetime"
-                android:text="Choose Pick up Date" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dropDateTimeLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Load Date/Time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadDateTimeLayout">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dropDateTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
-                android:inputType="datetime"
-                android:text="Choose Delivery Date" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Contact Information -->
-
-        <!-- Additional Requirements -->
-
-        <!-- Submit Button -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/contactInfoLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Contact Information"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loadDateTimeLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/contactInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:inputType="text" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/additionalRequirementsLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="16dp"
-            android:hint="Additional Requirements"
-            app:layout_constraintBottom_toTopOf="@+id/postLoadButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contactInfoLayout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/additionReq"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:maxLines="5"
-                android:minLines="4" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/postLoadButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Post"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Post Load" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

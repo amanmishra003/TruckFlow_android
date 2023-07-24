@@ -17,7 +17,11 @@ import com.example.truckflow.load.LoadDetails;
 
 
 import java.util.List;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder> {
     private List<Load> loadList;
 
@@ -52,19 +56,40 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
 
 
     public class LoadViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
-        private TextView textViewLoadName;
+        private TextView textViewLoadName,pickUpLocation,loadDropLocation,loadPickUpMonth,loadPickUpDate,
+        loadDistance,loadWeight;
 
 
         public LoadViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewLoadName = itemView.findViewById(R.id.load_name);
-
+            pickUpLocation = itemView.findViewById(R.id.load_pick_loc);
+            loadDropLocation = itemView.findViewById(R.id.load_drop_loc);
+            loadPickUpDate = itemView.findViewById(R.id.load_pick_date);
+            loadPickUpMonth = itemView.findViewById(R.id.load_pick_month);
+            loadDistance = itemView.findViewById(R.id.load_distance);
+            loadWeight = itemView.findViewById(R.id.load_weight);
             // Set the click listener on the item view
             itemView.setOnClickListener(this);
         }
 
         public void bind(Load load) {
             textViewLoadName.setText(load.getLoadName());
+            Date date = parseDate(load.pickUpDate);
+            int day=0;
+            String month="";
+            if (date != null) {
+                day = getDay(date);
+                month = getMonthInAlphabetical(date);
+                int year = getYear(date);
+            } else {
+                System.out.println("Invalid date format.");
+            }
+
+            loadPickUpDate.setText(String.valueOf(day));
+            loadPickUpMonth.setText(String.valueOf(month));
+            loadDistance.setText(load.getTotalDistance());
+            loadWeight.setText(load.getLoadWeight());
 
         }
 
@@ -81,6 +106,39 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
                 itemView.getContext().startActivity(intent);
             }
         }
+    }
+
+    public static Date parseDate(String inputDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        try {
+            return dateFormat.parse(inputDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int getDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public static String getMonthInAlphabetical(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int monthNumber = calendar.get(Calendar.MONTH);
+        String[] monthNames = new String[] {
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        };
+        return monthNames[monthNumber];
+    }
+
+    public static int getYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
     }
 }
 

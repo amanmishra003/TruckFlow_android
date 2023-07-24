@@ -17,6 +17,13 @@
         android:theme="@style/Theme.Truckflow"
         tools:targetApi="31">
         <activity
+            android:name=".load.LoadActivityThree"
+            android:exported="false" />
+        <activity
+            android:name=".load.LoadActivityTwo"
+            android:exported="false" />
+        <activity
+            android:name=".home.HomeShipper"
             android:name=".imageUser"
             android:exported="false" />
         <activity
@@ -81,7 +88,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBbOq9E_iUhKtg6WiaqV2CXUxIG2qo9wjQ" />
+            android:value="AIzaSyAtw3f2NBYcbNVz01pmZPfZnQlOwnoErNk" />
     </application>
 
 </manifest>

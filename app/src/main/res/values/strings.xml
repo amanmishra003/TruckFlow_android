@@ -8,6 +8,7 @@
 
     <!--map-->
     <string name="map_content_description"> Pick drop location map</string>
+
     <string name="todo">TODO</string>
     <string name="upload">upload</string>
     <string name="select">select</string>
