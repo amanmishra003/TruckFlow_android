@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.truckflow.entities.User;
 import com.example.truckflow.home.Home;
 import com.example.truckflow.R;
+import com.example.truckflow.profile.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -66,7 +67,7 @@ public class Login extends AppCompatActivity {
                     checkEmailAndPasswordExist(emailInputLayout.getEditText().getText().toString(),
                             passwordInputLayout.getEditText().getText().toString());
                 }
-     }
+            }
         });
         // Navigate to Registration
         callSignUp = findViewById(R.id.button_gotoRegister);
@@ -125,7 +126,16 @@ public class Login extends AppCompatActivity {
                                 Log.d("Login", "Email and password exist");
                                 // Proceed with login or show toast message
                                 Intent intent = new Intent(Login.this, Home.class);
+
+
+
+                                // Pass the email as an extra to the intent
+                                intent.putExtra("EMAIL_KEY", emailInputLayout.getEditText().getText().toString());
+
+                                // Start the UserProfile activity with the intent
                                 startActivity(intent);
+
+
                                 return;
                             }
                         }

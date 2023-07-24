@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 
 import com.example.truckflow.R;
 import com.example.truckflow.entities.User;
+import com.example.truckflow.imageUser;
 import com.example.truckflow.registration.TruckerRegistration;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -92,10 +93,13 @@ public class SignUp extends AppCompatActivity {
         submit_registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SignUp.this, TruckerRegistration.class);
+//                Intent i = new Intent(SignUp.this, TruckerRegistration.class);
+                Intent i = new Intent(SignUp.this, imageUser.class);
 
-
+                String userEmail = email.getEditText().getText().toString();
+                i.putExtra("USER_EMAIL", userEmail);
                 startActivity(i);
+
                 UUID uuid = UUID.randomUUID();
 
 

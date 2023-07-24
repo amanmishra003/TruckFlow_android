@@ -24,6 +24,7 @@
             android:exported="false" />
         <activity
             android:name=".home.HomeShipper"
+            android:name=".imageUser"
             android:exported="false" />
         <activity
             android:name=".load.LoadDetails"
