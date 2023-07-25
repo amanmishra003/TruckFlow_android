@@ -20,7 +20,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.truckflow.R;
 import com.example.truckflow.entities.User;
 import com.example.truckflow.imageUser;
-import com.example.truckflow.registration.TruckerRegistration;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
@@ -74,7 +73,7 @@ public class SignUp extends AppCompatActivity {
                 } else if (checkedId == R.id.radioButtonTrucker) {
                     // Option 2 is selected
                     // Add your code here
-                    role = "truckker";
+                    role = "trucker";
                 }
                 // Add more conditions for other RadioButtons as needed
             }
@@ -93,51 +92,118 @@ public class SignUp extends AppCompatActivity {
         submit_registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(SignUp.this, TruckerRegistration.class);
-                Intent i = new Intent(SignUp.this, imageUser.class);
+                if (validateInput()) {
+                    // If all fields are valid, proceed with the registration
+                    String userEmail = email.getEditText().getText().toString();
+                    String userName = f_name.getEditText().getText().toString();
+                    String userPhone = phone.getEditText().getText().toString();
+                    String userPassword = password.getEditText().getText().toString();
 
-                String userEmail = email.getEditText().getText().toString();
-                i.putExtra("USER_EMAIL", userEmail);
-                startActivity(i);
+                    // Create a new User object
+                    User user = new User(userName, userEmail, userPhone, userPassword, role);
 
-                UUID uuid = UUID.randomUUID();
+                    // Store the user object in the database
+                    UUID uuid = UUID.randomUUID();
+                    databaseRef.child("users").child(String.valueOf(uuid)).setValue(user);
 
+                    // Alternatively, you can also store the user object in Firestore
+                    db.collection("users")
+                            .add(user)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error adding document", e);
+                                }
+                            });
 
-
-                User user = new User(f_name.getEditText().getText().toString(),email.getEditText().getText().toString(),
-                        phone
-                        .getEditText().getText().toString(),
-                        password.getEditText().getText().toString(), role);
-
-                user.toString();
-
-                databaseRef.child("users").child(String.valueOf(uuid)).setValue(user);
-                db.collection("users")
-                        .add(user)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
-                            }
-                        });
-
+                    // Start the next activity
+                    Intent i = new Intent(SignUp.this, imageUser.class);
+                    i.putExtra("USER_EMAIL", userEmail);
+                    i.putExtra("Role", role);
+                    startActivity(i);
+                }
             }
         });
 
-
-
-
-
-
-
-
-
     }
 
+    private boolean validateInput() {
+        boolean isValid = true;
+
+        // Validate full name
+        String fullName = f_name.getEditText().getText().toString().trim();
+        if (fullName.isEmpty()) {
+            f_name.setError("Full name is required");
+            isValid = false;
+        } else {
+            f_name.setError(null);
+        }
+
+        // Validate email
+        String userEmail = email.getEditText().getText().toString().trim();
+        if (userEmail.isEmpty()) {
+            email.setError("Email is required");
+            isValid = false;
+        } else if (!isValidEmail(userEmail)) {
+            email.setError("Invalid email address");
+            isValid = false;
+        } else {
+            email.setError(null);
+        }
+
+        // Validate phone number (optional)
+        String userPhone = phone.getEditText().getText().toString().trim();
+        if (!userPhone.isEmpty() && !isValidPhoneNumber(userPhone)) {
+            phone.setError("Invalid phone number");
+            isValid = false;
+        } else {
+            phone.setError(null);
+        }
+
+        // Validate password (optional, you may have specific password requirements)
+        String userPassword = password.getEditText().getText().toString().trim();
+        if (userPassword.isEmpty()) {
+            password.setError("Password is required");
+            isValid = false;
+        } else {
+            password.setError(null);
+        }
+
+        // Validate role selection
+        if (role.isEmpty()) {
+            // You may also show an error message using a Toast or Snackbar
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Simple email validation for demonstration purposes
+    private boolean isValidEmail(@NonNull String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    // Simple phone number validation for demonstration purposes
+    private boolean isValidPhoneNumber(@NonNull String phoneNumber) {
+        return phoneNumber.matches("\\d{10}"); // Assumes 10-digit phone numbers
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

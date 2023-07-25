@@ -1,5 +1,6 @@
 package com.example.truckflow.registration;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -34,29 +35,73 @@ public class TruckerRegistration extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String companyName = company_name.getEditText().getText().toString();
-                String companyPhone = company_phone.getEditText().getText().toString();
-                String dotValue = dot.getEditText().getText().toString();
-                String mcValue = mc.getEditText().getText().toString();
+                if (validateInput()) {
+                    // If all fields are valid, proceed to the next activity
+                    Intent i = new Intent(TruckerRegistration.this, TruckerRegistrationTwo.class);
+                    i.putExtra("companyName", company_name.getEditText().getText().toString());
+                    i.putExtra("companyPhone", company_phone.getEditText().getText().toString());
+                    i.putExtra("dotValue", dot.getEditText().getText().toString());
+                    i.putExtra("mcValue", mc.getEditText().getText().toString());
 
-                Intent i = new Intent(TruckerRegistration.this, TruckerRegistrationTwo.class);
-                i.putExtra("companyName", companyName);
-                i.putExtra("companyPhone", companyPhone);
-                i.putExtra("dotValue", dotValue);
-                i.putExtra("mcValue", mcValue);
+                    if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("IMAGE_FILE_NAME")) {
+                        String fileName = getIntent().getStringExtra("IMAGE_FILE_NAME");
+                        i.putExtra("IMAGE_FILE_NAME", fileName);
+                        Log.d("fileName trucker", fileName);
+                    }
 
-                if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("IMAGE_FILE_NAME")) {
-                    String fileName = getIntent().getStringExtra("IMAGE_FILE_NAME");
-                    i.putExtra("IMAGE_FILE_NAME", fileName);
-                    Log.d("fileName trucker", fileName);
                     startActivity(i);
-
                 }
-
-                startActivity(i);
-
-
             }
         });
+    }
+
+    private boolean validateInput() {
+        boolean isValid = true;
+
+        // Check if company name is filled
+        String companyName = company_name.getEditText().getText().toString().trim();
+        if (companyName.isEmpty()) {
+            company_name.setError("Company name is required");
+            isValid = false;
+        } else {
+            company_name.setError(null);
+        }
+
+        // Check if company phone is filled and has a valid format (optional)
+        String companyPhone = company_phone.getEditText().getText().toString().trim();
+        if (companyPhone.isEmpty()) {
+            company_phone.setError("Company phone is required");
+            isValid = false;
+        } else if (!isValidPhoneNumber(companyPhone)) {
+            company_phone.setError("Invalid phone number");
+            isValid = false;
+        } else {
+            company_phone.setError(null);
+        }
+
+        // Check if DOT field is filled
+        String mcValue = mc.getEditText().getText().toString().trim();
+        if (mcValue.length() != 8) {
+            mc.setError("MC number must be exactly 8 digits");
+            isValid = false;
+        } else {
+            mc.setError(null);
+        }
+
+        // Validate DOT number (6 to 8 characters)
+        String dotValue = dot.getEditText().getText().toString().trim();
+        if (dotValue.length() < 6 || dotValue.length() > 8) {
+            dot.setError("DOT number must be between 6 and 8 characters");
+            isValid = false;
+        } else {
+            dot.setError(null);
+        }
+
+        return isValid;
+    }
+
+    // Simple phone number validation for demonstration purposes
+    private boolean isValidPhoneNumber(@NonNull String phoneNumber) {
+        return phoneNumber.matches("\\d{10}"); // Assumes 10-digit phone numbers
     }
 }

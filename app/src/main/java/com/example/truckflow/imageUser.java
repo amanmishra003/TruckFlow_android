@@ -8,19 +8,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.truckflow.authentication.SignUp;
+import com.example.truckflow.authentication.Login;
 import com.example.truckflow.databinding.ActivityImageUserBinding;
-import com.example.truckflow.profile.UserProfile;
+import com.example.truckflow.home.Home;
 import com.example.truckflow.registration.TruckerRegistration;
+import com.example.truckflow.registration.TruckerRegistrationTwo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.example.truckflow.databinding.ActivityMainBinding;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +33,8 @@ public class imageUser extends AppCompatActivity {
     Uri imageUri;
     StorageReference storageReference;
     ProgressDialog progressDialog;
+
+    private String role;
 
 
     @Override
@@ -73,10 +74,14 @@ public class imageUser extends AppCompatActivity {
         progressDialog.setTitle("Uploading File....");
         progressDialog.show();
 
+
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("USER_EMAIL")) {
             String userEmail = getIntent().getStringExtra("USER_EMAIL");
+            role = getIntent().getStringExtra("Role"); // Add this line to get the "Role" extra
 
             Log.d("imageUser", "Received email: " + userEmail);
+            Log.d("imageUser", "Received role: " + role);
+
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
             Date now = new Date();
@@ -84,10 +89,7 @@ public class imageUser extends AppCompatActivity {
             storageReference = FirebaseStorage.getInstance().getReference("images/"+userEmail);
         }
 
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
-//        Date now = new Date();
-//        String fileName = formatter.format(now);
-//        storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+
 
 
         storageReference.putFile(imageUri)
@@ -100,9 +102,23 @@ public class imageUser extends AppCompatActivity {
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
 
-                        Intent i = new Intent(imageUser.this, TruckerRegistration.class);
+//                        Intent i = new Intent(imageUser.this, TruckerRegistration.class);
+//
+//
+//                        startActivity(i);
 
-//                        i.putExtra("IMAGE_FILE_NAME", fileName);
+                        Intent i;
+                        if ("shipper".equals(role)) {
+                            // Load Home.class for shipper
+                            i = new Intent(imageUser.this, Login.class);
+                        } else if ("trucker".equals(role)) {
+                            // Load TruckerRegistrationTwo.class for trucker
+                            i = new Intent(imageUser.this, TruckerRegistration.class);
+                        } else {
+                            // Handle other roles or fallback to a default activity
+                            i = new Intent(imageUser.this, Login.class);
+                        }
+
                         startActivity(i);
 
 

@@ -59,6 +59,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
 
+
+
+
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +124,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                     if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
                         String email = getIntent().getStringExtra("EMAIL_KEY");
-                        Log.d("UserProfile", "Email GOT IT HOME from intent: " + email);
+
 
                         intent.putExtra("EMAIL_KEY", email);
 
@@ -194,4 +197,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public interface FirestoreLoadCallback {
         void onLoadsReceived(List<Load> loadData);
     }
+
+
+
+
 }

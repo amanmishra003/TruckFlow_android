@@ -108,15 +108,18 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
         }
     }
 
-    public static Date parseDate(String inputDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private Date parseDate(String dateStr) {
         try {
-            return dateFormat.parse(inputDate);
+            if (dateStr != null && !dateStr.isEmpty()) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+                return formatter.parse(dateStr);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
+
 
     public static int getDay(Date date) {
         Calendar calendar = Calendar.getInstance();

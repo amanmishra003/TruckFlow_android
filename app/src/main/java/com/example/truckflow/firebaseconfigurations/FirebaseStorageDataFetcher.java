@@ -1,4 +1,4 @@
-package com.example.truckflow;
+package com.example.truckflow.firebaseconfigurations;
 
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Priority;

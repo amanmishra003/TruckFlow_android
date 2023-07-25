@@ -1,10 +1,10 @@
-package com.example.truckflow;
+package com.example.truckflow.firebaseconfigurations;
 
-import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.signature.ObjectKey;
+import com.example.truckflow.firebaseconfigurations.FirebaseStorageDataFetcher;
 import com.google.firebase.storage.StorageReference;
 import java.io.InputStream;
 

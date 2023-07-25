@@ -70,6 +70,34 @@ public class TruckerRegistrationTwo extends AppCompatActivity {
                 String maxLength = max_length.getEditText().getText().toString();
                 String maxWt = max_wt.getEditText().getText().toString();
 
+                if (truckName.isEmpty()) {
+                    truck_name.setError("Truck name is required");
+                    return;
+                } else {
+                    truck_name.setError(null);
+                }
+
+                if (truckType.isEmpty()) {
+                    truck_type.setError("Truck type is required");
+                    return;
+                } else {
+                    truck_type.setError(null);
+                }
+
+                if (maxLength.isEmpty()) {
+                    max_length.setError("Maximum length is required");
+                    return;
+                } else {
+                    max_length.setError(null);
+                }
+
+                if (maxWt.isEmpty()) {
+                    max_wt.setError("Maximum weight is required");
+                    return;
+                } else {
+                    max_wt.setError(null);
+                }
+
                 Intent intent = getIntent();
                 if (intent != null) {
                     String companyName = intent.getStringExtra("companyName");
