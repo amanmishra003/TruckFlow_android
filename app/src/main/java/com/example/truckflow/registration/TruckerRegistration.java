@@ -37,11 +37,16 @@ public class TruckerRegistration extends AppCompatActivity {
             public void onClick(View v) {
                 if (validateInput()) {
                     // If all fields are valid, proceed to the next activity
+                    String userEmail = getIntent().getStringExtra("USER_EMAIL");
+
                     Intent i = new Intent(TruckerRegistration.this, TruckerRegistrationTwo.class);
                     i.putExtra("companyName", company_name.getEditText().getText().toString());
                     i.putExtra("companyPhone", company_phone.getEditText().getText().toString());
                     i.putExtra("dotValue", dot.getEditText().getText().toString());
                     i.putExtra("mcValue", mc.getEditText().getText().toString());
+                    i.putExtra("Email", userEmail);
+
+                    Log.d("email in trucker", userEmail);
 
                     if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("IMAGE_FILE_NAME")) {
                         String fileName = getIntent().getStringExtra("IMAGE_FILE_NAME");

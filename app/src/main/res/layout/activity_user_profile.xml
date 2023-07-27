@@ -133,6 +133,43 @@
                     android:drawablePadding="10dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/bungee"
+                android:hint="Set Availability">
+
+                <!-- Add a horizontal LinearLayout to contain the TextView and Switch -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Add a TextView to describe the action -->
+                    <TextView
+                        android:layout_width="153dp"
+                        android:layout_height="27dp"
+                        android:text="Set Availability: "
+                        android:textSize="20sp" />
+
+                    <!-- The Switch -->
+                    <Switch
+                        android:id="@+id/avail_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="180dp"
+                        android:checked="false"
+
+                        android:textOff="Unavailable"
+                        android:textOn="Available"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <Button
                 android:id="@+id/updateBtn"
                 android:layout_width="match_parent"

@@ -4,6 +4,8 @@ public class Trucker {
 
     public String company_name;
 
+    public String truckerEmail;
+
     public String company_phone;
 
     public String dot;
@@ -92,7 +94,7 @@ public class Trucker {
     public Trucker() {
 
     }
-    public Trucker(String company_name, String company_phone, String dot, String mc, String truck_name, String truck_type, String max_length, String max_weight) {
+    public Trucker(String company_name, String company_phone, String dot, String mc, String truck_name, String truck_type, String max_length, String max_weight, String email) {
         this.company_name = company_name;
         this.company_phone = company_phone;
         this.dot = dot;
@@ -101,5 +103,19 @@ public class Trucker {
         this.truck_type = truck_type;
         this.max_length = max_length;
         this.max_weight = max_weight;
+        this.truckerEmail = email;
     }
+
+    private boolean availability;
+
+    public boolean isAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
+    }
+
+
+
 }

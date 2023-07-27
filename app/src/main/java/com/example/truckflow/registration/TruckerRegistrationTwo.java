@@ -104,8 +104,9 @@ public class TruckerRegistrationTwo extends AppCompatActivity {
                     String companyPhone = intent.getStringExtra("companyPhone");
                     String dotValue = intent.getStringExtra("dotValue");
                     String mcValue = intent.getStringExtra("mcValue");
+                    String email = intent.getStringExtra("Email");
 
-                    Trucker tck = new Trucker(companyName, companyPhone, dotValue, mcValue, truckName, truckType, maxLength, maxWt);
+                    Trucker tck = new Trucker(companyName, companyPhone, dotValue, mcValue, truckName, truckType, maxLength, maxWt, email);
 
                     UUID uuid = UUID.randomUUID();
 
@@ -139,7 +140,7 @@ public class TruckerRegistrationTwo extends AppCompatActivity {
                             });
                 }
 
-                Toast.makeText(TruckerRegistrationTwo.this, "User successfully created! You can Login Now", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TruckerRegistrationTwo.this, "User successfully created! You can 4 Now", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(TruckerRegistrationTwo.this, Login.class);
 
                 if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("IMAGE_FILE_NAME")) {

@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.truckflow.adpters.TruckerAdapter;
 import com.example.truckflow.firebaseconfigurations.FirebaseStorageModelLoaderFactory;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -24,6 +28,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.io.InputStream;
 
 public class UserProfile extends AppCompatActivity {
+
+    private TruckerAdapter truckerAdapter;
 
     private TextView fullNameTextView;
     private TextView emailTextView;
@@ -40,6 +46,9 @@ public class UserProfile extends AppCompatActivity {
     private Button update;
 
     private ImageView profilepic;
+
+    private Switch availSwitch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,7 @@ public class UserProfile extends AppCompatActivity {
         update = findViewById(R.id.updateBtn);
         add = findViewById(R.id.add);
         profilepic = findViewById(R.id.profilePicture);
+        availSwitch = findViewById(R.id.avail_switch);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
             String email = getIntent().getStringExtra("EMAIL_KEY");
@@ -117,6 +127,26 @@ public class UserProfile extends AppCompatActivity {
             });
         }
 
+        availSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // isChecked will be true if the Switch is selected (ON),
+                // and false if the Switch is not selected (OFF).
+                if (isChecked) {
+                    // Switch is ON
+                    updateAvailability(true);
+//                    truckerAdapter.setShowAvailableTruckers(true);
+                    Toast.makeText(UserProfile.this, "Availability is ON", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Switch is OFF
+                    updateAvailability(false);
+//                    truckerAdapter.setShowAvailableTruckers(false);
+                    Toast.makeText(UserProfile.this, "Availability OFF", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,5 +179,50 @@ public class UserProfile extends AppCompatActivity {
                 });
             }
         });
+
+
     }
+
+    private void updateAvailability(boolean b) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query query = db.collection("users").whereEqualTo("email", emailTextView.getText().toString());
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // Update the document with the new availability value
+                    document.getReference().update("availability", b);
+                }
+                // Show a toast message indicating the successful update
+                Toast.makeText(UserProfile.this, "Availability updated!", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("UserProfile", "Error getting documents: ", task.getException());
+            }
+        });
+    }
+
+//    private void updateTAvailability(String truckerEmail, boolean availability) {
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        CollectionReference truckerCollectionRef = db.collection("trucker");
+//
+//        // Query the trucker collection where the email matches the logged-in trucker's email
+//        Query query = truckerCollectionRef.whereEqualTo("email", truckerEmail);
+//
+//        query.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                for (QueryDocumentSnapshot document : task.getResult()) {
+//                    // Update the document with the new availability value
+//                    document.getReference().update("availability", availability);
+//                }
+//                // Show a toast message indicating the successful update
+//                String statusMessage = availability ? "Availability is ON" : "Availability OFF";
+//                Toast.makeText(UserProfile.this, statusMessage, Toast.LENGTH_SHORT).show();
+//            } else {
+//                Log.d("UserProfile", "Error getting documents: ", task.getException());
+//            }
+//        });
+
+
+
+
 }
+

@@ -74,9 +74,11 @@ public class imageUser extends AppCompatActivity {
         progressDialog.setTitle("Uploading File....");
         progressDialog.show();
 
+        String userEmail = "";
+
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("USER_EMAIL")) {
-            String userEmail = getIntent().getStringExtra("USER_EMAIL");
+            userEmail = getIntent().getStringExtra("USER_EMAIL");
             role = getIntent().getStringExtra("Role"); // Add this line to get the "Role" extra
 
             Log.d("imageUser", "Received email: " + userEmail);
@@ -119,6 +121,13 @@ public class imageUser extends AppCompatActivity {
                             i = new Intent(imageUser.this, Login.class);
                         }
 
+                        //i.putExtra("USER_EMAIL", userEmail);
+
+
+                        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("USER_EMAIL")) {
+                            String userEmail = getIntent().getStringExtra("USER_EMAIL");
+                            i.putExtra("USER_EMAIL", userEmail);
+                        }
                         startActivity(i);
 
 
