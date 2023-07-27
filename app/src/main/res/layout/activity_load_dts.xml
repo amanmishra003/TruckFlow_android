@@ -30,7 +30,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/load_dts_card1"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="180dp"
             app:layout_constraintTop_toBottomOf="@id/load_dts_map"
 
             android:layout_marginBottom="10dp"
@@ -38,7 +38,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:padding="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -61,51 +61,32 @@
                     android:id="@+id/load_pick_loc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+
                     android:layout_marginTop="10dp"
                     android:drawableStart="@drawable/baseline_arrow_circle_up_24"
                     android:drawablePadding="5dp"
                     android:text="Surrey,BC"
                     android:textColor="@color/black"
-                    android:textSize="16dp"
-                    app:layout_constraintLeft_toRightOf="@id/load_pick_month"
-                    app:layout_constraintTop_toBottomOf="@id/load_name" />
+                    android:textSize="15dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                     app:layout_constraintTop_toBottomOf="@id/load_name" />
+
+
 
                 <TextView
                     android:id="@+id/load_drop_loc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
                     android:drawableStart="@drawable/baseline_arrow_circle_down_24"
                     android:drawablePadding="5dp"
                     android:text="Calgary,Alberta"
                     android:textColor="@color/black"
-                    android:textSize="16dp"
-                    app:layout_constraintLeft_toRightOf="@id/load_pick_date"
+                    android:textSize="15dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/load_pick_loc" />
-
-                <TextView
-                    android:id="@+id/load_pick_month"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center_horizontal"
-                    android:text="JUN"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/load_pick_loc"
-                    app:layout_constraintTop_toBottomOf="@id/load_name" />
-
-                <TextView
-                    android:id="@+id/load_pick_date"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center_horizontal"
-                    android:text="30"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/load_drop_loc"
-                    app:layout_constraintTop_toBottomOf="@id/load_pick_month" />
+>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
@@ -146,14 +127,14 @@
                     />
 
                 <TextView
-                    android:id="@+id/load_dts_dim_head"
+                    android:id="@+id/load_dts_price_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Dimensions"
+                    android:text="Exp Price"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/load_dts_weight_head"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="70dp"
                     />
 
 
@@ -162,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:text="2,268 mi"
+                    android:text="2,268 Km"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@id/load_dts_distance_head"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -179,20 +160,20 @@
                     android:text="44,0000 lbs"
                     app:layout_constraintTop_toBottomOf="@id/load_dts_weight_head"
                     app:layout_constraintLeft_toRightOf="@id/load_dts_distance_value"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginLeft="50dp"
                     android:layout_marginTop="5dp"
                     />
 
                 <TextView
-                    android:id="@+id/load_dts_dim_value"
+                    android:id="@+id/load_dts_price_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:text="20x30x50"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_dim_head"
+                    android:text="$ 3,000"
+                    android:textColor="#12AD2B"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_price_head"
                     app:layout_constraintLeft_toRightOf="@id/load_dts_weight_value"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginLeft="60dp"
                     android:layout_marginTop="5dp"
                     />
 
@@ -221,14 +202,14 @@
                     />
 
                 <TextView
-                    android:id="@+id/load_dts_driveTime_head"
+                    android:id="@+id/load_dts_length_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Driving Time"
+                    android:text="Length"
                     app:layout_constraintTop_toBottomOf="@id/load_dts_distance_value"
                     app:layout_constraintLeft_toRightOf   = "@id/load_dts_dropDate_head"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="60dp"
                     android:layout_marginTop="20dp"
                     />
 
@@ -237,7 +218,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:text="JUN 30"
+                    android:text="23/7/2023"
                     android:textColor="@color/black"
                     app:layout_constraintTop_toBottomOf="@id/load_dts_pickDate_head"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -251,23 +232,23 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:textColor="@color/black"
-                    android:text="JUL 2"
+                    android:text="23/7/2023"
                     app:layout_constraintTop_toBottomOf="@id/load_dts_dropDate_head"
                     app:layout_constraintLeft_toRightOf="@id/load_dts_pickDate_value"
-                    android:layout_marginLeft="70dp"
+                    android:layout_marginLeft="50dp"
                     android:layout_marginTop="5dp"
                     />
 
                 <TextView
-                    android:id="@+id/load_dts_driveTime_value"
+                    android:id="@+id/load_dts_length_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:text="20 Hour"
+                    android:text="69.0 Ft"
                     android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_driveTime_head"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_length_head"
                     app:layout_constraintLeft_toRightOf="@id/load_dts_dropDate_value"
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginLeft="60dp"
                     android:layout_marginTop="5dp"
                     />
 
@@ -288,25 +269,50 @@
                 android:padding="20dp">
 
                 <TextView
+                    android:id="@+id/load_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Description:"
+                    android:textSize="16sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/load_desc_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:text="Load goods containing marble tiles"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_description"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
                     android:id="@+id/contact_info_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="Contact Info:"
+                    android:layout_marginTop="5dp"
+                    android:text="Contact-Info:"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/load_description" />
 
                 <TextView
                     android:id="@+id/contact_info_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="70dp"
+                    android:layout_marginLeft="31dp"
+                    android:layout_marginTop="5dp"
                     android:text="contact@surwaytransport.ca"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     app:layout_constraintLeft_toRightOf="@id/contact_info_head"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/load_desc_value" />
 
 
                 <TextView
@@ -315,7 +321,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Extra Requirements:"
+                    android:text="Requirements:"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/contact_info_head" />

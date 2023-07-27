@@ -75,8 +75,14 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
         }
 
         public void bind(Load load) {
+
+            String[] pickAddressParts = Load.getAddressParts(load.getPickupAddress());
+            String[] dropAddressParts = Load.getAddressParts(load.getDeliveryAddress());
             textViewLoadName.setText(load.getLoadName());
-            Date date = parseDate(load.pickUpDate);
+            pickUpLocation.setText(pickAddressParts[1]+", "+pickAddressParts[2]);
+            loadDropLocation.setText(dropAddressParts[1]+", "+dropAddressParts[2]);
+
+            Date date = parseDate(load.getPickUpDate());
             int day=0;
             String month="";
             if (date != null) {
@@ -89,8 +95,10 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
 
             loadPickUpDate.setText(String.valueOf(day));
             loadPickUpMonth.setText(String.valueOf(month));
-            loadDistance.setText(load.getTotalDistance());
-            loadWeight.setText(load.getLoadWeight());
+            double totalDistance = Double.parseDouble(load.getTotalDistance());
+            String formattedDistance = String.format("Trip %.2f Km", totalDistance);
+            loadDistance.setText(formattedDistance);
+            loadWeight.setText(load.getLoadWeight()+" lbs");
 
         }
 
@@ -104,6 +112,18 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
                 // Start a new activity and pass the load details to it
                 Intent intent = new Intent(itemView.getContext(), LoadDetails.class);
 //                intent.putExtra("load", clickedLoad);
+                intent.putExtra("loadName", clickedLoad.getLoadName());
+                intent.putExtra("loadDescription", clickedLoad.getLoadDescription());
+                intent.putExtra("loadWeight", clickedLoad.getLoadWeight());
+                intent.putExtra("loadLength", clickedLoad.getLoadLength());
+                intent.putExtra("pickUpDate", clickedLoad.getPickUpDate());
+                intent.putExtra("deliveryDate", clickedLoad.getDeliveryDate());
+                intent.putExtra("totalDistance", clickedLoad.getTotalDistance());
+                intent.putExtra("pickupAddress", clickedLoad.getPickupAddress());
+                intent.putExtra("deliveryAddress", clickedLoad.getDeliveryAddress());
+                intent.putExtra("expectedPrice", clickedLoad.getExpectedPrice());
+                intent.putExtra("contactInformation", clickedLoad.getContactInformation());
+                intent.putExtra("requirement", clickedLoad.getRequirement());
                 itemView.getContext().startActivity(intent);
             }
         }
@@ -112,7 +132,7 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
     private Date parseDate(String dateStr) {
         try {
             if (dateStr != null && !dateStr.isEmpty()) {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.CANADA);
                 return formatter.parse(dateStr);
             }
         } catch (ParseException e) {
