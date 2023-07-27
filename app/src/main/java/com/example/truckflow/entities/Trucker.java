@@ -89,7 +89,9 @@ public class Trucker {
         this.mc = mc;
 
     }
+    public Trucker() {
 
+    }
     public Trucker(String company_name, String company_phone, String dot, String mc, String truck_name, String truck_type, String max_length, String max_weight) {
         this.company_name = company_name;
         this.company_phone = company_phone;
