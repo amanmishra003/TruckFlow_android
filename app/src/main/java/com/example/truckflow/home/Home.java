@@ -19,7 +19,9 @@ import android.widget.ImageView;
 
 import com.example.truckflow.R;
 import com.example.truckflow.adpters.LoadAdapter;
+import com.example.truckflow.adpters.TruckerAdapter;
 import com.example.truckflow.entities.Load;
+import com.example.truckflow.entities.Trucker;
 import com.example.truckflow.load.LoadActivity;
 
 import com.example.truckflow.load.LoadActivityTwo;
@@ -44,6 +46,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private RecyclerView recyclerView;
     private LoadAdapter loadAdapter;
 
+    private TruckerAdapter truckerAdapter;
+
     private List<Load> loadList;
 
     @Override
@@ -65,8 +69,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //condition if shipper then take to load post
                 Intent i = new Intent(Home.this, LoadActivityTwo.class);
                 startActivity(i);
+
+                //else trucker then take to post truck
 
             }
         });
@@ -79,16 +86,34 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         recyclerView = findViewById(R.id.show_loads_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Bundle extras = getIntent().getExtras();
 
-        // Get the shipper load data from Firestore or any other source
-        getMyLoads(new FirestoreLoadCallback() {
-            @Override
-            public void onLoadsReceived(List<Load> loadData) {
-                // Set the load data for the shipperLoadAdapter
-                loadAdapter = new LoadAdapter(loadData);
-                recyclerView.setAdapter(loadAdapter);
-            }
-        });
+        String role = "";
+        if (extras != null) {
+            role = extras.getString("role");
+        }
+        if(role.equals("trucker")) {
+            getMyLoads(new FirestoreLoadCallback() {
+                @Override
+                public void onLoadsReceived(List<Load> loadData) {
+                    // Set the load data for the shipperLoadAdapter
+                    loadAdapter = new LoadAdapter(loadData);
+                    recyclerView.setAdapter(loadAdapter);
+
+
+                }
+            });
+        }
+        else {
+            getMyTruckers(new FirestoreTruckerCallBack() {
+                @Override
+                public void onTruckerReceived(List<Trucker> loadData) {
+                    truckerAdapter = new TruckerAdapter(loadData);
+                    recyclerView.setAdapter(truckerAdapter);
+                }
+            });
+
+        }
 
 
 
@@ -124,11 +149,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                     if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
                         String email = getIntent().getStringExtra("EMAIL_KEY");
-
-
                         intent.putExtra("EMAIL_KEY", email);
-
-
                     }
 
 
@@ -163,6 +184,34 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    private void getMyTruckers(FirestoreTruckerCallBack callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference loadsCollectionRef = db.collection("trucker");
+
+        loadsCollectionRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Trucker> truckerData = new ArrayList<>();
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null) {
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        Trucker trucker = new Trucker();
+                        trucker.setTruck_name(document.getString("truck_name"));
+                        trucker.setDot(document.getString("dot"));
+                        trucker.setMc(document.getString("mc"));
+                        trucker.setCompany_name(document.getString("company_name"));
+                        trucker.setMax_length(document.getString("max_length"));
+                        trucker.setTruck_type(document.getString("truck_type"));
+                        trucker.setMax_weight(document.getString("max_weight"));
+                        truckerData.add(trucker);
+                    }
+                }
+                callback.onTruckerReceived(truckerData);
+            } else {
+                // Handle errors here
+                callback.onTruckerReceived(new ArrayList<>()); // or pass null to indicate an error
+            }
+        });
+    }
 
     //dummy loads list for now
     private void getMyLoads(FirestoreLoadCallback callback) {
@@ -198,6 +247,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         void onLoadsReceived(List<Load> loadData);
     }
 
+    public interface FirestoreTruckerCallBack {
+        void onTruckerReceived(List<Trucker> loadData);
+    }
 
 
 

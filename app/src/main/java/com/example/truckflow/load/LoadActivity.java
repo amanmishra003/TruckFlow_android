@@ -5,7 +5,9 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +58,8 @@ public class LoadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
      //   setContentView(R.layout.activity_load);
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
 
         load = new Load();
         binding = ActivityLoadBinding.inflate(getLayoutInflater());
@@ -222,6 +226,10 @@ public class LoadActivity extends AppCompatActivity {
                 Log.i("Load Name::Load Act::",loadName);
                 load.setLoadName(loadName);
                 load.setLoadDescription(loadDescription);
+
+                String username = sharedPreferences.getString("email", null);
+                load.setContactInformation(username);
+                Log.i("Username",username);
                 databaseRef.child("Load").child(String.valueOf(uuid)).setValue(load)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -250,8 +258,6 @@ public class LoadActivity extends AppCompatActivity {
                                 Log.e(TAG, "Error saving trucker data to Firestore", e);
                             }
                         });
-
-
                 startActivity(i);
 
             }

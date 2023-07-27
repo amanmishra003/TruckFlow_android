@@ -56,7 +56,8 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
 
 
     public class LoadViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
-        private TextView textViewLoadName,pickUpLocation,loadDropLocation,loadPickUpMonth,loadPickUpDate,
+        private TextView textViewLoadName,pickUpLocation,
+                loadDropLocation,loadPickUpMonth,loadPickUpDate,
         loadDistance,loadWeight;
 
 

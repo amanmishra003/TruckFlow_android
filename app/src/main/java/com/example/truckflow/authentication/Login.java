@@ -3,7 +3,9 @@ package com.example.truckflow.authentication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,7 +33,6 @@ import com.example.truckflow.home.HomeShipper;
 public class Login extends AppCompatActivity {
     Button callSignUp;
     Button callToHome;
-
     TextInputLayout emailInputLayout;
     TextInputLayout passwordInputLayout;
 
@@ -41,7 +42,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
         emailInputLayout = findViewById(R.id.userName);
@@ -49,10 +50,11 @@ public class Login extends AppCompatActivity {
         image = findViewById(R.id.logoImg);
 
 
+
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Login.this,Home.class);
+                Intent i = new Intent(Login.this, Home.class);
                 startActivity(i);
             }
         });
@@ -61,12 +63,42 @@ public class Login extends AppCompatActivity {
         callToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                CollectionReference usersCollectionRef = db.collection("users");
 
-                if (validateEmail(emailInputLayout.getEditText().getText().toString()) &&
-                        validatePassword(passwordInputLayout.getEditText().getText().toString())) {
-                    checkEmailAndPasswordExist(emailInputLayout.getEditText().getText().toString(),
-                            passwordInputLayout.getEditText().getText().toString());
+                String collectionName = "users"; // Replace with your collection name
+                String email = emailInputLayout.getEditText().getText().toString(); // Replace with your document ID
+
+                db.collection(collectionName)
+                        .document(email)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                // Document found, you can access its data
+                                // For example, if you have a 'name' field in your document:
+                                String role = documentSnapshot.getString("role");
+                                Log.d("FirebaseData", "role: " + role);
+                            } else {
+                                // Document not found
+                                Log.d("FirebaseData", "Document not found");
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            // Handle any errors that occurred while retrieving the document
+                            Log.e("FirebaseData", "Error getting document: " + e);
+                        });
+
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putString("email", emailInputLayout.getEditText().getText().toString());
+                editor.apply();
+
+                if (validateEmail(emailInputLayout.getEditText().getText().toString()) && validatePassword(passwordInputLayout.getEditText().getText().toString())) {
+                    checkEmailAndPasswordExist(emailInputLayout.getEditText().getText().toString(), passwordInputLayout.getEditText().getText().toString());
                 }
+                checkRolesByEmail(emailInputLayout.getEditText().getText().toString(),passwordInputLayout.getEditText().getText().toString());
+
             }
         });
         // Navigate to Registration
@@ -128,7 +160,6 @@ public class Login extends AppCompatActivity {
                                 Intent intent = new Intent(Login.this, Home.class);
 
 
-
                                 // Pass the email as an extra to the intent
                                 intent.putExtra("EMAIL_KEY", emailInputLayout.getEditText().getText().toString());
 
@@ -156,6 +187,61 @@ public class Login extends AppCompatActivity {
         });
 
     }
+
+    private void checkRolesByEmail(String email, String password) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("users");
+
+        Query query = usersRef.whereEqualTo("email", email);
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                    // Email exists, check for password match
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        User user = document.toObject(User.class);
+                        if (user.getPassword().equals(password)) {
+                            // Email and password match, retrieve the user's role
+                            String role = user.getRole();
+                            Log.d("Login", "Role: " + role);
+
+                            // Now you have the role, you can use it for further logic
+                            // For example, you can navigate to different activities based on the role
+                            if ("trucker".equals(role)) {
+                                // User has a trucker role, navigate to trucker activity
+                                Intent intent = new Intent(Login.this, Home.class);
+                                intent.putExtra("EMAIL_KEY", email);
+                                intent.putExtra("role", role);
+                                startActivity(intent);
+                            } else if ("shipper".equals(role)) {
+                                // User has a shipper role, navigate to shipper activity
+                                Intent intent = new Intent(Login.this, Home.class);
+                                intent.putExtra("EMAIL_KEY", email);
+                                intent.putExtra("role", role);
+                                startActivity(intent);
+                            }
+                            // Add more cases for other roles if needed
+
+                            return;
+                        }
+                    }
+                    // Password doesn't match
+                    Log.d("Login", "Password does not match");
+                    Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Email does not exist
+                    Log.d("Login", "Email does not exist");
+                    Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Error occurred while checking email existence
+                Log.d("Login", "Error checking email existence");
+                Toast.makeText(Login.this, "Database error occurred", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }
 
