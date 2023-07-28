@@ -99,7 +99,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 @Override
                 public void onTruckerReceived(List<Trucker> loadData) {
                     truckerAdapter = new TruckerAdapter(loadData);
-                    recyclerView.setAdapter(truckerAdapter);
+                    recyclerView.setAdapter(loadAdapter);
                 }
             });
 
@@ -111,7 +111,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 public void onLoadsReceived(List<Load> loadData) {
                     // Set the load data for the shipperLoadAdapter
                     loadAdapter = new LoadAdapter(loadData);
-                    recyclerView.setAdapter(loadAdapter);
+                    recyclerView.setAdapter(truckerAdapter);
 
 
                 }
