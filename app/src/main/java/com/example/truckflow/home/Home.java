@@ -27,8 +27,11 @@ import com.example.truckflow.load.LoadActivity;
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -54,10 +57,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
-
-
 
 
         //Menu Hooks
@@ -65,8 +66,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView = findViewById(R.id.navigation_view);
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
-
-
 
 
         postLoad.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +94,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (extras != null) {
             role = extras.getString("role");
         }
-        if(role.equals("trucker")) {
+        if (role.equals("trucker")) {
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
@@ -106,8 +105,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                 }
             });
-        }
-        else {
+        } else {
             getMyTruckers(new FirestoreTruckerCallBack() {
                 @Override
                 public void onTruckerReceived(List<Trucker> loadData) {
@@ -119,8 +117,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
 
-
     }
+
 
 
     //nav drawer
@@ -193,96 +191,36 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-//    private void getMyTruckers(FirestoreTruckerCallBack callback) {
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        CollectionReference loadsCollectionRef = db.collection("trucker");
-//
-//        loadsCollectionRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                List<Trucker> truckerData = new ArrayList<>();
-//                QuerySnapshot querySnapshot = task.getResult();
-//                if (querySnapshot != null) {
-//                    for (QueryDocumentSnapshot document : querySnapshot) {
-//                        Trucker trucker = new Trucker();
-//                        trucker.setTruck_name(document.getString("truck_name"));
-//                        trucker.setDot(document.getString("dot"));
-//                        trucker.setMc(document.getString("mc"));
-//                        trucker.setCompany_name(document.getString("company_name"));
-//                        trucker.setMax_length(document.getString("max_length"));
-//                        trucker.setTruck_type(document.getString("truck_type"));
-//                        trucker.setMax_weight(document.getString("max_weight"));
-//                        truckerData.add(trucker);
-//                    }
-//                }
-//                callback.onTruckerReceived(truckerData);
-//            } else {
-//                // Handle errors here
-//                callback.onTruckerReceived(new ArrayList<>()); // or pass null to indicate an error
-//            }
-//        });
-
     private void getMyTruckers(FirestoreTruckerCallBack callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference truckerCollectionRef = db.collection("trucker");
+        CollectionReference loadsCollectionRef = db.collection("trucker");
 
-        truckerCollectionRef.get().addOnCompleteListener(task -> {
+        loadsCollectionRef.whereEqualTo("availability", true).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Trucker> truckerData = new ArrayList<>();
                 QuerySnapshot querySnapshot = task.getResult();
                 if (querySnapshot != null) {
-                    // Get the user's email from the intent
-                    String userEmail = getIntent().getStringExtra("USER_EMAIL");
-
-                    // Get the list of available emails from the "users" collection
-                    CollectionReference usersCollectionRef = db.collection("users");
-                    Query userQuery = usersCollectionRef.whereEqualTo("availability", true);
-
-                    userQuery.get().addOnCompleteListener(userTask -> {
-                        if (userTask.isSuccessful()) {
-                            List<String> availableEmails = new ArrayList<>();
-                            QuerySnapshot userQuerySnapshot = userTask.getResult();
-                            if (userQuerySnapshot != null) {
-                                for (QueryDocumentSnapshot userDocument : userQuerySnapshot) {
-                                    // Add the available emails to the list
-                                    String email = userDocument.getString("email");
-                                    if (email != null) {
-                                        availableEmails.add(email);
-                                    }
-                                }
-
-                                // Iterate through the trucker documents and add to the truckerData list if the email is in availableEmails
-                                for (QueryDocumentSnapshot document : querySnapshot) {
-                                    String email = document.getString("email");
-                                    if (email != null && availableEmails.contains(email)) {
-                                        Trucker trucker = new Trucker();
-                                        trucker.setTruck_name(document.getString("truck_name"));
-                                        trucker.setDot(document.getString("dot"));
-                                        trucker.setMc(document.getString("mc"));
-                                        trucker.setCompany_name(document.getString("company_name"));
-                                        trucker.setMax_length(document.getString("max_length"));
-                                        trucker.setTruck_type(document.getString("truck_type"));
-                                        trucker.setMax_weight(document.getString("max_weight"));
-                                        truckerData.add(trucker);
-                                    }
-                                }
-
-                                // Pass the filtered truckerData list to the callback
-                                callback.onTruckerReceived(truckerData);
-                            }
-                        } else {
-                            // Handle errors here
-                            callback.onTruckerReceived(new ArrayList<>()); // or pass null to indicate an error
-                        }
-                    });
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        Trucker trucker = new Trucker();
+                        trucker.setTruck_name(document.getString("truck_name"));
+                        trucker.setDot(document.getString("dot"));
+                        trucker.setMc(document.getString("mc"));
+                        trucker.setCompany_name(document.getString("company_name"));
+                        trucker.setMax_length(document.getString("max_length"));
+                        trucker.setTruck_type(document.getString("truck_type"));
+                        trucker.setMax_weight(document.getString("max_weight"));
+                        trucker.setTruckerEmail(document.getString("truckerEmail"));
+                        truckerData.add(trucker);
+                    }
                 }
+                callback.onTruckerReceived(truckerData);
             } else {
                 // Handle errors here
                 callback.onTruckerReceived(new ArrayList<>()); // or pass null to indicate an error
             }
         });
 
-
-}
+    }
 
     //dummy loads list for now
     private void getMyLoads(FirestoreLoadCallback callback) {

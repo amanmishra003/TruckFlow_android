@@ -108,6 +108,14 @@ public class Trucker {
 
     private boolean availability;
 
+    public String getTruckerEmail() {
+        return truckerEmail;
+    }
+
+    public void setTruckerEmail(String truckerEmail) {
+        this.truckerEmail = truckerEmail;
+    }
+
     public boolean isAvailability() {
         return availability;
     }

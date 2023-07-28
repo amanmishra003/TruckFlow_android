@@ -111,10 +111,13 @@
                 int position = getAdapterPosition();
                 // Handle the click event, e.g., start a new activity with load details
                 if (position != RecyclerView.NO_POSITION) {
-                    Trucker clickedLoad = truckerList.get(position);
+                    Trucker clickedTrucker= truckerList.get(position);
+
                     // Start a new activity and pass the load details to it
                     Intent intent = new Intent(itemView.getContext(), TruckerDetails.class);
-    //                intent.putExtra("load", clickedLoad);
+    //
+                    intent.putExtra("email",clickedTrucker.truckerEmail);
+                    //intent.putExtra("load", clickedLoad);
                     itemView.getContext().startActivity(intent);
             }
         }

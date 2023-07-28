@@ -186,6 +186,7 @@ public class UserProfile extends AppCompatActivity {
     private void updateAvailability(boolean b) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query query = db.collection("users").whereEqualTo("email", emailTextView.getText().toString());
+        Query queryTruck = db.collection("trucker").whereEqualTo("truckerEmail", emailTextView.getText().toString());
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -196,6 +197,20 @@ public class UserProfile extends AppCompatActivity {
                 Toast.makeText(UserProfile.this, "Availability updated!", Toast.LENGTH_SHORT).show();
             } else {
                 Log.d("UserProfile", "Error getting documents: ", task.getException());
+            }
+        });
+
+        queryTruck.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // Update the document with the new availability value
+                    document.getReference().update("availability", b);
+                }
+                // Show a toast message indicating the successful update
+                Toast.makeText(UserProfile.this, "Availability updated!", Toast.LENGTH_SHORT).show();
+                Log.i("Trucker Profile","Updateds");
+            } else {
+                Log.d("Trucker Profile", "Error getting documents: ", task.getException());
             }
         });
     }
