@@ -94,7 +94,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (extras != null) {
             role = extras.getString("role");
         }
-        if (role.equals("trucker")) {
+        if (role.equals("trucker")) { 
+          getMyTruckers(new FirestoreTruckerCallBack() {
+                @Override
+                public void onTruckerReceived(List<Trucker> loadData) {
+                    truckerAdapter = new TruckerAdapter(loadData);
+                    recyclerView.setAdapter(truckerAdapter);
+                }
+            });
+
+
+        }
+        else {
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
@@ -105,18 +116,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                 }
             });
-        } else {
-            getMyTruckers(new FirestoreTruckerCallBack() {
-                @Override
-                public void onTruckerReceived(List<Trucker> loadData) {
-                    truckerAdapter = new TruckerAdapter(loadData);
-                    recyclerView.setAdapter(truckerAdapter);
-                }
-            });
-
         }
-
-
     }
 
 
@@ -237,8 +237,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         load.setLoadName(document.getString("loadName"));
                         load.setLoadDescription(document.getString("loadDescription"));
                         load.setLoadWeight(document.getString("loadWeight"));
+                        load.setLoadLength(document.getString("loadLength"));
                         load.setPickUpDate(document.getString("pickUpDate"));
                         load.setDeliveryDate(document.getString("deliveryDate"));
+                        load.setTotalDistance(document.getString("totalDistance"));
+                        load.setPickupAddress(document.getString("pickupAddress"));
+                        load.setDeliveryAddress(document.getString("deliveryAddress"));
+                        load.setExpectedPrice(document.getString("expectedPrice"));
                         load.setContactInformation(document.getString("contactInformation"));
                         load.setRequirement(document.getString("requirement"));
                         loadData.add(load);
@@ -251,6 +256,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
     }
+
+
 
     public interface FirestoreLoadCallback {
         void onLoadsReceived(List<Load> loadData);
