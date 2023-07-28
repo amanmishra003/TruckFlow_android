@@ -93,29 +93,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (extras != null) {
             role = extras.getString("role");
         }
-        if (role.equals("trucker")) { 
-          getMyTruckers(new FirestoreTruckerCallBack() {
+        if (role.equals("trucker")) {
+            getMyTruckers(new FirestoreTruckerCallBack() {
                 @Override
                 public void onTruckerReceived(List<Trucker> loadData) {
                     truckerAdapter = new TruckerAdapter(loadData);
-                    recyclerView.setAdapter(loadAdapter);
+                    recyclerView.setAdapter(truckerAdapter); // Set truckerAdapter for truckers
                 }
             });
-
-
-        }
-        else {
+        } else {
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
-                    // Set the load data for the shipperLoadAdapter
                     loadAdapter = new LoadAdapter(loadData);
-                    recyclerView.setAdapter(truckerAdapter);
-
-
+                    recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
                 }
             });
         }
+
     }
 
 
