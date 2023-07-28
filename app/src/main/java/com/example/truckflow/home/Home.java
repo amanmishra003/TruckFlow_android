@@ -49,7 +49,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private RecyclerView recyclerView;
     private LoadAdapter loadAdapter;
-
     private TruckerAdapter truckerAdapter;
 
     private List<Load> loadList;
