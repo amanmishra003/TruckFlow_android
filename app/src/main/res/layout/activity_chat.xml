@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:id="@+id/chat_back_btn"
             android:background="#4169E1"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             />
 
         <ImageView
@@ -74,8 +74,23 @@
             android:layout_margin="10dp"
             android:elevation="4dp"
             android:padding="10dp"
+            android:layout_toLeftOf="@id/send_btn"
+
 
             />
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_send_24"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:id="@+id/send_btn"
+            android:backgroundTint="@color/white"
+            android:padding="8dp"
+            android:layout_marginStart="10dp"
+            />
+
+
     </RelativeLayout>
 
 </RelativeLayout>
