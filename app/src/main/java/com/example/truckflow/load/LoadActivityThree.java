@@ -304,8 +304,8 @@ public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCa
                     currentIntent.putExtra("statePU",state);
                     currentIntent.putExtra("countryPU",country);
                     currentIntent.putExtra("postalCodePU",postalCode);
-                    currentIntent.putExtra("longitudePU",longitude);
-                    currentIntent.putExtra("latitudePU",latitude);
+                    currentIntent.putExtra("longitudePU",longitudePU);
+                    currentIntent.putExtra("latitudePU",latitudePU);
                     currentIntent.putExtra("distance",distanceV);
                     currentIntent.putExtra("duration",durationV);
 
