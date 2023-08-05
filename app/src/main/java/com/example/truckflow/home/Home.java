@@ -27,9 +27,13 @@ import com.example.truckflow.load.LoadActivity;
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -53,7 +57,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
 
@@ -62,8 +66,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView = findViewById(R.id.navigation_view);
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
-
-
 
 
         postLoad.setOnClickListener(new View.OnClickListener() {
@@ -92,37 +94,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (extras != null) {
             role = extras.getString("role");
         }
+
         if(role.equals("shipper")) {
+
             getMyTruckers(new FirestoreTruckerCallBack() {
                 @Override
                 public void onTruckerReceived(List<Trucker> loadData) {
                     truckerAdapter = new TruckerAdapter(loadData);
-                    recyclerView.setAdapter(truckerAdapter);
+                    recyclerView.setAdapter(truckerAdapter); // Set truckerAdapter for truckers
                 }
             });
 
-
-        }
-
-
-        else {
+        } else {
 
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
-                    // Set the load data for the shipperLoadAdapter
                     loadAdapter = new LoadAdapter(loadData);
-                    recyclerView.setAdapter(loadAdapter);
-
-
+                    recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
                 }
             });
-
         }
 
-
-
     }
+
 
 
     //nav drawer
@@ -155,7 +150,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
                         String email = getIntent().getStringExtra("EMAIL_KEY");
                         intent.putExtra("EMAIL_KEY", email);
+
                     }
+
+
 
 
 
@@ -167,6 +165,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 return true;
             }
         });
+
+
+
     }
 
 
@@ -193,7 +194,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference loadsCollectionRef = db.collection("trucker");
 
-        loadsCollectionRef.get().addOnCompleteListener(task -> {
+        loadsCollectionRef.whereEqualTo("availability", true).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Trucker> truckerData = new ArrayList<>();
                 QuerySnapshot querySnapshot = task.getResult();
@@ -207,6 +208,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         trucker.setMax_length(document.getString("max_length"));
                         trucker.setTruck_type(document.getString("truck_type"));
                         trucker.setMax_weight(document.getString("max_weight"));
+                        trucker.setTruckerEmail(document.getString("truckerEmail"));
                         truckerData.add(trucker);
                     }
                 }
@@ -216,6 +218,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 callback.onTruckerReceived(new ArrayList<>()); // or pass null to indicate an error
             }
         });
+
     }
 
     //dummy loads list for now

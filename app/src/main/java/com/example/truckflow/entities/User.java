@@ -10,16 +10,35 @@ public class User {
 
     public String role;
 
+    public boolean availability;
     public User(String name, String email, String phone, String password, String role) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
         this.role = role;
+        this.availability = false;
+    }
+
+    public User(String name, String email, String phone, String password, String role, boolean availability) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.role = role;
+        this.availability= availability;
     }
 
 
     public User() {
+    }
+
+    public boolean isAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
     }
 
     public String getName() {
