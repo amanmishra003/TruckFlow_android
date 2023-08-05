@@ -125,8 +125,18 @@ public class LoadActivity extends AppCompatActivity {
         load.setDeliveryDate(dateDel);
         load.setDeliveryAddress(addressDel);
 
+
+        //setting long and lat
+        load.setLongitudePU(longitudePU);
+        load.setLatitudePU(latitudePU);
+
+        load.setLongitudeDel(longitudeDel);
+        load.setLatitudeDel(latitudeDel);
+
         load.setTotalDistance(distance+"");
         load.setExpectedPrice(expectedPrice+"");
+        //duration setting
+        load.setDurationInHours(durationInHours+"");
 
         binding.pickupAddress.setText("PickUp Address:"+addressPU);
         binding.deliveryAddress.setText("Delivery Address:"+addressDel);
@@ -139,7 +149,6 @@ public class LoadActivity extends AppCompatActivity {
             @Override
             public void onValueChange(Slider slider, float value, boolean fromUser) {
                 loadWeight = value;
-
 
             }
 

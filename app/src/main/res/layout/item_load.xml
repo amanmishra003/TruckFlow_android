@@ -19,7 +19,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="180dp"
             android:padding="20dp"
             >
 
@@ -107,7 +107,7 @@
                 app:layout_constraintTop_toBottomOf="@id/load_distance"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
                 />
             <TextView
@@ -123,6 +123,7 @@
                 android:paddingHorizontal="10dp"
                 android:background="#4169E1"
                 />
+
 
 
 
