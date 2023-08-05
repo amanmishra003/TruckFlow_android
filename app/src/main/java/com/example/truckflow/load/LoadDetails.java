@@ -43,6 +43,8 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     private TextView contactInfo;
 
     private Button bookLoad;
+
+    private double longitudePU,longitudeDel,latitudeDel,latitudePU;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,12 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         String contactInformationValue = intent.getStringExtra("contactInformation");
         String requirementValue = intent.getStringExtra("requirement");
         String shipperId = intent.getStringExtra("shipperId");
+        Log.i("Latitude::",intent.getStringExtra("latitudePU"));
+        latitudePU = Double.parseDouble(intent.getStringExtra("latitudePU"));
+        longitudePU = Double.parseDouble(intent.getStringExtra("longitudePU"));
+        latitudeDel = Double.parseDouble(intent.getStringExtra("latitudeDel"));
+
+        longitudeDel = Double.parseDouble(intent.getStringExtra("longitudeDel"));
 
         // Set the data to TextViews
         loadName.setText(loadNameValue);
@@ -124,19 +132,33 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         // Customize the map settings
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+        Intent intent = getIntent();
 
+        double latitude1=49.17447560000001,latitude2=49.17447560000001;
+        double longitude1=-122.7724726,longitude2=-122.7724726;
         //example
         // Define the latitude and longitude values for location1
-        double latitude1 = 37.7749;
-        double longitude1 = -122.4194;
+        Log.i("Latitude PU",intent.getStringExtra("latitudePU")+"");
+        /*if(intent.getStringExtra("latitudePU")!=null) {
+             latitude1 = Double.parseDouble(intent.getStringExtra("latitudePU"));
+             longitude1 = Double.parseDouble(intent.getStringExtra("longitudePU"));
+
+        }
 
         // Define the latitude and longitude values for location2
-        double latitude2 = 34.0522;
-        double longitude2 = -118.2437;
+        if(intent.getStringExtra("latitudeDel")!=null) {
 
+            latitude2 = Double.parseDouble(intent.getStringExtra("latitudeDel"));
+            ;
+            longitude2 = Double.parseDouble(intent.getStringExtra("longitudeDel"));
+            ;
+        }*/
         // Add markers to the map
-        LatLng pickupLatLng = new LatLng(latitude1, longitude1);
-        LatLng dropLatLng = new LatLng(latitude2, longitude2);
+        LatLng pickupLatLng = new LatLng(latitudePU, longitudePU);
+        Log.i("pickupLatlang.",pickupLatLng.toString());
+        LatLng dropLatLng = new LatLng(latitudeDel, longitudeDel);
+        Log.i("deliveryLatLang.",dropLatLng.toString());
+
         // Adding markers to the map
         // Adding markers to the map
         MarkerOptions pickupMarkerOptions = new MarkerOptions()
@@ -159,7 +181,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(pickupLatLng)
-                .zoom(5)
+                .zoom(10)
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 

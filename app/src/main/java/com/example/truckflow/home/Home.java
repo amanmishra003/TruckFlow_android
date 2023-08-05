@@ -253,6 +253,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         load.setExpectedPrice(document.getString("expectedPrice"));
                         load.setContactInformation(document.getString("contactInformation"));
                         load.setRequirement(document.getString("requirement"));
+
+                        load.setLatitudeDel(document.getString("latitudeDel"));
+                        load.setLongitudeDel(document.getString("longitudeDel"));
+
+                        load.setLatitudePU(document.getString("latitudePU"));
+                        load.setLongitudePU(document.getString("longitudePU"));
                         loadData.add(load);
                     }
                 }

@@ -158,7 +158,6 @@ public class LoadActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
-
             }
 
             @Override
@@ -168,8 +167,6 @@ public class LoadActivity extends AppCompatActivity {
                 double distance = distanceInKM; // Length of the freight route in kilometers.
                 double pricePerKm = baseRatePerKm + (additionalRatePerKmPerTonne * loadWeight/2000);
                 double expectedPrice = pricePerKm * distance;
-
-
                 binding.loadWeightLabel.setText("Load Weight : " + loadWeight + " lbs");
                 String formattedValue = String.format("%.2f", expectedPrice);
                 load.setExpectedPrice(formattedValue);
@@ -193,7 +190,6 @@ public class LoadActivity extends AppCompatActivity {
             public void onValueChange(Slider slider, float value, boolean fromUser) {
                 loadLength = value;
                 load.setLoadLength(loadLength+"");
-
             }
 
         });
@@ -206,8 +202,6 @@ public class LoadActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-
-
                 binding.loadDimLabel.setText("Load Length : " + loadLength + " ft");
             }
         });

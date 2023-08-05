@@ -153,9 +153,7 @@ public class LoadActivityTwo extends AppCompatActivity implements OnMapReadyCall
                 currentIntent.putExtra("postalCodePU",postalCode);
                 currentIntent.putExtra("longitudePU",longitude);
                 currentIntent.putExtra("latitudePU",latitude);
-
                 currentIntent.putExtra("datePU",selectedDate);
-
                 //full address
                 String fullAddress = streetNumber + " " + streetName + ", " + city + ", " + state + ", " + country + " " + postalCode;
                 currentIntent.putExtra("addressPU",fullAddress);
