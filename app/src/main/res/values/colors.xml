@@ -19,4 +19,7 @@
     <color name="banner_background">#F1E9CE</color>
     <color name="banner_background_light">#56F1E9CE</color>
 
+     <!--chat activity colors-->
+    <color name="chat_sender">#1E88E5</color>
+    <color name="chat_receiver">#7CB342 </color>
 </resources>

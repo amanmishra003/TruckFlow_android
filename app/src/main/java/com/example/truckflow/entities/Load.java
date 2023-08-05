@@ -6,20 +6,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Load {
+    private  String loadId;  //auto generated Mongo-ID
+    private String shipperId;
 
-    public String loadName;
-    public String loadDescription;
-    public String loadWeight;
-    public String loadLength;
-    public String pickUpDate;
-    public String deliveryDate;
-    public String totalDistance;
-    public String pickupAddress;
-    public String deliveryAddress;
-    public String expectedPrice;
+    private String loadName;
+    private String loadDescription;
+    private String loadWeight;
+    private String loadLength;
+    private String pickUpDate;
+    private String deliveryDate;
+    private String totalDistance;
+    private String pickupAddress;
+    private String deliveryAddress;
+    private String expectedPrice;
+    private String longitudePU;
+    private String latitudePU;
+    private String longitudeDel;
+    private String latitudeDel;
+    private String contactInformation;
+
+    private String durationInHours;
 
 
-    public Load(String loadName, String loadDescription, String loadWeight, String loadLength, String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress, String expectedPrice, String contactInformation, String requirement) {
+
+    public Load(String loadName, String loadDescription, String loadWeight, String loadLength,String durationInHours, String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress, String expectedPrice, String contactInformation, String requirement, String longitudePU, String latitudePU, String longitudeDel, String latitudeDel,String shipperId) {
         this.loadName = loadName;
         this.loadDescription = loadDescription;
         this.loadWeight = loadWeight;
@@ -32,9 +42,32 @@ public class Load {
         this.expectedPrice = expectedPrice;
         this.contactInformation = contactInformation;
         this.requirement = requirement;
+        this.longitudePU = longitudePU;
+        this.latitudePU = latitudePU;
+        this.longitudeDel = longitudeDel;
+        this.latitudeDel = latitudeDel;
+        this.durationInHours = durationInHours;
+        this.shipperId = shipperId;
     }
 
-    public String contactInformation;
+    public String getLoadId() {
+        return loadId;
+    }
+
+    public void setLoadId(String loadId) {
+        this.loadId = loadId;
+    }
+
+    // Getter for shipperId
+    public String getShipperId() {
+        return shipperId;
+    }
+
+    // Setter for shipperId
+    public void setShipperId(String shipperId) {
+        this.shipperId = shipperId;
+    }
+
 
     public String getPickupAddress() {
         return pickupAddress;
@@ -134,11 +167,52 @@ public class Load {
         this.requirement = requirement;
     }
 
+    public String getLongitudePU() {
+        return longitudePU;
+    }
+
+    public void setLongitudePU(String longitudePU) {
+        this.longitudePU = longitudePU;
+    }
+
+    public String getLatitudePU() {
+        return latitudePU;
+    }
+
+    public void setLatitudePU(String latitudePU) {
+        this.latitudePU = latitudePU;
+    }
+
+    public String getLongitudeDel() {
+        return longitudeDel;
+    }
+
+    public void setLongitudeDel(String longitudeDel) {
+        this.longitudeDel = longitudeDel;
+    }
+
+    public String getLatitudeDel() {
+        return latitudeDel;
+    }
+
+    public void setLatitudeDel(String latitudeDel) {
+        this.latitudeDel = latitudeDel;
+    }
+
+    public String getDurationInHours() {
+        return durationInHours;
+    }
+
+    public void setDurationInHours(String durationInHours) {
+        this.durationInHours = durationInHours;
+    }
 
     public Load() {
 
     }
 
+
+    //method for getting different parts of the address
     public static String[] getAddressParts(String addressString) {
         // Split the addressString using commas as separators
         String[] parts = addressString.split(",");

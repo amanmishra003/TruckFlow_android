@@ -94,7 +94,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (extras != null) {
             role = extras.getString("role");
         }
-        if (role.equals("trucker")) {
+
+        if(role.equals("shipper")) {
+
             getMyTruckers(new FirestoreTruckerCallBack() {
                 @Override
                 public void onTruckerReceived(List<Trucker> loadData) {
@@ -102,7 +104,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     recyclerView.setAdapter(truckerAdapter); // Set truckerAdapter for truckers
                 }
             });
+
         } else {
+
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
@@ -229,6 +233,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 if (querySnapshot != null) {
                     for (QueryDocumentSnapshot document : querySnapshot) {
                         Load load = new Load();
+
+                        //testing shipper id from load
+                        if(document.getString("shipperId")!=null){
+                            load.setShipperId(document.getString("shipperId"));
+                        }
+
+                        // Set the load ID in your Load object
+                        load.setLoadId(document.getId());
                         load.setLoadName(document.getString("loadName"));
                         load.setLoadDescription(document.getString("loadDescription"));
                         load.setLoadWeight(document.getString("loadWeight"));

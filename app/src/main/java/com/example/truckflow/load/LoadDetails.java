@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.truckflow.R;
+import com.example.truckflow.communication.ChatActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +41,8 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     private TextView expectedPrice;
     private  TextView requirement;
     private TextView contactInfo;
+
+    private Button bookLoad;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +61,12 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         expectedPrice = findViewById(R.id.load_dts_price_value);
         requirement = findViewById(R.id.ad_req_value);
         contactInfo =findViewById(R.id.contact_info_value);
+        bookLoad  =findViewById(R.id.button_bookLoad);
+
 
         // Retrieve data from the intent
         Intent intent = getIntent();
+        String loadId = intent.getStringExtra("loadId");
         String loadNameValue = intent.getStringExtra("loadName");
         String loadDescriptionValue = intent.getStringExtra("loadDescription");
         String loadWeightValue = intent.getStringExtra("loadWeight");
@@ -72,6 +79,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         String expectedPriceValue = intent.getStringExtra("expectedPrice");
         String contactInformationValue = intent.getStringExtra("contactInformation");
         String requirementValue = intent.getStringExtra("requirement");
+        String shipperId = intent.getStringExtra("shipperId");
 
         // Set the data to TextViews
         loadName.setText(loadNameValue);
@@ -97,6 +105,17 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         mapView = findViewById(R.id.load_dts_map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        //Taking to chat activity
+        bookLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoadDetails.this, ChatActivity.class);
+                intent.putExtra("shipperId", shipperId);
+                intent.putExtra("loadId",loadId);
+                startActivity(intent);
+            }
+        });
 
     }
 
