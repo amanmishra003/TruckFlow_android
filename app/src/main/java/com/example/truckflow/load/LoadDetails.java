@@ -12,6 +12,8 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.truckflow.R;
 import com.example.truckflow.communication.ChatActivity;
 import com.google.android.gms.maps.CameraUpdate;
@@ -24,7 +26,31 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.FirebaseApp;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.TravelMode;
+
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -43,13 +69,14 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     private TextView contactInfo;
 
     private Button bookLoad;
+    private RequestQueue requestQueue;
+
 
     private double longitudePU,longitudeDel,latitudeDel,latitudePU;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_dts);
-
         // Initialize TextViews
         loadName = findViewById(R.id.load_name);
         loadDescription = findViewById(R.id.load_desc_value);
@@ -65,7 +92,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         contactInfo =findViewById(R.id.contact_info_value);
         bookLoad  =findViewById(R.id.button_bookLoad);
 
-
+        requestQueue = Volley.newRequestQueue(this);
         // Retrieve data from the intent
         Intent intent = getIntent();
         String loadId = intent.getStringExtra("loadId");
@@ -132,34 +159,13 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         // Customize the map settings
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        Intent intent = getIntent();
 
-        double latitude1=49.17447560000001,latitude2=49.17447560000001;
-        double longitude1=-122.7724726,longitude2=-122.7724726;
-        //example
-        // Define the latitude and longitude values for location1
-        Log.i("Latitude PU",intent.getStringExtra("latitudePU")+"");
-        /*if(intent.getStringExtra("latitudePU")!=null) {
-             latitude1 = Double.parseDouble(intent.getStringExtra("latitudePU"));
-             longitude1 = Double.parseDouble(intent.getStringExtra("longitudePU"));
-
-        }
-
-        // Define the latitude and longitude values for location2
-        if(intent.getStringExtra("latitudeDel")!=null) {
-
-            latitude2 = Double.parseDouble(intent.getStringExtra("latitudeDel"));
-            ;
-            longitude2 = Double.parseDouble(intent.getStringExtra("longitudeDel"));
-            ;
-        }*/
         // Add markers to the map
         LatLng pickupLatLng = new LatLng(latitudePU, longitudePU);
         Log.i("pickupLatlang.",pickupLatLng.toString());
         LatLng dropLatLng = new LatLng(latitudeDel, longitudeDel);
         Log.i("deliveryLatLang.",dropLatLng.toString());
 
-        // Adding markers to the map
         // Adding markers to the map
         MarkerOptions pickupMarkerOptions = new MarkerOptions()
                 .position(pickupLatLng)
@@ -173,11 +179,13 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
 
 
         // Adding polyline
-        PolylineOptions polylineOptions = new PolylineOptions()
+       /* PolylineOptions polylineOptions = new PolylineOptions()
                 .add(pickupLatLng, dropLatLng)
                 .color(Color.BLUE)
                 .width(5);
         googleMap.addPolyline(polylineOptions);
+        */
+
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(pickupLatLng)
@@ -185,8 +193,87 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
                 .build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+        drawRoutePath(googleMap, pickupLatLng, dropLatLng);
 
     }
+
+    private void drawRoutePath(GoogleMap googleMap, LatLng pickupLatLng, LatLng dropLatLng) {
+        String baseUrl = "https://maps.googleapis.com/maps/api/directions/json";
+        String apiKey = "AIzaSyAtw3f2NBYcbNVz01pmZPfZnQlOwnoErNk";
+
+        String url = baseUrl + "?origin=" + pickupLatLng.latitude + "," + pickupLatLng.longitude
+                + "&destination=" + dropLatLng.latitude + "," + dropLatLng.longitude
+                + "&mode=driving&key=" + apiKey;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Parse the JSON response and draw the route on the map
+                        try {
+                            JSONArray routesArray = response.getJSONArray("routes");
+                            if (routesArray.length() > 0) {
+                                JSONObject routeObject = routesArray.getJSONObject(0);
+                                JSONObject overviewPolylineObject = routeObject.getJSONObject("overview_polyline");
+                                String points = overviewPolylineObject.getString("points");
+
+                                // Decode the polyline points
+                                List<LatLng> latLngPoints = decodePolyline(points);
+
+                                // Draw the polyline on the map
+                                PolylineOptions polylineOptions = new PolylineOptions()
+                                        .addAll(latLngPoints)
+                                        .color(Color.BLUE)
+                                        .width(5);
+                                Polyline polyline = googleMap.addPolyline(polylineOptions);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Handle error
+                        error.printStackTrace();
+                    }
+                });
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private List<LatLng> decodePolyline(String encoded) {
+        List<LatLng> poly = new ArrayList<>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng((double) lat / 1E5, (double) lng / 1E5);
+            poly.add(p);
+        }
+        return poly;
+    }
+
 
     @Override
     protected void onResume() {
