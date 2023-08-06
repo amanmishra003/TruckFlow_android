@@ -25,8 +25,10 @@ import com.example.truckflow.entities.Trucker;
 import com.example.truckflow.load.LoadActivity;
 
 import com.example.truckflow.load.LoadActivityTwo;
+import com.example.truckflow.loadView;
 import com.example.truckflow.profile.UserProfile;
 
+import com.example.truckflow.truckerView;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.navigation.NavigationView;
@@ -73,9 +75,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 //condition if shipper then take to load post
                 Intent i = new Intent(Home.this, LoadActivityTwo.class);
+
+
+                Bundle extras = getIntent().getExtras();
+
+                String role = "";
+                if (extras != null && extras.containsKey("role")) {
+                    role = extras.getString("role");
+                }
+                if (extras != null && extras.containsKey("EMAIL_KEY")) {
+                    String email = extras.getString("EMAIL_KEY");
+                    i.putExtra("EMAIL_KEY", email);
+                }
+
+                i.putExtra("role", role);
+
                 startActivity(i);
 
-                //else trucker then take to post truck
+                //else trucker then take to  truck
 
             }
         });
@@ -91,9 +108,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Bundle extras = getIntent().getExtras();
 
         String role = "";
-        if (extras != null) {
+        if (extras != null  && extras.containsKey("role")) {
             role = extras.getString("role");
         }
+
+
 
         if(role.equals("shipper")) {
 
@@ -105,11 +124,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 }
             });
 
-        } else {
+        } else if (role.equals("trucker")) {
+
+            Log.d("load for trucker", role);
 
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
+
                     loadAdapter = new LoadAdapter(loadData);
                     recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
                 }
@@ -127,16 +149,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setCheckedItem(R.id.nav_home);
 
         menuIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(drawerLayout.isDrawerVisible(GravityCompat.START)){
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                    }
-                    else{
-                        drawerLayout.openDrawer(GravityCompat.START);
-                    }
+            @Override
+            public void onClick(View v) {
+                if(drawerLayout.isDrawerVisible(GravityCompat.START)){
+                    drawerLayout.closeDrawer(GravityCompat.START);
                 }
-            });
+                else{
+                    drawerLayout.openDrawer(GravityCompat.START);
+                }
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -159,6 +181,59 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                     startActivity(intent);
                 }
+
+//                else if (id == R.id.nav_1)
+//                {
+//                    Bundle extras = getIntent().getExtras();
+//
+//                    String role = "";
+//                    if (extras != null  && extras.containsKey("role")) {
+//                        role = extras.getString("role");
+//                    }
+//
+//
+//
+//                    Intent intent = new Intent(Home.this, loadView.class);
+//                    if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
+//                        String email = getIntent().getStringExtra("EMAIL_KEY");
+//                        intent.putExtra("EMAIL_KEY", email);
+//
+//                    }
+//
+//
+//                    startActivity(intent);
+//                }
+
+                else if (id == R.id.nav_1) {
+                    Bundle extras = getIntent().getExtras();
+                    String role = "";
+
+                    if (extras != null && extras.containsKey("role")) {
+                        role = extras.getString("role");
+                    }
+
+                    Intent intent ;
+
+                    if ("trucker".equals(role)) {
+                        intent = new Intent(Home.this, truckerView.class);
+                    } else if ("shipper".equals(role)) {
+                        intent = new Intent(Home.this, loadView.class);
+                    }
+                    else {
+                        intent = new Intent(Home.this, loadView.class);
+                    }
+
+                    // Pass the "EMAIL_KEY" data to the intent if it exists in the extras
+                    if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
+                        String email = getIntent().getStringExtra("EMAIL_KEY");
+                        intent.putExtra("EMAIL_KEY", email);
+                    }
+
+                    startActivity(intent);
+                }
+
+
+
 
                 // Close the drawer after handling the click event
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -253,12 +328,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         load.setExpectedPrice(document.getString("expectedPrice"));
                         load.setContactInformation(document.getString("contactInformation"));
                         load.setRequirement(document.getString("requirement"));
-
-                        load.setLatitudeDel(document.getString("latitudeDel"));
-                        load.setLongitudeDel(document.getString("longitudeDel"));
-
-                        load.setLatitudePU(document.getString("latitudePU"));
-                        load.setLongitudePU(document.getString("longitudePU"));
                         loadData.add(load);
                     }
                 }
