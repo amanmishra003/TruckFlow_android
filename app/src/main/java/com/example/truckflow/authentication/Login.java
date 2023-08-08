@@ -1,6 +1,6 @@
 package com.example.truckflow.authentication;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -19,19 +19,17 @@ import android.widget.Toast;
 import com.example.truckflow.entities.User;
 import com.example.truckflow.home.Home;
 import com.example.truckflow.R;
-import com.example.truckflow.profile.UserProfile;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.example.truckflow.home.HomeShipper;
 import com.google.gson.Gson;
 
 public class Login extends AppCompatActivity {
+    private static final String TAG = "LoginActivity";
+
     Button callSignUp;
     Button callToHome;
     TextInputLayout emailInputLayout;
@@ -39,6 +37,7 @@ public class Login extends AppCompatActivity {
 
     ImageView image;
 
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +45,11 @@ public class Login extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
+        preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+
         emailInputLayout = findViewById(R.id.userName);
         passwordInputLayout = findViewById(R.id.password);
         image = findViewById(R.id.logoImg);
-
-
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,49 +58,21 @@ public class Login extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
         // Navigate to Home
         callToHome = findViewById(R.id.button_login);
         callToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                CollectionReference usersCollectionRef = db.collection("users");
+                if (validateEmailAndPassword()) {
+                    String email = emailInputLayout.getEditText().getText().toString().toLowerCase();
+                    String password = passwordInputLayout.getEditText().getText().toString();
 
-                String collectionName = "users"; // Replace with your collection name
-                String email = emailInputLayout.getEditText().getText().toString().toLowerCase(); // Replace with your document ID
-
-                db.collection(collectionName)
-                        .document(email)
-                        .get()
-                        .addOnSuccessListener(documentSnapshot -> {
-                            if (documentSnapshot.exists()) {
-                                // Document found, you can access its data
-                                // For example, if you have a 'name' field in your document:
-                                String role = documentSnapshot.getString("role");
-                                Log.d("FirebaseData", "role: " + role);
-                            } else {
-                                // Document not found
-                                Log.d("FirebaseData", "Document not found");
-                            }
-                        })
-                        .addOnFailureListener(e -> {
-                            // Handle any errors that occurred while retrieving the document
-                            Log.e("FirebaseData", "Error getting document: " + e);
-                        });
-
-                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                editor.putString("email", emailInputLayout.getEditText().getText().toString().toLowerCase());
-                editor.apply();
-
-                if (validateEmail(emailInputLayout.getEditText().getText().toString()) && validatePassword(passwordInputLayout.getEditText().getText().toString())) {
-                    checkEmailAndPasswordExist(emailInputLayout.getEditText().getText().toString(), passwordInputLayout.getEditText().getText().toString());
+                    checkEmailAndPasswordExist(email, password);
                 }
-                checkRolesByEmail(emailInputLayout.getEditText().getText().toString(),passwordInputLayout.getEditText().getText().toString());
-
             }
         });
+
         // Navigate to Registration
         callSignUp = findViewById(R.id.button_gotoRegister);
         callSignUp.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +84,8 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private boolean validatePassword(String password) {
+    private boolean validatePassword() {
+        String password = passwordInputLayout.getEditText().getText().toString();
         if (TextUtils.isEmpty(password)) {
             passwordInputLayout.setError("Password is required");
             return false;
@@ -126,7 +98,8 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    private boolean validateEmail(String email) {
+    private boolean validateEmail() {
+        String email = emailInputLayout.getEditText().getText().toString();
 
         if (TextUtils.isEmpty(email)) {
             emailInputLayout.setError("Email is required");
@@ -140,168 +113,62 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    /*private void checkEmailAndPasswordExist(String email, String password) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference usersRef = db.collection("users");
-
-        Query query = usersRef.whereEqualTo("email", email);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot querySnapshot = task.getResult();
-                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                        // Email exists, check for password match
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            User user = document.toObject(User.class);
-                            if (user.getPassword().equals(password)) {
-                                // Email and password match
-                                Log.d("Login", "Email and password exist");
-                                // Proceed with login or show toast message
-                                Intent intent = new Intent(Login.this, Home.class);
-
-
-                                // Pass the email as an extra to the intent
-                                intent.putExtra("EMAIL_KEY", emailInputLayout.getEditText().getText().toString());
-
-                                // Start the UserProfile activity with the intent
-                                startActivity(intent);
-
-
-                                return;
-                            }
-                        }
-                        // Password doesn't match
-                        Log.d("Login", "Password does not match");
-                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Email does not exist
-                        Log.d("Login", "Email does not exist");
-                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // Error occurred while checking email existence
-                    Log.d("Login", "Error checking email existence");
-                    Toast.makeText(Login.this, "Database error occurred", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }*/
+    private boolean validateEmailAndPassword() {
+        return validateEmail() && validatePassword();
+    }
 
     private void checkEmailAndPasswordExist(String email, String password) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference usersRef = db.collection("users");
 
-        Query query = usersRef.whereEqualTo("email", email.toLowerCase());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot querySnapshot = task.getResult();
-                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                        // Email exists, check for password match
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            User user = document.toObject(User.class);
-                            if (user.getPassword().equals(password)) {
-                                // Email and password match
-                                Log.d("Login", "Email and password exist");
-
-                                // Save user data in shared preferences
-                                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                                // Convert the user object to JSON and save it as a string
-                                String userJson = new Gson().toJson(user);
-                                editor.putString("user", userJson);
-                                editor.apply();
-
-                                // Proceed with login or show toast message
-                                Intent intent = new Intent(Login.this, Home.class);
-
-                                // Pass the email as an extra to the intent
-                                intent.putExtra("EMAIL_KEY", emailInputLayout.getEditText().getText().toString());
-
-                                // Start the UserProfile activity with the intent
-                                startActivity(intent);
-
-                                return;
-                            }
-                        }
-                        // Password doesn't match
-                        Log.d("Login", "Password does not match");
-                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Email does not exist
-                        Log.d("Login", "Email does not exist");
-                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // Error occurred while checking email existence
-                    Log.d("Login", "Error checking email existence");
-                    Toast.makeText(Login.this, "Database error occurred", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-
-
-
-    private void checkRolesByEmail(String email, String password) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference usersRef = db.collection("users");
-
-        Query query = usersRef.whereEqualTo("email", email.toLowerCase());
+        Query query = usersRef.whereEqualTo("email", email);
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 QuerySnapshot querySnapshot = task.getResult();
                 if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                    // Email exists, check for password match
                     for (QueryDocumentSnapshot document : querySnapshot) {
                         User user = document.toObject(User.class);
                         if (user.getPassword().equals(password)) {
-                            // Email and password match, retrieve the user's role
+                            saveUserToPrefs(user);
+
+                            // Set isLoggedIn to true
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("isLoggedIn", true);
+                            editor.apply();
+
                             String role = user.getRole();
-                            Log.d("Login", "Role: " + role);
+                            Log.d(TAG, "Role: " + role);
 
-                            // Now you have the role, you can use it for further logic
-                            // For example, you can navigate to different activities based on the role
-                            if ("trucker".equals(role)) {
-                                // User has a trucker role, navigate to trucker activity
+                            if ("trucker".equals(role) || "shipper".equals(role)) {
                                 Intent intent = new Intent(Login.this, Home.class);
                                 intent.putExtra("EMAIL_KEY", email);
                                 intent.putExtra("role", role);
                                 startActivity(intent);
-                            } else if ("shipper".equals(role)) {
-                                // User has a shipper role, navigate to shipper activity
-                                Intent intent = new Intent(Login.this, Home.class);
-                                intent.putExtra("EMAIL_KEY", email);
-                                intent.putExtra("role", role);
-                                startActivity(intent);
+                                finish();
+                            } else {
+                                // Handle other roles
                             }
-                            // Add more cases for other roles if needed
-
                             return;
                         }
                     }
-                    // Password doesn't match
-                    Log.d("Login", "Password does not match");
+                    Log.d(TAG, "Password does not match");
                     Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Email does not exist
-                    Log.d("Login", "Email does not exist");
+                    Log.d(TAG, "Email does not exist");
                     Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                // Error occurred while checking email existence
-                Log.d("Login", "Error checking email existence");
+                Log.d(TAG, "Error checking email existence");
                 Toast.makeText(Login.this, "Database error occurred", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
+    private void saveUserToPrefs(User user) {
+        SharedPreferences.Editor editor = preferences.edit();
+        String userJson = new Gson().toJson(user);
+        editor.putString("user", userJson);
+        editor.apply();
+    }
 }
-
