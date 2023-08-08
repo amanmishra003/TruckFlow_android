@@ -1,5 +1,17 @@
 package com.example.truckflow.home;
 
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -21,16 +33,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.truckflow.R;
 import com.example.truckflow.adapters.LoadAdapter;
 import com.example.truckflow.adapters.TruckerAdapter;
+import com.example.truckflow.authentication.Login;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.entities.Trucker;
+
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
 import com.example.truckflow.utils.MyNotificationHelper;
 
-
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,6 +55,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    // UI elements
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageView menuIcon;
@@ -53,8 +67,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
     private RecyclerView recyclerView;
+
+    // Adapters
     private LoadAdapter loadAdapter;
     private TruckerAdapter truckerAdapter;
+
+    private SharedPreferences preferences;
 
     private List<Load> loadList;
     String regToken = "";
@@ -75,6 +93,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             notificationManager.createNotificationChannel(new NotificationChannel(channelId,
                     channelName, NotificationManager.IMPORTANCE_LOW));
         }
+
+        // Initialize UI elements
 
         FirebaseMessaging meessagingIns = FirebaseMessaging.getInstance();
 
@@ -99,130 +119,131 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         FirebaseMessaging.getInstance().subscribeToTopic("PushNotifications");
 
         //Menu Hooks
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
 
-
+        // Handle post load/truck button click
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //condition if shipper then take to load post
                 Intent i = new Intent(Home.this, LoadActivityTwo.class);
                 startActivity(i);
-
-                //else trucker then take to post truck
-
             }
         });
-        //Navigation Drawer
+
+
+        // Set up navigation drawer
         navigationDrawer();
+
+        // Initialize RecyclerView
 
         recyclerView = findViewById(R.id.show_loads_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Bundle extras = getIntent().getExtras();
 
+        // Get user role from intent extras
+        Bundle extras = getIntent().getExtras();
         String role = "";
         if (extras != null) {
             role = extras.getString("role");
         }
 
-        if(role.equals("shipper")) {
-
+        // Display appropriate data based on user role
+        if (role.equals("shipper")) {
+            // Load trucker data if the user is a shipper
             getMyTruckers(new FirestoreTruckerCallBack() {
                 @Override
                 public void onTruckerReceived(List<Trucker> loadData) {
                     truckerAdapter = new TruckerAdapter(loadData);
-                    recyclerView.setAdapter(truckerAdapter); // Set truckerAdapter for truckers
+                    recyclerView.setAdapter(truckerAdapter);
                 }
             });
-
         } else {
-
+            // Load load data if the user is not a shipper
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
                     loadAdapter = new LoadAdapter(loadData);
-                    recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
+                    recyclerView.setAdapter(loadAdapter);
                 }
             });
         }
-
     }
 
-
-
-    //nav drawer
+    // Set up navigation drawer
     private void navigationDrawer() {
-        navigationView.bringToFront(); //to interact with nav bar
-        navigationView.setNavigationItemSelectedListener(this);//to click the items
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
         menuIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(drawerLayout.isDrawerVisible(GravityCompat.START)){
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                    }
-                    else{
-                        drawerLayout.openDrawer(GravityCompat.START);
-                    }
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START);
                 }
-            });
+            }
+        });
 
+        // Handle navigation item clicks
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
                 if (id == R.id.nav_profile) {
-                    // Handle Home item click here
+                    // Handle Profile item click
                     Intent intent = new Intent(Home.this, UserProfile.class);
 
                     if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
                         String email = getIntent().getStringExtra("EMAIL_KEY");
                         intent.putExtra("EMAIL_KEY", email);
-
                     }
-
-
-
-
 
                     startActivity(intent);
                 }
 
-                // Close the drawer after handling the click event
+
+                if (id == R.id.nav_logout) {
+                    // Clear shared preferences
+                    preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear(); // or editor.remove("user"); if you want to keep other preferences
+                    editor.apply();
+
+                    // Start Login activity
+                    Intent intent = new Intent(Home.this, Login.class);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                }
+
+
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
-
-
-
     }
-
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return true;
     }
-    //closing navigation drawer first not app on back press
-
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerVisible(GravityCompat.START)){
+        if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else{
+        } else {
             super.onBackPressed();
         }
-
     }
 
+    // Retrieve trucker data
     private void getMyTruckers(FirestoreTruckerCallBack callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference loadsCollectionRef = db.collection("trucker");
@@ -233,28 +254,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 QuerySnapshot querySnapshot = task.getResult();
                 if (querySnapshot != null) {
                     for (QueryDocumentSnapshot document : querySnapshot) {
-                        Trucker trucker = new Trucker();
-                        trucker.setTruck_name(document.getString("truck_name"));
-                        trucker.setDot(document.getString("dot"));
-                        trucker.setMc(document.getString("mc"));
-                        trucker.setCompany_name(document.getString("company_name"));
-                        trucker.setMax_length(document.getString("max_length"));
-                        trucker.setTruck_type(document.getString("truck_type"));
-                        trucker.setMax_weight(document.getString("max_weight"));
-                        trucker.setTruckerEmail(document.getString("truckerEmail"));
+                        Trucker trucker = document.toObject(Trucker.class);
                         truckerData.add(trucker);
                     }
                 }
                 callback.onTruckerReceived(truckerData);
             } else {
-                // Handle errors here
-                callback.onTruckerReceived(new ArrayList<>()); // or pass null to indicate an error
+                callback.onTruckerReceived(new ArrayList<>());
             }
         });
-
     }
 
-    //dummy loads list for now
+    // Retrieve load data
     private void getMyLoads(FirestoreLoadCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference loadsCollectionRef = db.collection("load");
@@ -265,45 +276,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 QuerySnapshot querySnapshot = task.getResult();
                 if (querySnapshot != null) {
                     for (QueryDocumentSnapshot document : querySnapshot) {
-                        Load load = new Load();
-
-                        //testing shipper id from load
-                        if(document.getString("shipperId")!=null){
-                            load.setShipperId(document.getString("shipperId"));
-                        }
-
-                        // Set the load ID in your Load object
-                        load.setLoadId(document.getId());
-                        load.setLoadName(document.getString("loadName"));
-                        load.setLoadDescription(document.getString("loadDescription"));
-                        load.setLoadWeight(document.getString("loadWeight"));
-                        load.setLoadLength(document.getString("loadLength"));
-                        load.setPickUpDate(document.getString("pickUpDate"));
-                        load.setDeliveryDate(document.getString("deliveryDate"));
-                        load.setTotalDistance(document.getString("totalDistance"));
-                        load.setPickupAddress(document.getString("pickupAddress"));
-                        load.setDeliveryAddress(document.getString("deliveryAddress"));
-                        load.setExpectedPrice(document.getString("expectedPrice"));
-                        load.setContactInformation(document.getString("contactInformation"));
-                        load.setRequirement(document.getString("requirement"));
-
-                        load.setLatitudeDel(document.getString("latitudeDel"));
-                        load.setLongitudeDel(document.getString("longitudeDel"));
-
-                        load.setLatitudePU(document.getString("latitudePU"));
-                        load.setLongitudePU(document.getString("longitudePU"));
+                        Load load = document.toObject(Load.class);
                         loadData.add(load);
                     }
                 }
                 callback.onLoadsReceived(loadData);
             } else {
-                // Handle errors here
-                callback.onLoadsReceived(new ArrayList<>()); // or pass null to indicate an error
+                callback.onLoadsReceived(new ArrayList<>());
             }
         });
     }
-
-
 
     public interface FirestoreLoadCallback {
         void onLoadsReceived(List<Load> loadData);
@@ -312,6 +294,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public interface FirestoreTruckerCallBack {
         void onTruckerReceived(List<Trucker> loadData);
     }
+
 
     private void showNotification() {
         String channelId = getString(R.string.default_notification_channel_id);
@@ -326,3 +309,4 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
 }
+
