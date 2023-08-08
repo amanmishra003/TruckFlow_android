@@ -1,4 +1,4 @@
-package com.example.truckflow.adpters;
+package com.example.truckflow.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
