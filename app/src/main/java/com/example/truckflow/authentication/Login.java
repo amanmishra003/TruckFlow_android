@@ -1,8 +1,6 @@
 package com.example.truckflow.authentication;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,9 +14,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.truckflow.R;
 import com.example.truckflow.entities.User;
 import com.example.truckflow.home.Home;
-import com.example.truckflow.R;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -115,63 +115,6 @@ public class Login extends AppCompatActivity {
 
     private boolean validateEmailAndPassword() {
         return validateEmail() && validatePassword();}
-/*
-    private void checkEmailAndPasswordExist(String email, String password) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference usersRef = db.collection("users");
-
-        Query query = usersRef.whereEqualTo("email", email.toLowerCase());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot querySnapshot = task.getResult();
-                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                        // Email exists, check for password match
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            User user = document.toObject(User.class);
-                            if (user.getPassword().equals(password)) {
-                                // Email and password match
-                                Log.d("Login", "Email and password exist");
-
-                                // Save user data in shared preferences
-                                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                                // Convert the user object to JSON and save it as a string
-                                String userJson = new Gson().toJson(user);
-                                editor.putString("user", userJson);
-                                editor.apply();
-
-                                // Proceed with login or show toast message
-                                Intent intent = new Intent(Login.this, Home.class);
-
-                                // Pass the email as an extra to the intent
-                                intent.putExtra("EMAIL_KEY", emailInputLayout.getEditText().getText().toString());
-
-                                // Start the UserProfile activity with the intent
-                                startActivity(intent);
-
-                                return;
-                            }
-                        }
-                        // Password doesn't match
-                        Log.d("Login", "Password does not match");
-                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Email does not exist
-                        Log.d("Login", "Email does not exist");
-                        Toast.makeText(Login.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    // Error occurred while checking email existence
-                    Log.d("Login", "Error checking email existence");
-                    Toast.makeText(Login.this, "Database error occurred", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }*/
 
     private void checkEmailAndPasswordExist(String email, String password) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -191,11 +134,12 @@ public class Login extends AppCompatActivity {
                             // Set isLoggedIn to true
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putBoolean("isLoggedIn", true);
+                            editor.putString("email", email);
                             editor.apply();
 
                             String role = user.getRole();
                             Log.d(TAG, "Role: " + role);
-
+                            editor.putString("role",role);
                             if ("trucker".equals(role) || "shipper".equals(role)) {
                                 Intent intent = new Intent(Login.this, Home.class);
                                 intent.putExtra("EMAIL_KEY", email);
