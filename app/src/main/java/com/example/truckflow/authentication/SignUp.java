@@ -2,9 +2,6 @@ package com.example.truckflow.authentication;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +11,11 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-
 import com.example.truckflow.R;
 import com.example.truckflow.entities.User;
 import com.example.truckflow.imageUser;
@@ -27,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.UUID;
 
@@ -37,8 +37,8 @@ public class SignUp extends AppCompatActivity {
 
     RequestQueue requestQueue;
 
-
     String role = "";
+    String regToken = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +50,20 @@ public class SignUp extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_up);
+        FirebaseMessaging meessagingIns = FirebaseMessaging.getInstance();
+        meessagingIns.getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String token = task.getResult();
+                        regToken = token;
+                        Log.d("FCM Token", "Token: " + token);
+                        // You can store or use the token as needed
+                    } else {
+                        Log.e("FCM Token", "Failed to retrieve token: " + task.getException());
+                    }
+                });
+
+        Log.d("FCM Token", "Token: " + regToken);
 
         RadioButton radioButtonShipper;
         RadioButton radioButtonTrucker;
@@ -100,7 +114,7 @@ public class SignUp extends AppCompatActivity {
                     String userPassword = password.getEditText().getText().toString();
 
                     // Create a new User object
-                    User user = new User(userName, userEmail, userPhone, userPassword, role);
+                    User user = new User(userName, userEmail, userPhone, userPassword, role,false,regToken);
 
                     // Store the user object in the database
                     UUID uuid = UUID.randomUUID();
@@ -130,6 +144,10 @@ public class SignUp extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    private void sendRegistrationTokenToServer(String registrationToken) {
 
     }
 

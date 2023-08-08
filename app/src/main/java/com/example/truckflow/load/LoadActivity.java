@@ -57,7 +57,6 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   setContentView(R.layout.activity_load);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
 
@@ -65,17 +64,14 @@ public class LoadActivity extends AppCompatActivity {
         binding = ActivityLoadBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         loadName = binding.loadName.getText().toString();
-        Log.i("Load Name::Load Act::",loadName);
 
         loadDescription = binding.loadDescription.getEditableText().toString();
-        Log.i("Load Name::Load Act::",loadName);
 
         databaseRef = FirebaseDatabase.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
 
 
         Places.initialize(getApplicationContext(), "AIzaSyAtw3f2NBYcbNVz01pmZPfZnQlOwnoErNk");
-
         Bundle bundle = getIntent().getExtras();
 
         if (bundle != null) {

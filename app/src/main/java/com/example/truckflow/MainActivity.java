@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.truckflow.authentication.Login;
 import com.example.truckflow.home.Home;
 
 public class MainActivity extends AppCompatActivity {
+
 
     private static final int SPLASH_SCREEN = 1000;
     private SharedPreferences preferences;
@@ -21,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
+      preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                     startLoginActivity();
                 }
             }
+
         }, SPLASH_SCREEN);
     }
 
@@ -49,5 +53,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, Home.class);
         startActivity(intent);
         finish();
+        },SPLASH_SCREEN);
+
+
     }
 }
