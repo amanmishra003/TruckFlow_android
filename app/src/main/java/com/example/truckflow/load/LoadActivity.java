@@ -2,9 +2,6 @@ package com.example.truckflow.load;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,15 +9,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.truckflow.databinding.ActivityLoadBinding;
-import com.example.truckflow.R;
 import com.example.truckflow.entities.Load;
-import com.example.truckflow.entities.Trucker;
+import com.example.truckflow.entities.User;
 import com.example.truckflow.home.Home;
+import com.example.truckflow.utils.FireBaseUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.firebase.database.DatabaseReference;
@@ -211,6 +210,8 @@ public class LoadActivity extends AppCompatActivity {
         });
 
 
+        FireBaseUtils util = new FireBaseUtils();
+        User user = FireBaseUtils.getCurrentUserDetails(this);
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,8 +228,9 @@ public class LoadActivity extends AppCompatActivity {
                 load.setLoadDescription(loadDescription);
 
                 String username = sharedPreferences.getString("email", null);
-                load.setContactInformation(username);
-                Log.i("Username",username);
+                username = user.getEmail();
+                load.setContactInformation(user.getEmail());
+         //       Log.i("Username",username);
                 databaseRef.child("Load").child(String.valueOf(uuid)).setValue(load)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

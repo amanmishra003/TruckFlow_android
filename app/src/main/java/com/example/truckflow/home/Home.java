@@ -1,20 +1,11 @@
 package com.example.truckflow.home;
 
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,13 +28,11 @@ import com.example.truckflow.adapters.TruckerAdapter;
 import com.example.truckflow.authentication.Login;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.entities.Trucker;
-
+import com.example.truckflow.entities.User;
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
+import com.example.truckflow.utils.FireBaseUtils;
 import com.example.truckflow.utils.MyNotificationHelper;
-
-import com.example.truckflow.load.LoadActivityTwo;
-import com.example.truckflow.profile.UserProfile;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
@@ -146,10 +135,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         // Get user role from intent extras
         Bundle extras = getIntent().getExtras();
-        String role = "";
-        if (extras != null) {
+        User user= FireBaseUtils.getCurrentUserDetails(this);
+
+        String role = user.getRole();
+        /*if (extras != null) {
             role = extras.getString("role");
-        }
+        }*/
 
         // Display appropriate data based on user role
         if (role.equals("shipper")) {
