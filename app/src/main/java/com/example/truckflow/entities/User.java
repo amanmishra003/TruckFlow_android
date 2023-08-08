@@ -10,6 +10,7 @@ public class User {
 
     public String role;
 
+    public String token;
     public boolean availability;
     public User(String name, String email, String phone, String password, String role) {
         this.name = name;
@@ -20,13 +21,14 @@ public class User {
         this.availability = false;
     }
 
-    public User(String name, String email, String phone, String password, String role, boolean availability) {
+    public User(String name, String email, String phone, String password, String role, boolean availability,String token) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
         this.role = role;
         this.availability= availability;
+        this.token = token;
     }
 
 

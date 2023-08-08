@@ -1,22 +1,25 @@
 package com.example.truckflow.load;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.truckflow.R;
 import com.example.truckflow.communication.ChatActivity;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -24,33 +27,21 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.firebase.FirebaseApp;
-import com.google.maps.DirectionsApi;
-import com.google.maps.DirectionsApiRequest;
-import com.google.maps.GeoApiContext;
-import com.google.maps.PendingResult;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.TravelMode;
-
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -71,6 +62,14 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     private Button bookLoad;
     private RequestQueue requestQueue;
 
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final String TAG = "NOTIFICATION TAG";
+
+    String NOTIFICATION_TITLE;
+    String NOTIFICATION_MESSAGE;
+    String TOPIC;
+
+    String token;
 
     private double longitudePU,longitudeDel,latitudeDel,latitudePU;
     @Override
@@ -128,7 +127,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         deliveryAddress.setText(deliveryAddressValue);
         expectedPrice.setText(expectedPriceValue);
         requirement.setText(requirementValue);
-        contactInfo.setText(contactInformationValue);
+        contactInfo.setText(shipperId);
 
         // Initialize the MapView with the latest renderer
         try {
@@ -145,6 +144,25 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         bookLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
+                NOTIFICATION_TITLE = "TruckFlow";
+                NOTIFICATION_MESSAGE = "You have received a booking request.";
+
+                getTokenForUser(new FirestoreTokenCallBack() {
+                    @Override
+                    public void onTokenRecieved(String token) {
+                        if (token != null) {
+                            Log.i("RecievedToken", token);
+                            sendNotification(NOTIFICATION_TITLE, NOTIFICATION_MESSAGE, token);
+                        } else {
+                            Log.e("RecievedToken", "Token not available");
+                        }
+                    }
+                }, shipperId);
+
+
+
                 Intent intent = new Intent(LoadDetails.this, ChatActivity.class);
                 intent.putExtra("shipperId", shipperId);
                 intent.putExtra("loadId",loadId);
@@ -153,6 +171,8 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         });
 
     }
+
+
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -176,16 +196,6 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
                 .position(dropLatLng)
                 .title("Drop");
         googleMap.addMarker(dropMarkerOptions);
-
-
-        // Adding polyline
-       /* PolylineOptions polylineOptions = new PolylineOptions()
-                .add(pickupLatLng, dropLatLng)
-                .color(Color.BLUE)
-                .width(5);
-        googleMap.addPolyline(polylineOptions);
-        */
-
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(pickupLatLng)
@@ -250,29 +260,35 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
 
         while (index < len) {
             int b, shift = 0, result = 0;
+            // Extract latitude value from encoded string
             do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
+                b = encoded.charAt(index++) - 63; // Decode latitude value
+                result |= (b & 0x1f) << shift; // Bitwise OR operation to combine bits
+                shift += 5; // Increment shift by 5
+            } while (b >= 0x20); // Check if the value is greater than or equal to 0x20
+
             int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lat += dlat;
+            lat += dlat; // Calculate the latitude
 
             shift = 0;
             result = 0;
+            // Extract longitude value from encoded string
             do {
-                b = encoded.charAt(index++) - 63;
-                result |= (b & 0x1f) << shift;
-                shift += 5;
-            } while (b >= 0x20);
-            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
-            lng += dlng;
+                b = encoded.charAt(index++) - 63; // Decode longitude value
+                result |= (b & 0x1f) << shift; // Bitwise OR operation to combine bits
+                shift += 5; // Increment shift by 5
+            } while (b >= 0x20); // Check if the value is greater than or equal to 0x20
 
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng; // Calculate the longitude
+
+            // Create a LatLng object from decoded latitude and longitude
             LatLng p = new LatLng((double) lat / 1E5, (double) lng / 1E5);
-            poly.add(p);
+            poly.add(p); // Add the LatLng object to the list
         }
-        return poly;
+        return poly; // Return the list of LatLng objects representing the polyline
     }
+
 
 
     @Override
@@ -297,4 +313,70 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();}
+    private void sendNotification(String title, String body, String recipientToken) {
+        String serverKey = "AAAAEoGhiow:APA91bG4upNFfSvy77aiH6_mQLrJGeIhugP0Pyk0XemIc8N59IoIR1KESjoeWXZi1SaThtcguf2JILO9ES8PBZ2zpnY4eiFf-pHlgtcrkNDtkqhJb0iX0ykUoVDp1ilA9hvSx0K_fv2c"; // Replace with your FCM server key
+        String contentType = "application/json";
+        String FCM_API = "https://fcm.googleapis.com/fcm/send";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        try {
+            JSONObject data = new JSONObject();
+            data.put("title", title);
+            data.put("body", body);
+
+            JSONArray registrationIds = new JSONArray();
+            registrationIds.put(recipientToken);
+
+            JSONObject notification = new JSONObject();
+            notification.put("registration_ids", registrationIds);
+            notification.put("notification", data);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, FCM_API, notification,
+                    response -> Log.i("Notification", "Notification sent successfully"),
+                    error -> Log.e("Notification", "Error sending notification: " + error.toString())
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "key=" + serverKey);
+                    headers.put("Content-Type", contentType);
+                    return headers;
+                }
+            };
+            Log.i("Request Send", jsonObjectRequest.toString());
+            requestQueue.add(jsonObjectRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private void getTokenForUser(FirestoreTokenCallBack callback, String shipperId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query query = db.collection("users").whereEqualTo("email", shipperId);
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    // ... (get token and log values)
+                    String fullName = document.getString("name");
+                    String phoneNo = document.getString("phone");
+                    String password = document.getString("password");
+                    String role = document.getString("role");
+                    token = document.getString("token");
+                    callback.onTokenRecieved(token);
+                    return;
+                }
+                callback.onTokenRecieved(null); // Token not found
+            } else {
+                callback.onTokenRecieved(null); // Error occurred
+                Log.d("UserProfile", "Error getting documents: ", task.getException());
+            }
+        });
+    }
+    public interface FirestoreTokenCallBack {
+        void onTokenRecieved(String token);
+    }
+
 }
