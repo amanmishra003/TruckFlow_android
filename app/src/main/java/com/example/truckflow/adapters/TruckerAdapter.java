@@ -117,7 +117,7 @@
                     Intent intent = new Intent(itemView.getContext(), TruckerDetails.class);
     //
                     intent.putExtra("email",clickedTrucker.truckerEmail);
-                    //intent.putExtra("load", clickedLoad);
+
                     itemView.getContext().startActivity(intent);
             }
         }
