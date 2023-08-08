@@ -6,4 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".trucker.TruckerDetails">
 
+    <ImageButton
+
+        android:id="@+id/chat_with_trucker"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/baseline_chat_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

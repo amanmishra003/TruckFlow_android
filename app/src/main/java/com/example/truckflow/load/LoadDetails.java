@@ -146,7 +146,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoadDetails.this, ChatActivity.class);
-                intent.putExtra("shipperId", shipperId);
+                intent.putExtra("receiverId", shipperId);
                 intent.putExtra("loadId",loadId);
                 startActivity(intent);
             }

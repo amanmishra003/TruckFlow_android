@@ -11,34 +11,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.truckflow.R;
-import com.example.truckflow.adpters.LoadAdapter;
-import com.example.truckflow.adpters.TruckerAdapter;
+import com.example.truckflow.adapters.LoadAdapter;
+import com.example.truckflow.adapters.TruckerAdapter;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.entities.Trucker;
-import com.example.truckflow.load.LoadActivity;
 
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,7 +42,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private RecyclerView recyclerView;
     private LoadAdapter loadAdapter;
-
     private TruckerAdapter truckerAdapter;
 
     private List<Load> loadList;
