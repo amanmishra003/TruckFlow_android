@@ -342,6 +342,7 @@ public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCa
                         currentIntent.putExtra("duration",durationV);
 
                         currentIntent.putExtra("dateDel",selectedDate);
+                        currentIntent.putExtra("country",country);
                         //full address
                         String fullAddressDel = streetNumber + " " + streetName
                                 + ", " + city + ", " + state + ", " + country + " " + postalCode;

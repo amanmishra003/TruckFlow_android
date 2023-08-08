@@ -54,6 +54,12 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
         return loadList.size();
     }
 
+    public void updateData(List<Load> newData) {
+        loadList.clear(); // Clear the current data
+        loadList.addAll(newData); // Add new data
+        notifyDataSetChanged(); // Notify the adapter that data has changed
+    }
+
 
     public class LoadViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
         private TextView textViewLoadName,pickUpLocation,

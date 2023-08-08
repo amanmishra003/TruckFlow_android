@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Other string resources may exist above or below -->
+
+    <!-- Define the string array resource for countries -->
+    <string-array name="countries">
+        <item>Mexico</item>
+        <item>Canada</item>
+        <item>USA</item>
+    </string-array>
+</resources>

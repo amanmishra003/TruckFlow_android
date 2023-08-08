@@ -27,9 +27,14 @@ public class Load {
 
     private String durationInHours;
 
+    private String country;
 
 
-    public Load(String loadName, String loadDescription, String loadWeight, String loadLength,String durationInHours, String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress, String expectedPrice, String contactInformation, String requirement, String longitudePU, String latitudePU, String longitudeDel, String latitudeDel,String shipperId) {
+
+    public Load(String loadName, String loadDescription, String loadWeight, String loadLength,String durationInHours,
+                String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress,
+                String expectedPrice, String contactInformation, String requirement, String longitudePU, String latitudePU,
+                String longitudeDel, String latitudeDel,String shipperId, String country) {
         this.loadName = loadName;
         this.loadDescription = loadDescription;
         this.loadWeight = loadWeight;
@@ -48,6 +53,15 @@ public class Load {
         this.latitudeDel = latitudeDel;
         this.durationInHours = durationInHours;
         this.shipperId = shipperId;
+        this.country = country;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getLoadId() {

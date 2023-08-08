@@ -112,11 +112,22 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp">
+
+                    <!-- Add a Spinner for the country selection -->
+                    <Spinner
+                        android:id="@+id/countrySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:entries="@array/countries" />
+
+                    <!-- RecyclerView for showing loads -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/show_loads_rv"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
+
 
             </LinearLayout>
         </ScrollView>

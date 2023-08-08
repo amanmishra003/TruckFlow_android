@@ -47,7 +47,7 @@ public class LoadActivity extends AppCompatActivity {
 
 
     private String streetNumberPU, streetNamePU, cityPU, statePU, countryPU, postalCodePU, longitudePU, latitudePU, datePU, addressPU;
-    private String streetNumberDel, streetNameDel, cityDel, stateDel, countryDel, postalCodeDel, longitudeDel, latitudeDel, dateDel, addressDel;
+    private String streetNumberDel, streetNameDel, cityDel, stateDel, countryDel, postalCodeDel, longitudeDel, latitudeDel, dateDel, addressDel, country;
     private int distance;
     private Double distanceInKM;
     double expectedPrice;
@@ -63,7 +63,7 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //   setContentView(R.layout.activity_load);
+        //setContentView(R.layout.activity_load);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
 
@@ -111,6 +111,8 @@ public class LoadActivity extends AppCompatActivity {
             durationInHours = Double.valueOf(duration / 60 * 60);
             dateDel = bundle.getString("dateDel");
             addressDel = bundle.getString("addressDel");
+            country = bundle.getString("country");
+
         }
         double baseRatePerKm = 2.5;
         double additionalRatePerKmPerTonne = 0.1;
@@ -143,6 +145,10 @@ public class LoadActivity extends AppCompatActivity {
         load.setExpectedPrice(expectedPrice+"");
         //duration setting
         load.setDurationInHours(durationInHours+"");
+        load.setCountry(country);
+
+        Log.d("country", country);
+
 
         binding.pickupAddress.setText("PickUp Address:"+addressPU);
         binding.deliveryAddress.setText("Delivery Address:"+addressDel);

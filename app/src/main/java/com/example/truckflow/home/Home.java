@@ -11,11 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.example.truckflow.R;
 import com.example.truckflow.adpters.LoadAdapter;
@@ -39,15 +45,20 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageView menuIcon;
     ImageView postLoad;
+
+    Spinner countrySpinner;
 
     private RecyclerView recyclerView;
     private LoadAdapter loadAdapter;
@@ -56,6 +67,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private List<Load> loadList;
 
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,12 +79,51 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
 
 
+
+
         //Menu Hooks
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
+        countrySpinner = findViewById(R.id.countrySpinner);
 
+
+
+        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.countries,
+                android.R.layout.simple_spinner_item
+        );
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(countryAdapter);
+
+
+
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCountry = parent.getItemAtPosition(position).toString();
+                Log.d("selectedC", selectedCountry);
+
+                getMyL(new FirestoreLoadCallback() {
+                                    @Override
+                                    public void onLoadsReceived(List<Load> loadData) {
+
+                                        loadAdapter = new LoadAdapter(loadData);
+                                        recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
+                                    }
+                                }, selectedCountry);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the case where nothing is selected (optional)
+            }
+        });
 
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +183,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             Log.d("load for trucker", role);
 
+
+
             getMyLoads(new FirestoreLoadCallback() {
                 @Override
                 public void onLoadsReceived(List<Load> loadData) {
@@ -139,6 +196,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
     }
+
+
+
+
+    // Helper method to convert dp to pixels
+
 
 
 
@@ -182,27 +245,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     startActivity(intent);
                 }
 
-//                else if (id == R.id.nav_1)
-//                {
-//                    Bundle extras = getIntent().getExtras();
-//
-//                    String role = "";
-//                    if (extras != null  && extras.containsKey("role")) {
-//                        role = extras.getString("role");
-//                    }
-//
-//
-//
-//                    Intent intent = new Intent(Home.this, loadView.class);
-//                    if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("EMAIL_KEY")) {
-//                        String email = getIntent().getStringExtra("EMAIL_KEY");
-//                        intent.putExtra("EMAIL_KEY", email);
-//
-//                    }
-//
-//
-//                    startActivity(intent);
-//                }
+
 
                 else if (id == R.id.nav_1) {
                     Bundle extras = getIntent().getExtras();
@@ -338,6 +381,53 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
     }
+
+    private void getMyL(FirestoreLoadCallback callback, String selectedCountry) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference loadsCollectionRef = db.collection("load");
+
+        loadsCollectionRef
+                .whereEqualTo("country", selectedCountry) // Add this line to filter by country
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Load> loadData = new ArrayList<>();
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                Load load = new Load();
+
+                                // testing shipper id from load
+                                if (document.getString("shipperId") != null) {
+                                    load.setShipperId(document.getString("shipperId"));
+                                }
+
+                                // Set the load ID in your Load object
+                                load.setLoadId(document.getId());
+                                load.setLoadName(document.getString("loadName"));
+                                load.setLoadDescription(document.getString("loadDescription"));
+                                load.setLoadWeight(document.getString("loadWeight"));
+                                load.setLoadLength(document.getString("loadLength"));
+                                load.setPickUpDate(document.getString("pickUpDate"));
+                                load.setDeliveryDate(document.getString("deliveryDate"));
+                                load.setTotalDistance(document.getString("totalDistance"));
+                                load.setPickupAddress(document.getString("pickupAddress"));
+                                load.setDeliveryAddress(document.getString("deliveryAddress"));
+                                load.setExpectedPrice(document.getString("expectedPrice"));
+                                load.setContactInformation(document.getString("contactInformation"));
+                                load.setRequirement(document.getString("requirement"));
+                                loadData.add(load);
+                            }
+                        }
+                        callback.onLoadsReceived(loadData);
+                    } else {
+                        // Handle errors here
+                        callback.onLoadsReceived(new ArrayList<>()); // or pass null to indicate an error
+                    }
+                });
+    }
+
+
 
 
 
