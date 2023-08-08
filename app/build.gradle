@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.truckflow"
-        minSdk 26
+        minSdk 31
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -80,4 +80,6 @@ dependencies {
     //Import maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.maps:google-maps-services:0.18.0'
+
 }
