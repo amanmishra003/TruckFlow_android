@@ -13,6 +13,8 @@
     <string name="upload">upload</string>
     <string name="select">select</string>
     <string name="add_profile_picture">Add Profile Picture</string>
+    <!-- res/values/strings.xml -->
+    <string name="default_notification_channel_id">default_channel</string>
 
 
 </resources>

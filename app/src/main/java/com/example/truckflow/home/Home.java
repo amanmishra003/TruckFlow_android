@@ -1,35 +1,43 @@
 package com.example.truckflow.home;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
-
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.truckflow.R;
 import com.example.truckflow.adapters.LoadAdapter;
 import com.example.truckflow.adapters.TruckerAdapter;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.entities.Trucker;
+import com.example.truckflow.load.LoadActivityTwo;
+import com.example.truckflow.profile.UserProfile;
+import com.example.truckflow.utils.MyNotificationHelper;
+
 
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +48,55 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     ImageView menuIcon;
     ImageView postLoad;
 
+
+    private static final int NOTIFICATION_ID = 1;
+
+
     private RecyclerView recyclerView;
     private LoadAdapter loadAdapter;
     private TruckerAdapter truckerAdapter;
 
     private List<Load> loadList;
+    String regToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
+        FirebaseApp.initializeApp(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create a notification channel for displaying notifications.
+            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelName = "Fcm notifications";
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+
+        FirebaseMessaging meessagingIns = FirebaseMessaging.getInstance();
+
+        meessagingIns.getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String token = task.getResult();
+                        regToken = token;
+                        Log.d("FCM Token", "Token: " + token);
+                        // You can store or use the token as needed
+                    } else {
+                        Log.e("FCM Token", "Failed to retrieve token: " + task.getException());
+                    }
+                });
+
+        Log.d("FCM Token", "Token: " + regToken);
+
+
+        //create notification channel
+        MyNotificationHelper.createDefaultNotificationChannel(this);
+        //subscribe
+        FirebaseMessaging.getInstance().subscribeToTopic("PushNotifications");
 
         //Menu Hooks
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -73,10 +118,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         });
         //Navigation Drawer
         navigationDrawer();
-
-        //RecyclerView function calls
-
-        // Initialize the loadList with your load data
 
         recyclerView = findViewById(R.id.show_loads_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -272,6 +313,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         void onTruckerReceived(List<Trucker> loadData);
     }
 
+    private void showNotification() {
+        String channelId = getString(R.string.default_notification_channel_id);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.truck2)
+                .setContentTitle("Notification Title")
+                .setContentText("This is the notification content.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 
 }
