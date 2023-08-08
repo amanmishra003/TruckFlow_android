@@ -68,7 +68,7 @@ public class Login extends AppCompatActivity {
                 CollectionReference usersCollectionRef = db.collection("users");
 
                 String collectionName = "users"; // Replace with your collection name
-                String email = emailInputLayout.getEditText().getText().toString(); // Replace with your document ID
+                String email = emailInputLayout.getEditText().getText().toString().toLowerCase(); // Replace with your document ID
 
                 db.collection(collectionName)
                         .document(email)
@@ -92,7 +92,7 @@ public class Login extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                editor.putString("email", emailInputLayout.getEditText().getText().toString());
+                editor.putString("email", emailInputLayout.getEditText().getText().toString().toLowerCase());
                 editor.apply();
 
                 if (validateEmail(emailInputLayout.getEditText().getText().toString()) && validatePassword(passwordInputLayout.getEditText().getText().toString())) {
@@ -144,7 +144,7 @@ public class Login extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference usersRef = db.collection("users");
 
-        Query query = usersRef.whereEqualTo("email", email);
+        Query query = usersRef.whereEqualTo("email", email.toLowerCase());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -203,7 +203,7 @@ public class Login extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference usersRef = db.collection("users");
 
-        Query query = usersRef.whereEqualTo("email", email);
+        Query query = usersRef.whereEqualTo("email", email.toLowerCase());
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

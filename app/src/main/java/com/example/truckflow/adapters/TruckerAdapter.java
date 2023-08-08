@@ -1,4 +1,4 @@
-    package com.example.truckflow.adpters;
+    package com.example.truckflow.adapters;
 
     import android.content.Intent;
     import android.view.LayoutInflater;
@@ -10,9 +10,7 @@
     import androidx.recyclerview.widget.RecyclerView;
 
     import com.example.truckflow.R;
-    import com.example.truckflow.entities.Load;
     import com.example.truckflow.entities.Trucker;
-    import com.example.truckflow.load.LoadDetails;
     import com.example.truckflow.trucker.TruckerDetails;
 
     import java.text.ParseException;
@@ -117,7 +115,7 @@
                     Intent intent = new Intent(itemView.getContext(), TruckerDetails.class);
     //
                     intent.putExtra("email",clickedTrucker.truckerEmail);
-                    //intent.putExtra("load", clickedLoad);
+
                     itemView.getContext().startActivity(intent);
             }
         }

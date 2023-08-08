@@ -1,6 +1,8 @@
 package com.example.truckflow.communication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.truckflow.R;
+import com.example.truckflow.adapters.ChatAdapter;
 import com.example.truckflow.entities.ChatMessage;
 import com.example.truckflow.entities.ChatRoom;
 import com.example.truckflow.entities.User;
@@ -21,9 +24,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
 
+    private String chatRoomId;
     private TextView username;
     private ImageButton backButton;
     private ImageButton sendMessage;
@@ -32,6 +39,10 @@ public class ChatActivity extends AppCompatActivity {
     private String loadId;
     private String senderId;
     private String receiverId;
+
+    private RecyclerView recyclerView;
+    private ChatAdapter chatAdapter;
+    private List<ChatMessage> chatMessages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +55,26 @@ public class ChatActivity extends AppCompatActivity {
         sendMessage = findViewById(R.id.send_btn);
         messageText = findViewById(R.id.message_et);
 
+        // Fetch sender's id from shared preff
+        senderId = fetchSenderDetails().toLowerCase();
 
-        //fetch sender's id
-        senderId = fetchSenderDetails();
+        // Initialize RecyclerView and its layout manager
+        recyclerView = findViewById(R.id.chats_rv);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // Create an empty list to hold chat messages
+        chatMessages = new ArrayList<>();
+
+        // Create a new ChatAdapter with the sender's ID and set it to the RecyclerView
+
+
         // Get receiver's email from intent
         Intent intent = getIntent();
-        receiverId = intent.getStringExtra("shipperId");  //Ids are emails here
-        loadId   = intent.getStringExtra("loadId");
+        receiverId = intent.getStringExtra("receiverId").toLowerCase(); //Ids are emails here
+        //loadId = intent.getStringExtra("loadId");
 
+        Log.i("recieverID",receiverId);
         // Fetch receiver's details and set the username
         fetchReceiverDetails(receiverId);
 
@@ -59,11 +82,14 @@ public class ChatActivity extends AppCompatActivity {
         sendMessage.setOnClickListener(view -> {
             String message = messageText.getText().toString().trim();
             if (!message.isEmpty()) {
-                sendMessageToChatRoom(loadId, senderId, receiverId, message);
+                sendMessageToChatRoom( senderId, receiverId, message);
                 // Clear the message input field
                 messageText.setText("");
             }
         });
+
+        // Fetch and display chat messages
+        fetchChatMessages();
 
         // Set click listener for the back button
         backButton.setOnClickListener(view -> {
@@ -72,6 +98,48 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchChatMessages() {
+        getChatMessages( senderId, receiverId, new FirestoreMessageCallback() {
+            @Override
+            public void onMessagesReceived(List<ChatMessage> messageData) {
+
+                chatAdapter = new ChatAdapter(messageData, senderId);
+                recyclerView.setAdapter(chatAdapter);
+                // Scroll the RecyclerView to the last position
+                recyclerView.scrollToPosition(messageData.size() - 1);
+
+                Log.d(TAG, "Updated RecyclerView with chat messages");
+            }
+        });
+    }
+
+
+    private void getChatMessages( String senderId, String receiverId, FirestoreMessageCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference chatMessagesRef = db.collection("chatrooms")
+                .document(getChatroomId(this.senderId,this.receiverId))
+                .collection("chatMessages");
+
+        chatMessagesRef.orderBy("timestamp", Query.Direction.ASCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "Error fetching chat messages: " + error.getMessage());
+                        return;
+                    }
+
+                    List<ChatMessage> messageData = new ArrayList<>();
+                    if (value != null) {
+                        for (QueryDocumentSnapshot doc : value) {
+                            ChatMessage chatMessage = doc.toObject(ChatMessage.class);
+                            messageData.add(chatMessage);
+                            Log.d(TAG, "Fetched Message: " + chatMessage.getMessageText());
+                        }
+                    }
+                    callback.onMessagesReceived(messageData);
+                });
+    }
+
+
     private String fetchSenderDetails() {
 
         User currentUser = FireBaseUtils.getCurrentUserDetails(this);
@@ -79,6 +147,8 @@ public class ChatActivity extends AppCompatActivity {
         if (currentUser != null) {
             // Now you can access current user details like email, name, role, shipperId, etc.
             String userEmail = currentUser.getEmail();
+            senderId = userEmail;
+            Log.i("UserEMail",userEmail);
             return userEmail;
             // Use the current user details as needed
         } else {
@@ -98,7 +168,7 @@ public class ChatActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     // Get the receiver's name
                     String receiverName = document.getString("name");
-                    receiverId = document.getId();  // Set the receiver's ID
+                    receiverId = document.getString("email");  // Set the receiver's ID
 
 
                     // Update UI elements on the main thread
@@ -118,13 +188,12 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessageToChatRoom(String loadId, String senderId, String receiverId, String messageText) {
+    private void sendMessageToChatRoom(String senderId, String receiverId, String messageText) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         long timeStamp = System.currentTimeMillis();
 
         // Document reference for the chat room
-        DocumentReference chatRoomRef = db.collection("load").document(loadId)
-                .collection("chatrooms").document(senderId + "_" + receiverId);
+        DocumentReference chatRoomRef = db.collection("chatrooms").document(getChatroomId(senderId,receiverId));
 
         // Collection reference for chat messages within the chat room
         CollectionReference chatMessagesRef = chatRoomRef.collection("chatMessages");
@@ -137,25 +206,24 @@ public class ChatActivity extends AppCompatActivity {
                 chatMessagesRef.add(newMessage)
                         .addOnSuccessListener(documentReference -> {
                             Log.d(TAG, "Message added to chat messages collection");
-                            Toast.makeText(this, "chat added!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(this, "chat added!", Toast.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
                             Log.d(TAG, "Error adding message: " + e.getMessage());
                         });
             } else {
                 // Chat room doesn't exist, create it and add the message
-                createOrSendMessage(loadId, senderId, receiverId, messageText);
+                createOrSendMessage( senderId, receiverId, messageText);
             }
         });
     }
 
-    private void createOrSendMessage(String loadId, String senderId, String receiverId, String initialMessage) {
+    private void createOrSendMessage( String senderId, String receiverId, String initialMessage) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         long timeStamp = System.currentTimeMillis();
 
         // Document reference for the chat room
-        DocumentReference chatRoomRef = db.collection("load").document(loadId)
-                .collection("chatrooms").document(senderId + "_" + receiverId);
+        DocumentReference chatRoomRef = db.collection("chatrooms").document(getChatroomId(senderId,receiverId));
 
         // Collection reference for chat messages within the chat room
         CollectionReference chatMessagesRef = chatRoomRef.collection("chatMessages");
@@ -174,7 +242,7 @@ public class ChatActivity extends AppCompatActivity {
                             chatMessagesRef.add(firstMessage)
                                     .addOnSuccessListener(documentReference -> {
                                         Log.d(TAG, "Initial message added to chat messages collection");
-                                        Toast.makeText(this, "chat added!", Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(this, "chat added!", Toast.LENGTH_LONG).show();
                                     })
                                     .addOnFailureListener(e -> {
                                         Log.d(TAG, "Error adding initial message: " + e.getMessage());
@@ -189,12 +257,34 @@ public class ChatActivity extends AppCompatActivity {
                 chatMessagesRef.add(newMessage)
                         .addOnSuccessListener(documentReference -> {
                             Log.d(TAG, "Message added to chat messages collection");
-                            Toast.makeText(this, "chat added!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(this, "chat added!", Toast.LENGTH_LONG).show();
                         })
                         .addOnFailureListener(e -> {
                             Log.d(TAG, "Error adding message: " + e.getMessage());
                         });
             }
         });
+    }
+
+
+    public String getChatroomId(String userId1, String userId2) {
+
+        if (userId1 != null && userId2 != null) {
+            if (userId1.compareTo(userId2) < 0) {
+                Log.i("if::::",userId1 + "_" + userId2);
+                return userId1 + "_" + userId2;
+            } else {
+                Log.i("else::::",userId2 + "_" + userId1);
+                return userId2 + "_" + userId1;
+            }
+        } else {
+            // Handle the case where either userId1 or userId2 is null
+            Log.e(TAG, "One or both user IDs are null");
+            return ""; // or any appropriate default value
+        }
+
+}
+    public interface FirestoreMessageCallback {
+        void onMessagesReceived(List<ChatMessage> messageData);
     }
 }

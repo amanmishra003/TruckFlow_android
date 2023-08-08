@@ -13,9 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.truckflow.adpters.TruckerAdapter;
+import com.example.truckflow.adapters.TruckerAdapter;
 import com.example.truckflow.firebaseconfigurations.FirebaseStorageModelLoaderFactory;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 

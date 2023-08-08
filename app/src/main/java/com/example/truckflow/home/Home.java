@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,13 +19,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.truckflow.R;
-import com.example.truckflow.adpters.LoadAdapter;
-import com.example.truckflow.adpters.TruckerAdapter;
+import com.example.truckflow.adapters.LoadAdapter;
+import com.example.truckflow.adapters.TruckerAdapter;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.entities.Trucker;
 import com.example.truckflow.load.LoadActivityTwo;
 import com.example.truckflow.profile.UserProfile;
 import com.example.truckflow.utils.MyNotificationHelper;
+
+
+import com.example.truckflow.load.LoadActivityTwo;
+import com.example.truckflow.profile.UserProfile;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
@@ -50,7 +54,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private RecyclerView recyclerView;
     private LoadAdapter loadAdapter;
-
     private TruckerAdapter truckerAdapter;
 
     private List<Load> loadList;

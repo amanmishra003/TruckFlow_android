@@ -108,7 +108,7 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View v) {
                 if (validateInput()) {
                     // If all fields are valid, proceed with the registration
-                    String userEmail = email.getEditText().getText().toString();
+                    String userEmail = email.getEditText().getText().toString().toLowerCase();
                     String userName = f_name.getEditText().getText().toString();
                     String userPhone = phone.getEditText().getText().toString();
                     String userPassword = password.getEditText().getText().toString();
