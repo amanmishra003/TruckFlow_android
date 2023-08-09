@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-      preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        preferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, Home.class);
         startActivity(intent);
         finish();
-        }
+
     }
+}
 

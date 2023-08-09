@@ -29,6 +29,7 @@ import com.example.truckflow.R;
 import com.example.truckflow.adapters.LoadAdapter;
 import com.example.truckflow.adapters.TruckerAdapter;
 import com.example.truckflow.authentication.Login;
+import com.example.truckflow.booking.BookingRequests;
 import com.example.truckflow.entities.Load;
 import com.example.truckflow.entities.Trucker;
 import com.example.truckflow.entities.User;
@@ -255,6 +256,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     startActivity(intent);
                     finish();
                     return true;
+                }
+
+
+                if (id == R.id.booking_requests) {
+
+                    //Starting Booking Request acivit
+                    Intent intent  = new Intent(Home.this, BookingRequests.class);
+                    startActivity(intent);
                 }
 
 
