@@ -6,6 +6,6 @@
     <string-array name="countries">
         <item>Mexico</item>
         <item>Canada</item>
-        <item>USA</item>
+        <item>United States</item>
     </string-array>
 </resources>
