@@ -157,23 +157,30 @@ public class BookingRequests extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        // Fetch booking requests from Firebase Firestore
-        db.collection("bookingRequest").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot document : task.getResult()) {
-                        BookingRequest bookingRequest = document.toObject(BookingRequest.class);
-                        if (bookingRequest != null) {
-                            bookingRequests.add(bookingRequest);
+        // Get the current user's details
+         User currentUser = FireBaseUtils.getCurrentUserDetails(this);
+
+
+        // Fetch booking requests associated with the current shipper's email
+        db.collection("bookingRequest")
+                .whereEqualTo("shipperId", currentUser.getEmail()) // Modify this line
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                BookingRequest bookingRequest = document.toObject(BookingRequest.class);
+                                if (bookingRequest != null) {
+                                    bookingRequests.add(bookingRequest);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
+                });
     }
 
     private void showCustomDialog(String message) {
