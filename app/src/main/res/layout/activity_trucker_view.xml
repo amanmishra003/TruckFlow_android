@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".trucker.TruckerView">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#5B03BCF4"
+        android:orientation="vertical"
+        tools:context=".truckerView">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="309dp"
+            app:srcCompat="@drawable/img_1" />
+
+        <TextView
+            android:id="@+id/loadNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="company Name --> "
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/loadDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:text="company phone -->"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/loadWeightTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="dot -->"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/loadLengthTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="max Length -->"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/pickUpDateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="max weight -->"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/deliveryDateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="mc --> "
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/totalDistanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Truck name"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/pickupAddressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Truck Type -->"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

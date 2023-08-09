@@ -2,9 +2,6 @@ package com.example.truckflow.load;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.truckflow.R;
 import com.example.truckflow.databinding.ActivityLoadTwoBinding;
@@ -42,13 +42,17 @@ public class LoadActivityTwo extends AppCompatActivity implements OnMapReadyCall
     private TextView unitTV, streetNameTV, cityTV, provinceTV, countryTV, zipcodeTV;
     private  ActivityLoadTwoBinding binding;
 
-    String streetNumber,streetName,city,state,country,postalCode,latitude,longitude,selectedDate;
+
+    String shipperId,streetNumber,streetName,city,state,country,postalCode,latitude,longitude,selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoadTwoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        shipperId = intent.getStringExtra("shipperId");
 
         Places.initialize(getApplicationContext(), "AIzaSyAtw3f2NBYcbNVz01pmZPfZnQlOwnoErNk");
         PlacesClient placesClient = Places.createClient(this);
@@ -154,6 +158,9 @@ public class LoadActivityTwo extends AppCompatActivity implements OnMapReadyCall
                 currentIntent.putExtra("longitudePU",longitude);
                 currentIntent.putExtra("latitudePU",latitude);
                 currentIntent.putExtra("datePU",selectedDate);
+                currentIntent.putExtra("contactInformation",shipperId);
+
+                currentIntent.putExtra("shipperId",shipperId);
                 //full address
                 String fullAddress = streetNumber + " " + streetName + ", " + city + ", " + state + ", " + country + " " + postalCode;
                 currentIntent.putExtra("addressPU",fullAddress);

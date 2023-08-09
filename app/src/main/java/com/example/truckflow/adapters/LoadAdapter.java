@@ -128,6 +128,7 @@ public class LoadAdapter extends RecyclerView.Adapter<LoadAdapter.LoadViewHolder
                 intent.putExtra("shipperId",clickedLoad.getShipperId());
                 intent.putExtra("latitudeDel",clickedLoad.getLatitudeDel());
                 intent.putExtra("longitudeDel",clickedLoad.getLongitudeDel());
+                intent.putExtra("shipperId",clickedLoad.getShipperId());
 
                 intent.putExtra("latitudePU",clickedLoad.getLatitudePU());
                 intent.putExtra("longitudePU",clickedLoad.getLongitudePU());

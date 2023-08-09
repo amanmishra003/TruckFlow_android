@@ -3,6 +3,7 @@
 
     <group android:checkableBehavior="single">
 
+       
         <item
              android:id="@+id/nav_home"
              android:title="Home"
@@ -19,7 +20,6 @@
             android:title="Booking Confirmed"
             android:icon="@drawable/bookingconfirmed"
             />
-
 
     </group>
     <group android:checkableBehavior="single">

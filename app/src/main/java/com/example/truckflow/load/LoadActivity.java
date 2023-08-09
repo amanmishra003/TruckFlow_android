@@ -44,7 +44,7 @@ public class LoadActivity extends AppCompatActivity {
 
 
     private String streetNumberPU, streetNamePU, cityPU, statePU, countryPU, postalCodePU, longitudePU, latitudePU, datePU, addressPU;
-    private String streetNumberDel, streetNameDel, cityDel, stateDel, countryDel, postalCodeDel, longitudeDel, latitudeDel, dateDel, addressDel;
+    private String shipperId,streetNumberDel, streetNameDel, cityDel, stateDel, countryDel, postalCodeDel, longitudeDel, latitudeDel, dateDel, addressDel;
     private int distance;
     private Double distanceInKM;
     double expectedPrice;
@@ -94,6 +94,7 @@ public class LoadActivity extends AppCompatActivity {
             postalCodeDel = bundle.getString("postalCodeDel");
             longitudeDel = bundle.getString("longitudeDel");
             latitudeDel = bundle.getString("latitudeDel");
+            shipperId = bundle.getString("shipperId");
             int distance = bundle.getInt("distance");
             distanceInKM = Double.valueOf(Double.valueOf(distance) / 1000);
             duration = bundle.getInt("duration");
@@ -127,7 +128,7 @@ public class LoadActivity extends AppCompatActivity {
 
         load.setLongitudeDel(longitudeDel);
         load.setLatitudeDel(latitudeDel);
-
+        load.setShipperId(shipperId);
         load.setTotalDistance(distance+"");
         load.setExpectedPrice(expectedPrice+"");
         //duration setting

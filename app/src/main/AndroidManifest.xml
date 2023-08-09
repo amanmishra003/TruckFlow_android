@@ -22,10 +22,15 @@
         android:theme="@style/Theme.Truckflow"
         tools:targetApi="31">
         <activity
+
             android:name=".booking.ViewBooking"
             android:exported="false" />
         <activity
             android:name=".booking.BookingRequests"
+            android:name=".trucker.TruckerView"
+            android:exported="false" />
+        <activity
+            android:name=".load.LoadView"
             android:exported="false" />
 
         <service

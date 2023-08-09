@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,6 +57,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     ImageView postLoad;
 
 
+    Spinner countrySpinner;
     private static final int NOTIFICATION_ID = 1;
 
 
@@ -116,11 +120,51 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
 
+        countrySpinner = findViewById(R.id.countrySpinner);
+
+
+
+        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.countries,
+                android.R.layout.simple_spinner_item
+        );
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(countryAdapter);
+
+
+
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCountry = parent.getItemAtPosition(position).toString();
+                Log.d("selectedC", selectedCountry);
+
+                getMyL(new FirestoreLoadCallback() {
+                    @Override
+                    public void onLoadsReceived(List<Load> loadData) {
+
+                        loadAdapter = new LoadAdapter(loadData);
+                        recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
+                    }
+                }, selectedCountry);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle the case where nothing is selected (optional)
+            }
+        });
+        User user=FireBaseUtils.getCurrentUserDetails(this);
         // Handle post load/truck button click
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, LoadActivityTwo.class);
+                i.putExtra("shipperId",user.getEmail());
                 startActivity(i);
             }
         });
@@ -136,7 +180,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         // Get user role from intent extras
         Bundle extras = getIntent().getExtras();
-        User user= FireBaseUtils.getCurrentUserDetails(this);
 
         String role = user.getRole();
         /*if (extras != null) {
@@ -294,6 +337,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     public interface FirestoreTruckerCallBack {
         void onTruckerReceived(List<Trucker> loadData);
+
     }
 
 
@@ -308,6 +352,52 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
+
+    private void getMyL(FirestoreLoadCallback callback, String selectedCountry) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference loadsCollectionRef = db.collection("load");
+
+        loadsCollectionRef
+                .whereEqualTo("country", selectedCountry) // Add this line to filter by country
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<Load> loadData = new ArrayList<>();
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null) {
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                Load load = new Load();
+
+                                // testing shipper id from load
+                                if (document.getString("shipperId") != null) {
+                                    load.setShipperId(document.getString("shipperId"));
+                                }
+
+                                // Set the load ID in your Load object
+                                load.setLoadId(document.getId());
+                                load.setLoadName(document.getString("loadName"));
+                                load.setLoadDescription(document.getString("loadDescription"));
+                                load.setLoadWeight(document.getString("loadWeight"));
+                                load.setLoadLength(document.getString("loadLength"));
+                                load.setPickUpDate(document.getString("pickUpDate"));
+                                load.setDeliveryDate(document.getString("deliveryDate"));
+                                load.setTotalDistance(document.getString("totalDistance"));
+                                load.setPickupAddress(document.getString("pickupAddress"));
+                                load.setDeliveryAddress(document.getString("deliveryAddress"));
+                                load.setExpectedPrice(document.getString("expectedPrice"));
+                                load.setContactInformation(document.getString("contactInformation"));
+                                load.setRequirement(document.getString("requirement"));
+                                loadData.add(load);
+                            }
+                        }
+                        callback.onLoadsReceived(loadData);
+                    } else {
+                        // Handle errors here
+                        callback.onLoadsReceived(new ArrayList<>()); // or pass null to indicate an error
+                    }
+                });
+    }
+
 
 }
 
