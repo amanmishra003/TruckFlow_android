@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -48,9 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback {
@@ -200,7 +197,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
                     public void onTokenRecieved(String token) {
                         if (token != null) {
                             Log.i("RecievedToken", token);
-                            sendNotification(NOTIFICATION_TITLE, NOTIFICATION_MESSAGE, token);
+                            FireBaseUtils.sendNotification(NOTIFICATION_TITLE, NOTIFICATION_MESSAGE, token,LoadDetails.this);
                         } else {
                             Log.e("RecievedToken", "Token not available");
                         }
@@ -414,43 +411,6 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();}
-    private void sendNotification(String title, String body, String recipientToken) {
-        String serverKey = "AAAAEoGhiow:APA91bG4upNFfSvy77aiH6_mQLrJGeIhugP0Pyk0XemIc8N59IoIR1KESjoeWXZi1SaThtcguf2JILO9ES8PBZ2zpnY4eiFf-pHlgtcrkNDtkqhJb0iX0ykUoVDp1ilA9hvSx0K_fv2c"; // Replace with your FCM server key
-        String contentType = "application/json";
-        String FCM_API = "https://fcm.googleapis.com/fcm/send";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        try {
-            JSONObject data = new JSONObject();
-            data.put("title", title);
-            data.put("body", body);
-
-            JSONArray registrationIds = new JSONArray();
-            registrationIds.put(recipientToken);
-
-            JSONObject notification = new JSONObject();
-            notification.put("registration_ids", registrationIds);
-            notification.put("notification", data);
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, FCM_API, notification,
-                    response -> Log.i("Notification", "Notification sent successfully"),
-                    error -> Log.e("Notification", "Error sending notification: " + error.toString())
-            ) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "key=" + serverKey);
-                    headers.put("Content-Type", contentType);
-                    return headers;
-                }
-            };
-            Log.i("Request Send", jsonObjectRequest.toString());
-            requestQueue.add(jsonObjectRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 

@@ -9,18 +9,18 @@
              android:title="Home"
             android:icon="@drawable/ic_baseline_home_24"
             />
-        <item
-            android:id="@+id/booking_requests"
-            android:title="Booking Requests"
-            android:icon="@drawable/bookingrequest"
-            />
 
+        <item
+            android:id="@+id/booking_Request"
+            android:title="Booking Requests"
+            android:icon="@drawable/img"
+
+            />
         <item
             android:id="@+id/booking_view"
             android:title="Booking Confirmed"
             android:icon="@drawable/bookingconfirmed"
             />
-
     </group>
     <group android:checkableBehavior="single">
 

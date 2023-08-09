@@ -266,7 +266,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 }
 
 
-                if (id == R.id.booking_requests) {
+                if (id == R.id.booking_Request) {
 
                     //Starting Booking Request acivit
                     Intent intent  = new Intent(Home.this, BookingRequests.class);
