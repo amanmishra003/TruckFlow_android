@@ -13,6 +13,31 @@ public class BookingRequest {
     private String deliveryDate;
     private String totalDistance;
     private String pickupAddress;
+
+    public BookingRequest(String loadId, String shipperId, String loadName, String loadDescription, String loadWeight, String loadLength, String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress, String expectedPrice, String contactInformation, String durationInHours, String company_name, String truckerEmail, String company_phone, String truck_name, String truck_type, String max_length, String max_weight) {
+        this.loadId = loadId;
+        this.shipperId = shipperId;
+        this.loadName = loadName;
+        this.loadDescription = loadDescription;
+        this.loadWeight = loadWeight;
+        this.loadLength = loadLength;
+        this.pickUpDate = pickUpDate;
+        this.deliveryDate = deliveryDate;
+        this.totalDistance = totalDistance;
+        this.pickupAddress = pickupAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.expectedPrice = expectedPrice;
+        this.contactInformation = contactInformation;
+        this.durationInHours = durationInHours;
+        this.company_name = company_name;
+        this.truckerEmail = truckerEmail;
+        this.company_phone = company_phone;
+        this.truck_name = truck_name;
+        this.truck_type = truck_type;
+        this.max_length = max_length;
+        this.max_weight = max_weight;
+    }
+
     private String deliveryAddress;
     private String expectedPrice;
     private String contactInformation;
@@ -26,6 +51,11 @@ public class BookingRequest {
     private String truck_name;
     private String truck_type;
     private String max_length;
+
+    public BookingRequest(){
+
+    }
+
 
     public String getLoadId() {
         return loadId;
