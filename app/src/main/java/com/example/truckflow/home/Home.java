@@ -119,45 +119,52 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
 
+
+        User user = FireBaseUtils.getCurrentUserDetails(this);
+        String role = user.getRole();
+
         countrySpinner = findViewById(R.id.countrySpinner);
 
+        if ("trucker".equals(role)) {
+            countrySpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(
+                    this,
+                    R.array.countries,
+                    android.R.layout.simple_spinner_item
+            );
+            countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            countrySpinner.setAdapter(countryAdapter);
+
+            countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedCountry = parent.getItemAtPosition(position).toString();
+                    Log.d("selectedCountry", selectedCountry);
+
+                    getMyL(new FirestoreLoadCallback() {
+                        @Override
+                        public void onLoadsReceived(List<Load> loadData) {
+
+                            loadAdapter = new LoadAdapter(loadData);
+                            recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
+                        }
+                    }, selectedCountry);
 
 
-        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.countries,
-                android.R.layout.simple_spinner_item
-        );
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        countrySpinner.setAdapter(countryAdapter);
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Handle the case where nothing is selected (optional)
+                }
 
-
-        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCountry = parent.getItemAtPosition(position).toString();
-                Log.d("selectedCountry", selectedCountry);
-
-                getMyL(new FirestoreLoadCallback() {
-                    @Override
-                    public void onLoadsReceived(List<Load> loadData) {
-
-                        loadAdapter = new LoadAdapter(loadData);
-                        recyclerView.setAdapter(loadAdapter); // Set loadAdapter for non-truckers
-                    }
-                }, selectedCountry);
-
-
+            });
+        }
+        else {
+                countrySpinner.setVisibility(View.GONE);
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle the case where nothing is selected (optional)
-            }
-        });
-        User user=FireBaseUtils.getCurrentUserDetails(this);
+       // User user=FireBaseUtils.getCurrentUserDetails(this);
         // Handle post load/truck button click
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +187,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         // Get user role from intent extras
         Bundle extras = getIntent().getExtras();
 
-        String role = user.getRole();
+        role = user.getRole();
         /*if (extras != null) {
             role = extras.getString("role");
         }*/
