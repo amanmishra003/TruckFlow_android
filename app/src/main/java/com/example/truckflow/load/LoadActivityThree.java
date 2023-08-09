@@ -2,12 +2,8 @@ package com.example.truckflow.load;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.truckflow.R;
@@ -42,17 +44,9 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.gson.Gson;
 
-
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -276,7 +270,7 @@ public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCa
                     String postalCodePU = extras.getString("postalCodePU");
                     String longitudePU = extras.getString("longitudePU");
                     String latitudePU = extras.getString("latitudePU");
-
+                    String shipperId = extras.getString("shipperId");
                     String datePU = extras.getString("datePU");
 
                     String origin = extras.getString("addressPU");
@@ -294,9 +288,11 @@ public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCa
                     currentIntent.putExtra("datePU",datePU);
                     currentIntent.putExtra("longitudeDel",longitude);
                     currentIntent.putExtra("latitudeDel", latitude);
+                    currentIntent.putExtra("shipperId", shipperId);
                     //full address
                     String fullAddressOri = streetNumberPU + " " + streetNamePU + ", " + city + ", " + state + ", " + country + " " + postalCode;
                     currentIntent.putExtra("addressPU",fullAddressOri);
+
 
                     currentIntent.putExtra("streetNumberPU",streetNumber);
                     currentIntent.putExtra("streetNamePU",streetName);

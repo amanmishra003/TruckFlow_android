@@ -20,6 +20,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.truckflow.R;
 import com.example.truckflow.communication.ChatActivity;
+import com.example.truckflow.entities.BookingRequest;
+import com.example.truckflow.entities.Trucker;
+import com.example.truckflow.entities.User;
+import com.example.truckflow.utils.FireBaseUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -30,6 +34,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -42,6 +51,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -59,7 +69,9 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
     private  TextView requirement;
     private TextView contactInfo;
 
-    private Button bookLoad;
+    private Button bookLoad,startChat;
+
+    private Trucker truckerDetail;
     private RequestQueue requestQueue;
 
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
@@ -71,6 +83,8 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
 
     String token;
 
+    DatabaseReference databaseRef;
+    FirebaseFirestore db;
     private double longitudePU,longitudeDel,latitudeDel,latitudePU;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +104,17 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         requirement = findViewById(R.id.ad_req_value);
         contactInfo =findViewById(R.id.contact_info_value);
         bookLoad  =findViewById(R.id.button_bookLoad);
+        startChat = findViewById(R.id.send_btn);
+
+        startChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoadDetails.this,ChatActivity.class);
+
+                startActivity(i);
+
+            }
+        });
 
         requestQueue = Volley.newRequestQueue(this);
         // Retrieve data from the intent
@@ -140,7 +165,28 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        //Taking to chat activity
+
+        startChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoadDetails.this,ChatActivity.class);
+                i.putExtra("recieverId",shipperId);
+                startActivity(i);
+
+            }
+        });
+        User user = FireBaseUtils.getCurrentUserDetails(this);
+
+        FireBaseUtils.getCurrentTruckerDetails(user.email, new FireBaseUtils.FirestoreTruckerCallback() {
+            @Override
+            public void onTruckerReceived(Trucker trucker) {
+                if (trucker != null) {
+                    truckerDetail = trucker;
+                } else {
+                    // Handle the case where trucker details were not found
+                }
+            }
+        });//Taking to chat activity
         bookLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +208,62 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
                 }, shipperId);
 
 
+                BookingRequest bookingRequest = new BookingRequest();
 
+                bookingRequest.setLoadId(loadId);
+                bookingRequest.setShipperId(shipperId);
+                bookingRequest.setLoadName(loadNameValue);
+                bookingRequest.setLoadDescription(loadDescriptionValue);
+                bookingRequest.setLoadWeight(loadWeightValue);
+                bookingRequest.setLoadLength(loadLengthValue);
+                bookingRequest.setPickUpDate(pickUpDateValue);
+                bookingRequest.setDeliveryDate(deliveryDateValue);
+                bookingRequest.setTotalDistance(totalDistanceValue);
+                bookingRequest.setPickupAddress(pickupAddressValue);
+                bookingRequest.setDeliveryAddress(deliveryAddressValue);
+                bookingRequest.setExpectedPrice(expectedPriceValue);
+                bookingRequest.setContactInformation(shipperId);
+                bookingRequest.setDurationInHours("");
+
+                bookingRequest.setCompany_name(truckerDetail.company_name);
+                bookingRequest.setTruckerEmail(truckerDetail.truckerEmail);
+                bookingRequest.setCompany_phone(truckerDetail.getCompany_phone());
+                bookingRequest.setTruck_name(truckerDetail.truck_name);
+                bookingRequest.setTruck_type(truckerDetail.getTruck_type());
+                bookingRequest.setMax_length(truckerDetail.max_length);
+
+                databaseRef = FirebaseDatabase.getInstance().getReference();
+                db = FirebaseFirestore.getInstance();
+
+                UUID uuid = UUID.randomUUID();
+                databaseRef.child("bookingRequest").child(String.valueOf(uuid)).setValue(bookingRequest)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "Load data saved to Firebase Realtime Database");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "Error saving Load data to Firebase Realtime Database", e);
+                            }
+                        });
+
+                db.collection("bookingRequest")
+                        .add(bookingRequest)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "Trucker data saved to Firestore with ID: " + documentReference.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "Error saving trucker data to Firestore", e);
+                            }
+                        });
                 Intent intent = new Intent(LoadDetails.this, ChatActivity.class);
                 intent.putExtra("receiverId", shipperId);
                 intent.putExtra("loadId",loadId);
