@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    namespace 'com.example.truckflow'
+    namespace 'com.douglas.truckflow'
     compileSdk 33
     buildToolsVersion "30.0.3"
 
@@ -16,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.truckflow"
+        applicationId "com.douglas.truckflow"
         minSdk 31
         targetSdk 32
         versionCode 1

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:79484258956:android:80f57183310278ecde49a9",
         "android_client_info": {
-          "package_name": "com.example.truckflow"
+          "package_name": "com.douglas.truckflow"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "79484258956-0nhehht9sr2hhra3esb1knhk6rviu7gl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.truckflow",
+            "package_name": "com.douglas.truckflow",
             "certificate_hash": "067ca6861c4d84edc9dd58ccb2bc9c9ec3f2aaef"
           }
         },

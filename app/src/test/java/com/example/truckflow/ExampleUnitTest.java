@@ -1,4 +1,4 @@
-package com.example.truckflow;
+package com.douglas.truckflow;
 
 import org.junit.Test;
 
