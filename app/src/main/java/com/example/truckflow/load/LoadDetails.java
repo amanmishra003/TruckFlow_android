@@ -133,7 +133,7 @@ public class LoadDetails extends AppCompatActivity implements OnMapReadyCallback
         String contactInformationValue = intent.getStringExtra("contactInformation");
         String requirementValue = intent.getStringExtra("requirement");
         String shipperId = intent.getStringExtra("shipperId");
-        Log.i("Latitude::",intent.getStringExtra("latitudePU"));
+        Log.i("Latitude::",intent.getStringExtra("latitudePU")+"");
         latitudePU = Double.parseDouble(intent.getStringExtra("latitudePU"));
         longitudePU = Double.parseDouble(intent.getStringExtra("longitudePU"));
         latitudeDel = Double.parseDouble(intent.getStringExtra("latitudeDel"));

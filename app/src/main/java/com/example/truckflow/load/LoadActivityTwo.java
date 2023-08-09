@@ -159,6 +159,7 @@ public class LoadActivityTwo extends AppCompatActivity implements OnMapReadyCall
                 currentIntent.putExtra("latitudePU",latitude);
                 currentIntent.putExtra("datePU",selectedDate);
                 currentIntent.putExtra("contactInformation",shipperId);
+                currentIntent.putExtra("provincePu",state);
 
                 currentIntent.putExtra("shipperId",shipperId);
                 //full address

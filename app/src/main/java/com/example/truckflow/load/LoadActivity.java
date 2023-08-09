@@ -43,7 +43,8 @@ public class LoadActivity extends AppCompatActivity {
     FirebaseFirestore db;
 
 
-    private String streetNumberPU, streetNamePU, cityPU, statePU, countryPU, postalCodePU, longitudePU, latitudePU, datePU, addressPU;
+    private String streetNumberPU, streetNamePU, cityPU, statePU, countryPU, postalCodePU,
+            longitudePU, latitudePU, datePU, addressPU,provincePu,provinceDel;
     private String shipperId,streetNumberDel, streetNameDel, cityDel, stateDel, countryDel, postalCodeDel, longitudeDel, latitudeDel, dateDel, addressDel;
     private int distance;
     private Double distanceInKM;
@@ -95,6 +96,8 @@ public class LoadActivity extends AppCompatActivity {
             longitudeDel = bundle.getString("longitudeDel");
             latitudeDel = bundle.getString("latitudeDel");
             shipperId = bundle.getString("shipperId");
+            provincePu = bundle.getString("provincePu");
+            provinceDel = bundle.getString("provinceDel");
             int distance = bundle.getInt("distance");
             distanceInKM = Double.valueOf(Double.valueOf(distance) / 1000);
             duration = bundle.getInt("duration");
@@ -131,8 +134,11 @@ public class LoadActivity extends AppCompatActivity {
         load.setShipperId(shipperId);
         load.setTotalDistance(distance+"");
         load.setExpectedPrice(expectedPrice+"");
+        load.setProvinceDel(provinceDel);
+        load.setProvincePU(provincePu);
         //duration setting
         load.setDurationInHours(durationInHours+"");
+
 
         binding.pickupAddress.setText("PickUp Address:"+addressPU);
         binding.deliveryAddress.setText("Delivery Address:"+addressDel);
