@@ -7,10 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +21,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Truckflow"
         tools:targetApi="31">
+        <activity
+            android:name=".booking.ViewBooking"
+            android:exported="false" />
+        <activity
+            android:name=".booking.BookingRequests"
+            android:exported="false" />
 
         <service
             android:name=".firebaseconfigurations.MyFirebaseMessagingService"
@@ -31,6 +36,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity
             android:name=".communication.ChatActivity"
             android:exported="false" />
@@ -103,11 +109,14 @@
                 android:value="" />
         </activity>
 
-        <service android:name=".firebaseconfigurations.MyFirebaseInstanceIdService" android:exported="true">
+        <service
+            android:name=".firebaseconfigurations.MyFirebaseInstanceIdService"
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
