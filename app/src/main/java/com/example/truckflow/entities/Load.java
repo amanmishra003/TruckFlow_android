@@ -1,7 +1,5 @@
 package com.example.truckflow.entities;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +18,7 @@ public class Load {
     private String deliveryAddress;
     private String expectedPrice;
     private String longitudePU;
+
     private String latitudePU;
     private String longitudeDel;
     private String latitudeDel;
@@ -27,9 +26,16 @@ public class Load {
 
     private String durationInHours;
 
+    private String provincePU;
+
+    private String provinceDel;
 
 
-    public Load(String loadName, String loadDescription, String loadWeight, String loadLength,String durationInHours, String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress, String expectedPrice, String contactInformation, String requirement, String longitudePU, String latitudePU, String longitudeDel, String latitudeDel,String shipperId) {
+
+    public Load(String loadName, String loadDescription, String loadWeight, String loadLength,String durationInHours,
+                String pickUpDate, String deliveryDate, String totalDistance, String pickupAddress, String deliveryAddress,
+                String expectedPrice, String contactInformation, String requirement, String longitudePU, String latitudePU,
+                String longitudeDel, String latitudeDel,String shipperId,String provincePu,String provinceDel) {
         this.loadName = loadName;
         this.loadDescription = loadDescription;
         this.loadWeight = loadWeight;
@@ -48,6 +54,24 @@ public class Load {
         this.latitudeDel = latitudeDel;
         this.durationInHours = durationInHours;
         this.shipperId = shipperId;
+        this.provincePU = provincePu;
+        this.provinceDel = provinceDel;
+    }
+
+    public String getProvincePU() {
+        return provincePU;
+    }
+
+    public void setProvincePU(String provincePU) {
+        this.provincePU = provincePU;
+    }
+
+    public String getProvinceDel() {
+        return provinceDel;
+    }
+
+    public void setProvinceDel(String provinceDel) {
+        this.provinceDel = provinceDel;
     }
 
     public String getLoadId() {

@@ -138,7 +138,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCountry = parent.getItemAtPosition(position).toString();
-                Log.d("selectedC", selectedCountry);
+                Log.d("selectedCountry", selectedCountry);
 
                 getMyL(new FirestoreLoadCallback() {
                     @Override
@@ -349,7 +349,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         CollectionReference loadsCollectionRef = db.collection("load");
 
         loadsCollectionRef
-                .whereEqualTo("country", selectedCountry) // Add this line to filter by country
+                .whereEqualTo("provincePU", selectedCountry) // Add this line to filter by country
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -378,6 +378,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                 load.setExpectedPrice(document.getString("expectedPrice"));
                                 load.setContactInformation(document.getString("contactInformation"));
                                 load.setRequirement(document.getString("requirement"));
+                                load.setLongitudePU(document.getString("longitudePU"));
+                                load.setLatitudePU(document.getString("latitudePU"));
+                                load.setLatitudeDel(document.getString("latitudeDel"));
+                                load.setLongitudeDel(document.getString("longitudeDel"));
                                 loadData.add(load);
                             }
                         }

@@ -272,7 +272,7 @@ public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCa
                     String latitudePU = extras.getString("latitudePU");
                     String shipperId = extras.getString("shipperId");
                     String datePU = extras.getString("datePU");
-
+                    String provincePu = extras.getString("provincePu");
                     String origin = extras.getString("addressPU");
 
                     String destination = fullAddress;
@@ -289,6 +289,8 @@ public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCa
                     currentIntent.putExtra("longitudeDel",longitude);
                     currentIntent.putExtra("latitudeDel", latitude);
                     currentIntent.putExtra("shipperId", shipperId);
+                    currentIntent.putExtra("provincePu",provincePu);
+
                     //full address
                     String fullAddressOri = streetNumberPU + " " + streetNamePU + ", " + city + ", " + state + ", " + country + " " + postalCode;
                     currentIntent.putExtra("addressPU",fullAddressOri);
@@ -297,9 +299,9 @@ public class LoadActivityThree extends AppCompatActivity implements OnMapReadyCa
                     currentIntent.putExtra("streetNumberPU",streetNumber);
                     currentIntent.putExtra("streetNamePU",streetName);
                     currentIntent.putExtra("cityPU",city);
-                    currentIntent.putExtra("statePU",state);
-                    currentIntent.putExtra("countryPU",country);
-                    currentIntent.putExtra("postalCodePU",postalCode);
+                    currentIntent.putExtra("provinceDel",state);
+                    currentIntent.putExtra("countryDel",country);
+                    currentIntent.putExtra("postalCodeDel",postalCode);
                     currentIntent.putExtra("longitudePU",longitudePU);
                     currentIntent.putExtra("latitudePU",latitudePU);
                     currentIntent.putExtra("distance",distanceV);
