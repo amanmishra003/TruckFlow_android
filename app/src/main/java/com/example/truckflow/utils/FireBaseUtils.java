@@ -3,7 +3,12 @@ package com.example.truckflow.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.truckflow.entities.Trucker;
 import com.example.truckflow.entities.User;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 public class FireBaseUtils {
@@ -12,27 +17,30 @@ public class FireBaseUtils {
         SharedPreferences sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String userJson = sharedPreferences.getString("user", "");
 
-        // Convert the JSON string back to a User object
         return new Gson().fromJson(userJson, User.class);
     }
 
-    /* how to use the above method
-    User currentUser = FireBaseUtils.getCurrentUserDetails(this);
+    public static void getCurrentTruckerDetails(String email, FirestoreTruckerCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference truckerCollectionRef = db.collection("trucker");
 
-    if(currentUser !=null)
-    {
-        // Now you can access current user details like email, name, role, shipperId, etc.
-        String userEmail = currentUser.getEmail();
-        String userName = currentUser.getName();
-        String userRole = currentUser.getRole();
-        String userShipperId = currentUser.getShipperId();
+        truckerCollectionRef.whereEqualTo("truckerEmail", email).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                QuerySnapshot querySnapshot = task.getResult();
+                if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                    QueryDocumentSnapshot document = (QueryDocumentSnapshot) querySnapshot.getDocuments().get(0);
+                    Trucker truckerData = document.toObject(Trucker.class);
+                    callback.onTruckerReceived(truckerData);
+                } else {
+                    callback.onTruckerReceived(null);
+                }
+            } else {
+                callback.onTruckerReceived(null);
+            }
+        });
+    }
 
-        // Use the current user details as needed
-    } else
-
-    {
-        // Current user details not available or invalid
-        // Handle the case gracefully
-    }*/
-
+    public interface FirestoreTruckerCallback {
+        void onTruckerReceived(Trucker trucker);
+    }
 }

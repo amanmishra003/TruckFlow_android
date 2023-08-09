@@ -115,11 +115,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menuIcon = findViewById(R.id.menu_icon);
         postLoad = findViewById(R.id.postImg);
 
+        User user=FireBaseUtils.getCurrentUserDetails(this);
         // Handle post load/truck button click
         postLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, LoadActivityTwo.class);
+                i.putExtra("shipperId",user.getEmail());
                 startActivity(i);
             }
         });
@@ -135,7 +137,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         // Get user role from intent extras
         Bundle extras = getIntent().getExtras();
-        User user= FireBaseUtils.getCurrentUserDetails(this);
 
         String role = user.getRole();
         /*if (extras != null) {
@@ -285,6 +286,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     public interface FirestoreTruckerCallBack {
         void onTruckerReceived(List<Trucker> loadData);
+
     }
 
 

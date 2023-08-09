@@ -101,156 +101,145 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height= "wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="20dp">
 
                 <TextView
                     android:id="@+id/load_dts_distance_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Distance"
                     android:layout_marginLeft="10dp"
+                    android:text="Distance"
+                    android:textSize="18sp"
                     app:layout_constraintBaseline_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    />
+                    app:layout_constraintLeft_toLeftOf="parent" />
 
                 <TextView
                     android:id="@+id/load_dts_weight_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Weight"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/load_dts_distance_head"
                     android:layout_marginLeft="50dp"
-                    />
+                    android:text="Weight"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_distance_head"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/load_dts_price_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Exp Price"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/load_dts_weight_head"
                     android:layout_marginLeft="70dp"
-                    />
+                    android:text="Exp Price"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_weight_head"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <TextView
                     android:id="@+id/load_dts_distance_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="2,268 Km"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_distance_head"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:text="2,268 Km"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_distance_head" />
 
                 <TextView
                     android:id="@+id/load_dts_weight_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:text="44,0000 lbs"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_weight_head"
-                    app:layout_constraintLeft_toRightOf="@id/load_dts_distance_value"
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:text="44,0000 lbs"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_distance_value"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_weight_head" />
 
                 <TextView
                     android:id="@+id/load_dts_price_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="$ 3,000"
-                    android:textColor="#12AD2B"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_price_head"
-                    app:layout_constraintLeft_toRightOf="@id/load_dts_weight_value"
                     android:layout_marginLeft="60dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:text="$ 3,000"
+                    android:textColor="#12AD2B"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_weight_value"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_price_head" />
 
 
                 <TextView
                     android:id="@+id/load_dts_pickDate_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Pick Up"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_distance_value"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"/>
+                    android:text="Pick Up"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_distance_value" />
 
                 <TextView
                     android:id="@+id/load_dts_dropDate_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Delivery"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_weight_value"
-                    app:layout_constraintLeft_toRightOf   = "@id/load_dts_pickDate_head"
                     android:layout_marginLeft="60dp"
                     android:layout_marginTop="20dp"
-                    />
+                    android:text="Delivery"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_pickDate_head"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_weight_value" />
 
                 <TextView
                     android:id="@+id/load_dts_length_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="Length"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_distance_value"
-                    app:layout_constraintLeft_toRightOf   = "@id/load_dts_dropDate_head"
                     android:layout_marginLeft="60dp"
                     android:layout_marginTop="20dp"
-                    />
+                    android:text="Length"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_dropDate_head"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_distance_value" />
 
                 <TextView
                     android:id="@+id/load_dts_pickDate_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="23/7/2023"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_pickDate_head"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:text="23/7/2023"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_pickDate_head" />
 
                 <TextView
                     android:id="@+id/load_dts_dropDate_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:text="23/7/2023"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_dropDate_head"
-                    app:layout_constraintLeft_toRightOf="@id/load_dts_pickDate_value"
                     android:layout_marginLeft="50dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:text="23/7/2023"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_pickDate_value"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_dropDate_head" />
 
                 <TextView
                     android:id="@+id/load_dts_length_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="69.0 Ft"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/load_dts_length_head"
-                    app:layout_constraintLeft_toRightOf="@id/load_dts_dropDate_value"
                     android:layout_marginLeft="60dp"
                     android:layout_marginTop="5dp"
-                    />
+                    android:text="69.0 Ft"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@id/load_dts_dropDate_value"
+                    app:layout_constraintTop_toBottomOf="@id/load_dts_length_head" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -339,14 +328,35 @@
                     app:layout_constraintTop_toBottomOf="@id/contact_info_value" />
 
                 <Button
+
+                    android:id="@+id/send_btn"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:elevation="4dp"
+                    android:text="Start Chat"
+
+
+                    android:src="@drawable/baseline_chat_24"
+                    app:layout_constraintLeft_toRightOf="@+id/button_bookLoad"
+                    app:layout_constraintTop_toBottomOf="@id/ad_req_value" />
+
+                <Button
                     android:id="@+id/button_bookLoad"
-                    android:layout_width="match_parent"
+                    android:layout_width="240dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="30dp"
                     android:backgroundTint="#4169E1"
                     android:text="Book Load"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ad_req_head" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

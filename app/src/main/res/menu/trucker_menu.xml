@@ -10,10 +10,14 @@
             />
         <item
             android:id="@+id/nav_1"
-            android:title="other"
+            android:title="Booking Requests"
+            android:icon="@drawable/truck2"
+            />
+        <item
+            android:id="@+id/nav_2"
+            android:title="Booking Confirmed"
             android:icon="@drawable/ic_baseline_home_24"
             />
-
     </group>
     <group android:checkableBehavior="single">
 
